@@ -1,0 +1,56 @@
+<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  <div class="text-centerd-flex align-items-top justify-content-center">
+    <a href="index.html">
+      <!-- <img src="{{loggedUser.urlLogo}}" onerror="this.parentElement.innerHTML = '<h3 style=margin-top:15px;margin-left:20px;color:white;>SEGINTER</h3>';" alt="logo" width="60" height="60" style="margin-top: 5px;"/> -->
+      <div style="display: flex;">
+        <ng-container *ngIf="loggedUser.urlLogo">
+          <img src="{{loggedUser.urlLogo}}" alt="logo" width="65" height="65" />
+        </ng-container>
+        <h3 style=margin-top:20px;margin-left:20px;color:white;>{{loggedUser.proveedor}}</h3>
+      </div>
+    </a>
+    <!-- <a class="navbar-brand brand-logo-mini" href="index.html">
+      <img src="{{loggedUser.urlLogo}}" alt="logo" />
+    </a> -->
+  </div>
+  <div class="navbar-menu-wrapper d-flex align-items-center">
+    <ul class="navbar-nav navbar-nav-right">
+      <li class="nav-item dropdown d-none d-xl-inline-block" ngbDropdown>
+        <a class="nav-link dropdown-toggle" id="UserDropdown" ngbDropdownToggle>
+          <span class="profile-text">Hola, {{loggedUser.nombre}}!</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" ngbDropdownMenu aria-labelledby="UserDropdown">
+          <a class="dropdown-item p-0">
+            <div class="d-flex border-bottom">
+              <div class="py-3 px-4 d-flex align-items-center justify-content-center">
+                <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
+              </div>
+              <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
+                <i class="mdi mdi-account-outline mr-0 text-gray"></i>
+              </div>
+              <div class="py-3 px-4 d-flex align-items-center justify-content-center">
+                <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
+              </div>
+            </div>
+          </a>
+          <a class="dropdown-item mt-2">
+            Manage Accounts
+          </a>
+          <a class="dropdown-item">
+            Change Password
+          </a>
+          <a class="dropdown-item">
+            Check Inbox
+          </a>
+          <a class="dropdown-item">
+            Sign Out
+          </a>
+        </div>
+      </li>
+    </ul>
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+      (click)="toggleOffcanvas()">
+      <span class="mdi mdi-menu"></span>
+    </button>
+  </div>
+</nav>
