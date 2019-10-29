@@ -2,7 +2,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <ul class="nav">
     <li *ngFor="let item of menu" class="nav-item">
-      <a class="nav-link" routerLink="/{{item.descripcion}}" routerLinkActive="active">
+      <a class="nav-link" routerLink="/{{item.recurso | lowercase}}" routerLinkActive="active">
         <i class="{{item.icono}} menu-icon"></i>
         <span class="menu-title">{{ 'PAGES.Titles.' + item.descripcion | translate }}</span>
       </a>

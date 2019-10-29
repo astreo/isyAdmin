@@ -1,52 +1,48 @@
-import { AppState } from './../app.reducer';
-import { usuario as actions } from '../actions';
-import { Usuario } from '../../models/usuario.model';
+import { usuarios as actions } from '../actions';
+import { UsuarioList } from '../../models/usuarios.model';
+
 
 export interface State {
-  usuario: Usuario;
+  usuarios: UsuarioList[];
   loaded: boolean;
   loading: boolean;
-  authenticated: boolean;
   error: any;
 }
 
-export interface AppState extends AppState {
-  account: State;
-}
-
 const estadoInicial: State = {
-  usuario: null,
+  usuarios: null,
   loaded: false,
   loading: false,
-  authenticated: false,
   error: null
 };
 
 export function reducer(state = estadoInicial, action: actions.accion): State {
-  // debugger;
   switch (action.type) {
-    case actions.CARGAR_USUARIO:
+    case actions.CARGAR_USUARIOS:
+        console.log('reducer cargar');
       return {
         ...state,
         loading: true,
         error: null
       };
 
-    case actions.CARGAR_USUARIO_SUCCESS:
+    case actions.CARGAR_USUARIOS_SUCCESS:
+        console.log('reducer success');
+        console.log(action.usuarios);
       return {
         ...state,
         loading: false,
         loaded: true,
-        authenticated: true,
-        usuario: { ...action.usuario }
+        usuarios: [...action.usuarios ]
       };
 
-    case actions.CARGAR_USUARIO_FAIL:
+    case actions.CARGAR_USUARIOS_FAIL:
+        console.log('reducer fail');
+        console.log(action.payload);
       return {
         ...state,
         loading: false,
         loaded: false,
-        authenticated: false,
         error: {
           status: action.payload.status,
           message: action.payload.message,

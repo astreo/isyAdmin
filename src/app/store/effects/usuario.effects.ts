@@ -20,8 +20,6 @@ export class UsuarioEffects {
       ofType(actions.CARGAR_USUARIO),
       pipe(
         switchMap((action: actions.CargarUsuario) => {
-          console.log('effect');
-          console.log(action.usuario);
           return this.usuariosService.login(action.usuario)
             .pipe(
               map(user => {
@@ -30,7 +28,7 @@ export class UsuarioEffects {
               }),
               catchError((error) => {
                 Swal.fire({
-                  title: 'Error en el Login!',
+                  title: 'Error!',
                   text: error.message,
                   type: 'error',
                   confirmButtonText: 'OK'

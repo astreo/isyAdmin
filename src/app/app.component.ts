@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     this.store.select('account')
       .subscribe(result => {
         this.autenticathed = result.authenticated;
-        // if (!this.autenticathed) { this.router.navigate(['/login']); }
+        if (!this.autenticathed) { this.router.navigate(['/login']); }
       });
   }
 }

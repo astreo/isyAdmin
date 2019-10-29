@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.reducer';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 declare interface Menu {

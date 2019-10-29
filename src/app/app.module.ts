@@ -32,12 +32,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
   ],
   imports: [
-    // SharedModule,
     BrowserModule,
     AuthModule,
     AppRoutingModule,
-    // tslint:disable-next-line: deprecation
-    NgbModule.forRoot(),
+    NgbModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

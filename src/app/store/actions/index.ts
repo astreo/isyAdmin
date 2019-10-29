@@ -1,4 +1,6 @@
 import * as usuario from './usuario.actions';
-
 export {usuario};
-// export {usuarios};
+
+import * as usuarios from './usuarios.actions';
+export {usuarios};
+

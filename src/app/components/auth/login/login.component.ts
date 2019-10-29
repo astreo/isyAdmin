@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../../store/app.reducer';
 import { LoginData } from 'src/app/models/usuario.model';
 import { Store } from '@ngrx/store';
-import { Usuario } from '../../../models/usuario.model';
+// import { Usuario } from '../../../models/usuario.model';
 import { usuario as actions } from '../../../store/actions';
 
 @Component({
