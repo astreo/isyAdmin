@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/reducers/usuario.reducer';
+import { usuarios as actions } from '../../../store/actions';
 import { map } from 'rxjs/operators';
 
 declare interface UsuariosLista {
@@ -35,16 +36,20 @@ export class UsersListComponent implements OnInit {
     .pipe(
       map(item => ({ users: item.usuarios, loading: item.loading })),
       map(mappedItems => {
-        return mappedItems.users
-        .map(item => ({
-          fechaCreacion: item.fechaCreacion, nombres: item.nombres, apellidos: item.apellidos, username: item.username, estado: item.estado,
-                      proveedor: item.proveedor.nombre, perfil: item.perfil.descripcion
-        }));
+        return (({
+          users: (mappedItems.users ? mappedItems.users : []).map(item => ({
+            fechaCreacion: item.fechaCreacion, nombres: item.nombres, apellidos: item.apellidos, username: item.username,
+            estado: item.estado, proveedor: item.proveedor.nombre, perfil: item.perfil.descripcion
+          })),
+          loading: mappedItems.loading
+        })
+        );
       }))
     .subscribe(mappedItems => {
-      this.usuarios = mappedItems;
+      this.usuarios = mappedItems.users;
+      this.loading = mappedItems.loading;
+      console.log('subscribe');
     });
+    this.store.dispatch(new actions.CargarUsuarios(8))
   }
-
-
 }
