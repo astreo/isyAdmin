@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/reducers/usuario.reducer';
 import { usuarios as actions } from '../../../store/actions';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { DecimalPipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 declare interface UsuariosLista {
   fechaCreacion: string;
@@ -14,24 +17,37 @@ declare interface UsuariosLista {
   perfil: string;
 }
 
+
+
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent implements OnInit, OnDestroy {
   loading: boolean;
-  public usuarios = {} as UsuariosLista[];
+  usuarios = {} as UsuariosLista[];
+  pageSize = 15;
+  page = 1;
+  accountSuscription = new Subscription();
+  usersSuscription = new Subscription();
+  filter = new FormControl('');
 
-  constructor(public store: Store<AppState>) { }
+  constructor(public store: Store<AppState>, pipe: DecimalPipe) { }
 
   ngOnInit() {
-    /*this.store.select('users')
+    this.accountSuscription = this.store.select('account')
       .subscribe(result => {
-        this.loading = result.loading;
+        this.getUsers(result.usuario.proveedor.idProveedor);
       });
-    this.store.dispatch(new actions.CargarUsuarios(8));*/
+  }
 
+  ngOnDestroy() {
+    this.accountSuscription.unsubscribe();
+    this.usersSuscription.unsubscribe();
+  }
+
+  getUsers(idProveedor: number) {
     this.store.select('users')
     .pipe(
       map(item => ({ users: item.usuarios, loading: item.loading })),
@@ -50,6 +66,14 @@ export class UsersListComponent implements OnInit {
       this.loading = mappedItems.loading;
       console.log('subscribe');
     });
-    this.store.dispatch(new actions.CargarUsuarios(8))
+    this.store.dispatch(new actions.CargarUsuarios(idProveedor));
+  }
+
+  search(text: string, pipe: PipeTransform): UsuariosLista[] {
+    return this.usuarios.filter(usuario => {
+      const term = text.toLowerCase();
+      return usuario.nombres.toLowerCase().includes(term)
+          || usuario.apellidos.toLowerCase().includes(term);
+    });
   }
 }

@@ -3,11 +3,16 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{ 'PAGES.Titles.Users' | translate }}</h4>
-        <p class="card-description">
-          Buscar
-        </p>
+        <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon bg-primary border-primary" id="colored-addon2">
+                <i class="fa fa-search text-white"></i>
+              </span>
+              <input [formControl]="filter" type="text" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="colored-addon2">
+            </div>
+          </div>
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped table-sm">
             <thead>
               <tr>
                 <th>
@@ -37,36 +42,37 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr *ngFor="let user of usuarios | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                 <td>
-                  07-08-2017 05:27 PM
+                  {{user.fechaCreacion}}
                 </td>
                 <td>
-                  Herman
+                  {{user.nombres}}
                 </td>
                 <td>
-                  Beck
+                  {{user.apellidos}}
                 </td>
                 <td>
-                  hbeck
+                  {{user.username}}
                 </td>
                 <td>
-                  true
+                  {{user.estado}}
                 </td>
                 <td>
-                  PROTEK
+                  {{user.proveedor}}
                 </td>
                 <td>
-                  ADMIN
+                  {{user.perfil}}
                 </td>
                 <td>
-
                 </td>
               </tr>
-
             </tbody>
           </table>
         </div>
+        <br>
+        <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+          [collectionSize]="usuarios.length" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
       </div>
     </div>
   </div>

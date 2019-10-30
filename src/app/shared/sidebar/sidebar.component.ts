@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.reducer';
 import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 declare interface Menu {
   idPerfil: number;
@@ -16,15 +17,16 @@ declare interface Menu {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   public samplePagesCollapsed = true;
   public menu = {} as Menu[];
+  subscription = new Subscription();
 
   constructor(public store: Store<AppState>, private translate: TranslateService) { }
 
   ngOnInit() {
 
-    this.store.select('account')
+    this.subscription = this.store.select('account')
       .pipe(
         map(item => ({ menu: item.usuario.perfilNivel })),
         map(mappedItems => {
@@ -37,6 +39,10 @@ export class SidebarComponent implements OnInit {
         this.menu = mappedItems;
       });
 
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   cambiaIdioma(idioma: string) {

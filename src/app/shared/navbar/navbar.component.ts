@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.reducer';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 declare interface LoggedUser {
   nombre: string;
@@ -17,9 +18,10 @@ declare interface LoggedUser {
   styleUrls: ['./navbar.component.scss'],
   providers: [NgbDropdownConfig]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   public sidebarOpened = false;
   public loggedUser = {} as LoggedUser;
+  subscription = new Subscription();
 
 
   toggleOffcanvas() {
@@ -35,13 +37,13 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select('account')
+    /*this.store.select('account')
       .subscribe(result => {
         this.loggedUser.nombre = result.usuario.nombres + ' ' + result.usuario.apellidos;
-      });
+      });*/
 
 
-      this.store.select('account')
+      this.subscription = this.store.select('account')
       .pipe(
         map(item => ({
           nombre: (item.usuario.nombres + ' ' + item.usuario.apellidos),
@@ -52,6 +54,10 @@ export class NavbarComponent implements OnInit {
       .subscribe(mappedItems => {
         this.loggedUser = mappedItems;
       });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }
