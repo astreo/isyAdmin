@@ -5,7 +5,7 @@
         <h4 class="card-title">{{ 'PAGES.Titles.Users' | translate }}</h4>
         <ng-container *ngIf="loading">
             <i class="fa fa-spin fa-sync"></i>
-            Procesando...
+            {{ 'PAGES.Messages.Processing' | translate }}...
         </ng-container>
         <ng-container *ngIf="!loading">
           <div class="form-group">
@@ -13,7 +13,7 @@
               <span class="input-group-addon bg-primary border-primary" id="colored-addon2">
                 <i class="fa fa-search text-white"></i>
               </span>
-              <input [formControl]="filter" type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+              <input [formControl]="filter" type="text" class="form-control" placeholder="{{ 'PAGES.Placeholders.Search' | translate }}" aria-label="Buscar"
                 aria-describedby="colored-addon2">
             </div>
           </div>
@@ -71,6 +71,11 @@
                     <ngb-highlight [result]="user.perfil" [term]="filter.value"></ngb-highlight>
                   </td>
                   <td>
+                      <div class="btn-group" role="group" aria-label="Basic example">
+                          <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+                          <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
+                          <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-gear"></i></button>
+                        </div>
                   </td>
                 </tr>
               </tbody>

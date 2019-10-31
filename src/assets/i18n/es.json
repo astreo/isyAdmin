@@ -236,6 +236,7 @@
             "Spanish": "Español"
         },
         "Messages": {
+            "Processing": "Procesando",
             "HeaderError": "Proceso incorrecto",
             "GetError": "Se ha producido un error al intentar obtener los datos",
             "InsertError": "Se ha producido un error al intentar insertar los datos",

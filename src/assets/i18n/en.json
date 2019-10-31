@@ -1,5 +1,5 @@
 {
-    "PAGES": 
+    "PAGES":
     {
         "Basics": {
             "Signin": "Sign In",
@@ -64,7 +64,7 @@
             "Provider": "Select the Provider",
             "Reject": "Reject",
             "SelectType": "Select Type",
-            "ServiceCategory": "Select the Service Category", 
+            "ServiceCategory": "Select the Service Category",
             "TotalConnect": "Total Connect",
             "TypeProvider": "Select Type Provider",
             "WithoutCommunicator": "Without Communicator"
@@ -236,6 +236,7 @@
             "Spanish": "Spanish"
         },
         "Messages": {
+            "Processing": "Processing",
             "HeaderError": "Wrong Process",
             "GetError": "An Error occurred when trying to Get the Data",
             "InsertError": "An Error occurred when trying to insert the Data",
