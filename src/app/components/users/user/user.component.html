@@ -1,0 +1,77 @@
+<div class="col-12">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{'PAGES.ModalTitles.NewUser' | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-sample">
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Names' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.LastNames' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.User' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Password' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.ConfirmPassword' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Email' | translate}}</label>
+              <input type="text" class="form-control" aria-label="Username">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="exampleFormControlSelect1">{{'PAGES.Labels.Profile' | translate}}</label>
+              <select class="form-control form-control-sm" id="exampleFormControlSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="exampleFormControlSelect2">{{'PAGES.Labels.Provider' | translate}}</label>
+              <select class="form-control form-control-sm" id="exampleFormControlSelect2">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-label" for="exampleCheck1">Check me out</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+</div>

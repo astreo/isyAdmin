@@ -4,13 +4,14 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 // import { StoreModule } from '@ngrx/store';
 // import { reducer } from '../../store/reducers/usuario.reducer';
 import { HomeComponent } from '../home/home.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { UsersListComponent } from '../users/users-list/users-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserComponent } from '../users/user/user.component';
 
 
 
@@ -20,15 +21,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomeComponent,
     MainComponent,
     UsersListComponent,
+    UserComponent,
   ],
   imports: [
     NgbModule,
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     SharedModule,
     MainRoutingModule,
     TranslateModule.forChild(),
     // StoreModule.forFeature('account', reducer)
-  ]
+  ],
+  entryComponents: [ UserComponent ]
 })
 export class MainModule { }

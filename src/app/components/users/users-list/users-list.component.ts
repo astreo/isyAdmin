@@ -6,6 +6,8 @@ import { map, startWith } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserComponent } from '../user/user.component';
 
 declare interface UsuariosLista {
   fechaCreacion: string;
@@ -29,13 +31,13 @@ export class UsersListComponent implements OnInit, OnDestroy {
   loading: boolean;
   usuarios = {} as UsuariosLista[];
   usuarios$: Observable<UsuariosLista[]>;
-  pageSize = 15;
+  pageSize = 10;
   page = 1;
   accountSuscription = new Subscription();
   usersSuscription = new Subscription();
   filter = new FormControl('');
 
-  constructor(public store: Store<AppState>, public pipe: DecimalPipe) { }
+  constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal) { }
 
   ngOnInit() {
     this.accountSuscription = this.store.select('account')
@@ -73,6 +75,21 @@ export class UsersListComponent implements OnInit, OnDestroy {
       console.log('subscribe');
     });
     this.store.dispatch(new actions.CargarUsuarios(idProveedor));
+  }
+
+  openModal(user: UsuariosLista) {
+    const indice = this.usuarios.indexOf(user);
+    console.log('indice: ' + indice);
+    const modalRef = this.modalService.open(UserComponent, { size: 'lg',  backdrop: 'static' });
+    modalRef.componentInstance.elementIndex = indice;
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log(result);
+      }
+    });
+    // modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+    //   console.log(receivedEntry);
+    // })
   }
 
   search(text: string, pipe: PipeTransform): UsuariosLista[] {

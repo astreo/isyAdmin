@@ -28,6 +28,12 @@
   }
 }
 
+.form-label {
+  font-family: $type-1;
+  font-size: $input-font-size;
+
+}
+
 select {
   &.form-control {
     padding: 0.4375rem 0.75rem;
