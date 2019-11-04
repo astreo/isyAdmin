@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/reducers/usuario.reducer';
+import { AppState } from '../../../store/app.reducer';
 import { usuarios as actions } from '../../../store/actions';
 import { map, startWith } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
@@ -8,17 +8,7 @@ import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserComponent } from '../user/user.component';
-
-declare interface UsuariosLista {
-  fechaCreacion: string;
-  nombres: string;
-  apellidos: string;
-  username: string;
-  estado: string;
-  proveedor: string;
-  perfil: string;
-}
-
+import { UsuarioListComp } from 'src/app/models/usuarios.model';
 
 
 @Component({
@@ -29,8 +19,8 @@ declare interface UsuariosLista {
 })
 export class UsersListComponent implements OnInit, OnDestroy {
   loading: boolean;
-  usuarios = {} as UsuariosLista[];
-  usuarios$: Observable<UsuariosLista[]>;
+  usuarios = {} as UsuarioListComp[];
+  usuarios$: Observable<UsuarioListComp[]>;
   pageSize = 10;
   page = 1;
   accountSuscription = new Subscription();
@@ -58,8 +48,11 @@ export class UsersListComponent implements OnInit, OnDestroy {
       map(mappedItems => {
         return (({
           users: (mappedItems.users ? mappedItems.users : []).map(item => ({
-            fechaCreacion: item.fechaCreacion, nombres: item.nombres, apellidos: item.apellidos, username: item.username,
-            estado: item.estado, proveedor: item.proveedor.nombre, perfil: item.perfil.descripcion
+            fechaCreacion: item.fechaCreacion,
+            nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
+            estado: item.estado,
+            idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
+            idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion
           })),
           loading: mappedItems.loading
         })
@@ -77,11 +70,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.store.dispatch(new actions.CargarUsuarios(idProveedor));
   }
 
-  openModal(user: UsuariosLista) {
-    const indice = this.usuarios.indexOf(user);
-    console.log('indice: ' + indice);
+  openModal(user: UsuarioListComp) {
+    // const indice = this.usuarios.indexOf(user);
     const modalRef = this.modalService.open(UserComponent, { size: 'lg',  backdrop: 'static' });
-    modalRef.componentInstance.elementIndex = indice;
+    modalRef.componentInstance.user = user;
     modalRef.result.then((result) => {
       if (result) {
         console.log(result);
@@ -92,7 +84,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
     // })
   }
 
-  search(text: string, pipe: PipeTransform): UsuariosLista[] {
+  search(text: string, pipe: PipeTransform): UsuarioListComp[] {
     return this.usuarios.filter(usuario => {
       const term = text.toLowerCase();
       return usuario.nombres.toLowerCase().includes(term)

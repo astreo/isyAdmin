@@ -4,3 +4,6 @@ export {usuario};
 import * as usuarios from './usuarios.actions';
 export {usuarios};
 
+import * as perfil from './perfil.actions';
+export {perfil};
+

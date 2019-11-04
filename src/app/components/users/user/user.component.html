@@ -6,29 +6,29 @@
     </button>
   </div>
   <div class="modal-body">
-    <form class="form-sample">
+      <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
       <div class="row">
         <div class="col-md-6">
           <div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Names' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control" formControlName='nombres'>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.LastNames' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control" formControlName='apellidos'>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.User' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control" formControlName='username'>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Password' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control">
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.ConfirmPassword' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control">
             </div>
           </div>
         </div>
@@ -36,20 +36,16 @@
           <div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control" formControlName='telefono'>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Email' | translate}}</label>
-              <input type="text" class="form-control" aria-label="Username">
+              <input type="text" class="form-control" formControlName='email'>
             </div>
             <div class="form-group">
               <label class="form-label" for="exampleFormControlSelect1">{{'PAGES.Labels.Profile' | translate}}</label>
               <select class="form-control form-control-sm" id="exampleFormControlSelect1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                  <option *ngFor="let perfil of perfiles" [ngValue]="perfil.id">{{perfil.descripcion}}</option>
               </select>
             </div>
             <div class="form-group">

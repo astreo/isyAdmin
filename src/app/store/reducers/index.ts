@@ -3,3 +3,6 @@ export {usuario};
 
 import * as usuarios from './usuarios.reducer';
 export {usuarios};
+
+import * as perfil from './perfil.reducer';
+export {perfil};
