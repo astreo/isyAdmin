@@ -1,3 +1,5 @@
+import { Proveedor } from './proveedor.model';
+import { Perfil } from './perfil.model';
 
 
 export interface PerfilProveedor {
@@ -5,60 +7,6 @@ export interface PerfilProveedor {
   idPerfil: number;
   idProveedor: number;
   proveedor: any[];
-}
-
-export interface Proveedor {
-  idProveedor: number;
-  idTipoProveedor: number;
-  nombre: string;
-  alias: string;
-  direccion: string;
-  telefono: string;
-  email: string;
-  check: boolean;
-  celular?: any;
-  urlLogo: string;
-  urlBandera: string;
-  pais?: any;
-  dominioPais: string;
-  sistemaSeguridad: string;
-  fileBytes?: any;
-  fileBytesBand?: any;
-  urlWebService: string;
-  linkWeb: string;
-  estado: string;
-  usuarioCreacion: number;
-  fechaCreacion: string;
-  fechaCreacionUtc?: any;
-  usuarioModificacion: number;
-  fechaModificacionUtc?: any;
-  fechaModificacion: string;
-  tipoProveedor?: any;
-  idProveedorWeb: number;
-  idUsuarioWeb: number;
-  proveedorWeb?: any;
-}
-
-export interface Perfil {
-  idPerfil: number;
-  descripcion: string;
-  usuarioCreacion: number;
-  usuarioModificacion?: number;
-  fechaCreacion: string;
-  fechaCreacionUtc?: any;
-  fechaModificacion: string;
-  fechaModificacionUtc?: any;
-  estado: string;
-  check: boolean;
-  ver: boolean;
-  crear: boolean;
-  editar: boolean;
-  eliminar: boolean;
-  perfilNivel: any[];
-  proveedor: Proveedor[];
-  idProveedorWeb: number;
-  idUsuarioWeb: number;
-  proveedorWeb?: any;
 }
 
 export interface UsuarioList {

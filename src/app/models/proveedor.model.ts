@@ -1,0 +1,31 @@
+export interface Proveedor {
+  idProveedor: number;
+  idTipoProveedor: number;
+  nombre: string;
+  alias: string;
+  direccion: string;
+  telefono: string;
+  email: string;
+  check: boolean;
+  celular?: any;
+  urlLogo: string;
+  urlBandera: string;
+  pais?: any;
+  dominioPais: string;
+  sistemaSeguridad: string;
+  fileBytes?: any;
+  fileBytesBand?: any;
+  urlWebService: string;
+  linkWeb: string;
+  estado: string;
+  usuarioCreacion: number;
+  fechaCreacion: string;
+  fechaCreacionUtc?: any;
+  usuarioModificacion: number;
+  fechaModificacionUtc?: any;
+  fechaModificacion: string;
+  tipoProveedor?: any;
+  idProveedorWeb: number;
+  idUsuarioWeb: number;
+  proveedorWeb?: any;
+}

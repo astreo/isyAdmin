@@ -1,15 +1,7 @@
+import { Perfil } from './perfil.model';
+import { Proveedor } from './proveedor.model';
+import { PerfilProveedor, PerfilNivel } from './relaciones.model';
 
-/* export class Usuario {
-  public IdPerfilProveedor: number;
-  public IdPerfil: number;
-  public IdProveedor: number;
-  public Nombres: string;
-  public Apellidos: string;
-  public NroDoc: string;
-  constructor(
-    public email: string,
-  ) { }
-} */
 
 export class LoginData {
   constructor(
@@ -40,7 +32,7 @@ export interface Usuario {
   fechaCreacionUtc:     null;
   fechaModificacion:    string;
   fechaModificacionUtc: null;
-  estado:               Estado;
+  estado:               string;
   resetPassword:        boolean;
   recordarme:           boolean;
   perfilProveedor:      PerfilProveedor;
@@ -52,106 +44,3 @@ export interface Usuario {
   proveedorWeb:         null;
 }
 
-export enum Estado {
-  A = 'A',
-}
-
-export interface Perfil {
-  idPerfil:             number;
-  descripcion:          string;
-  usuarioCreacion:      number;
-  usuarioModificacion:  number;
-  fechaCreacion:        string;
-  fechaCreacionUtc:     null;
-  fechaModificacion:    string;
-  fechaModificacionUtc: null;
-  estado:               Estado;
-  check:                boolean;
-  ver:                  boolean;
-  crear:                boolean;
-  editar:               boolean;
-  eliminar:             boolean;
-  perfilNivel:          any[];
-  proveedor:            any[];
-  idProveedorWeb:       number;
-  idUsuarioWeb:         number;
-  proveedorWeb:         null;
-}
-
-export interface PerfilNivel {
-  idPerfilNivel:       number;
-  idPerfil:            number;
-  idNivel:             number;
-  ver:                 Crear;
-  crear:               Crear;
-  editar:              Crear;
-  eliminar:            Crear;
-  usuarioCreacion:     number;
-  usuarioModificacion: null;
-  fechaCreacion:       string;
-  fechaModificacion:   null;
-  nivel:               Nivel;
-}
-
-export enum Crear {
-  N = 'N',
-  S = 'S',
-}
-
-export interface Nivel {
-  idNivel:              number;
-  descripcion:          string;
-  recurso:              string;
-  url:                  string;
-  estado:               Estado;
-  icono:                string;
-  usuarioCreacion:      number;
-  usuarioModificacion:  number;
-  fechaCreacion:        string;
-  fechaCreacionUtc:     null;
-  fechaModificacion:    string;
-  fechaModificacionUtc: null;
-  perfil:               any[];
-  idProveedorWeb:       number;
-  idUsuarioWeb:         number;
-  proveedorWeb:         null;
-}
-
-export interface PerfilProveedor {
-  idPerfilProveedor: number;
-  idPerfil:          number;
-  idProveedor:       number;
-  proveedor:         any[];
-}
-
-export interface Proveedor {
-  idProveedor:          number;
-  idTipoProveedor:      number;
-  nombre:               string;
-  alias:                string;
-  direccion:            string;
-  telefono:             string;
-  email:                string;
-  check:                boolean;
-  celular:              null;
-  urlLogo:              string;
-  urlBandera:           string;
-  pais:                 null;
-  dominioPais:          string;
-  sistemaSeguridad:     string;
-  fileBytes:            null;
-  fileBytesBand:        null;
-  urlWebService:        string;
-  linkWeb:              string;
-  estado:               Estado;
-  usuarioCreacion:      number;
-  fechaCreacion:        string;
-  fechaCreacionUtc:     null;
-  usuarioModificacion:  number;
-  fechaModificacionUtc: null;
-  fechaModificacion:    string;
-  tipoProveedor:        null;
-  idProveedorWeb:       number;
-  idUsuarioWeb:         number;
-  proveedorWeb:         null;
-}

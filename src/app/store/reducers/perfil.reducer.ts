@@ -1,4 +1,4 @@
-import { Perfil } from './../../models/usuarios.model';
+import { Perfil } from './../../models/perfil.model';
 import { perfil as actions } from '../actions';
 
 export interface State {
