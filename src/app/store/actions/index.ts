@@ -7,3 +7,6 @@ export {usuarios};
 import * as perfil from './perfil.actions';
 export {perfil};
 
+import * as proveedor from './proveedor.actions';
+export {proveedor};
+

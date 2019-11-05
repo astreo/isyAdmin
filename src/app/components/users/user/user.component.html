@@ -43,20 +43,17 @@
               <input type="text" class="form-control" formControlName='email'>
             </div>
             <div class="form-group">
-              <label class="form-label" for="exampleFormControlSelect1">{{'PAGES.Labels.Profile' | translate}}</label>
+              <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
               <select class="form-control form-control-sm" formControlName='idPerfil'>
                   <option value="">{{'PAGES.DefaultListItems.Profile' | translate}}</option>
                   <option *ngFor="let perfil of perfiles" [ngValue]="perfil.id">{{perfil.descripcion}}</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label" for="exampleFormControlSelect2">{{'PAGES.Labels.Provider' | translate}}</label>
-              <select class="form-control form-control-sm" id="exampleFormControlSelect2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+              <label class="form-label">{{'PAGES.Labels.Provider' | translate}}</label>
+              <select class="form-control form-control-sm" formControlName='idProveedor'>
+                  <option value="">{{'PAGES.DefaultListItems.Provider' | translate}}</option>
+                  <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor.id">{{proveedor.descripcion}}</option>
               </select>
             </div>
             <div class="form-group form-check">

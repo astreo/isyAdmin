@@ -4,8 +4,8 @@ import { UsuarioListComp } from '../../../models/usuarios.model';
 import { AbstractControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducer';
-import { perfil as actions } from '../../../store/actions';
-import { map, filter } from 'rxjs/operators';
+import * as actions from '../../../store/actions';
+import { map } from 'rxjs/operators';
 import { SelectionModel } from 'src/app/models/misc.model';
 import { Subscription } from 'rxjs';
 
@@ -40,6 +40,7 @@ declare interface MyForm extends FormGroup {
 export class UserComponent implements OnInit {
   loading: boolean;
   perfiles = {} as SelectionModel[];
+  proveedores = {} as SelectionModel[];
   accountSuscription = new Subscription();
   // @Input() public elementIndex;
   @Input() public user: UsuarioListComp;
@@ -54,6 +55,7 @@ export class UserComponent implements OnInit {
     this.accountSuscription = this.store.select('account')
       .subscribe(result => {
         this.getPerfiles(result.usuario.proveedor.idProveedor);
+        this.getProveedores(result.usuario.proveedor.idProveedor);
       });
 
     this.form = this.formBuilder.group({
@@ -102,7 +104,33 @@ export class UserComponent implements OnInit {
       this.loading = mappedItems.loading;
       console.log('subscribe');
     });
-    this.store.dispatch(new actions.CargarPerfiles());
+    this.store.dispatch(new actions.perfil.CargarPerfiles());
+  }
+
+  getProveedores(idProveedor: number) {
+    this.store.select('proveedor')
+    .pipe(
+      map(item => ({ proveedores: item.proveedores, loading: item.loading })),
+      map(mappedItems => {
+        return (({
+          proveedores: (mappedItems.proveedores ? mappedItems.proveedores : [])
+          // .filter(item => item.proveedor.find(a => a.idProveedor === idProveedor))
+          .map(item => ({
+            id: item.idProveedor,
+            descripcion: item.nombre
+          })),
+          loading: mappedItems.loading
+        })
+        );
+      }))
+    .subscribe(mappedItems => {
+      this.proveedores = mappedItems.proveedores;
+      console.log('proveedores');
+      console.log(this.proveedores);
+      this.loading = mappedItems.loading;
+      console.log('subscribe');
+    });
+    this.store.dispatch(new actions.proveedor.CargarProveedores(idProveedor));
   }
 
   passBack() {
