@@ -5,8 +5,8 @@ import { of, pipe } from 'rxjs';
 import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { UsuarioService } from '../../services/usuario.service';
-import { Store, select } from '@ngrx/store';
-import { AppState, getUsuarios } from '../app.reducer';
+import { Store } from '@ngrx/store';
+import { AppState } from '../app.reducer';
 
 @Injectable()
 export class UsuariosEffects {

@@ -49,4 +49,4 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
   }
 }
 
-export const getUsuarios = (state: State) => state.usuarios;
+// export const getUsuarios = (state: State) => state.usuarios;

@@ -7,7 +7,7 @@ import { AppState } from '../../../store/app.reducer';
 import * as actions from '../../../store/actions';
 import { map } from 'rxjs/operators';
 import { SelectionModel } from 'src/app/models/misc.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 declare class MyFormDataStructure {
   fields: UsuarioListComp;
@@ -39,9 +39,13 @@ declare interface MyForm extends FormGroup {
 })
 export class UserComponent implements OnInit {
   loading: boolean;
-  perfiles = {} as SelectionModel[];
-  proveedores = {} as SelectionModel[];
-  accountSuscription = new Subscription();
+  // perfiles = {} as SelectionModel[];
+  perfiles$: Observable<SelectionModel[]>;
+  proveedores$: Observable<SelectionModel[]>;
+  accountSubscription = new Subscription();
+  perfilesLoaded$ = this.store.select(state => state.perfil.loaded);
+  proveedoresLoaded$ = this.store.select(state => state.proveedor.loaded);
+  idProveedor: number;
   // @Input() public elementIndex;
   @Input() public user: UsuarioListComp;
   form: MyForm;
@@ -51,11 +55,29 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.accountSuscription = this.store.select('account')
-      .subscribe(result => {
-        this.getPerfiles(result.usuario.proveedor.idProveedor);
-        this.getProveedores(result.usuario.proveedor.idProveedor);
+    this.accountSubscription = this.store.select(state => state.account.usuario.proveedor.idProveedor)
+      .subscribe(idProveedor => {
+        this.idProveedor = idProveedor;
       });
+
+    this.perfilesLoaded$.subscribe(loaded => {
+      if (!loaded) {
+        this.store.dispatch(new actions.perfil.CargarPerfiles());
+      } else {
+        // this.store.select('account')
+        while (!this.idProveedor) { }
+        this.getPerfilesFromStore(this.idProveedor);
+      }
+    });
+
+    this.proveedoresLoaded$.subscribe(loaded => {
+      if (!loaded) {
+        while (!this.idProveedor) { }
+        this.store.dispatch(new actions.proveedor.CargarProveedores(this.idProveedor));
+      } else {
+        this.getProveedoresFromStore();
+      }
+    });
 
     this.form = this.formBuilder.group({
       fechaCreacion: this.user.fechaCreacion,
@@ -80,52 +102,35 @@ export class UserComponent implements OnInit {
     return this.form.controls;
   }
 
-  getPerfiles(idProveedor: number) {
-    this.store.select('perfil')
-    .pipe(
-      map(item => ({ perfiles: item.perfiles, loading: item.loading })),
-      map(mappedItems => {
-        return (({
-          perfiles: (mappedItems.perfiles ? mappedItems.perfiles : [])
-          .filter(item => item.proveedor.find(a => a.idProveedor === idProveedor))
-          .map(item => ({
-            id: item.idPerfil,
-            descripcion: item.descripcion
-          })),
-          loading: mappedItems.loading
-        })
+  getPerfilesFromStore(idProveedor: number) {
+    this.perfiles$ = this.store.select(state => state.perfil.perfiles).pipe(
+      map(item => {
+        console.log('state.perfil.perfiles');
+        return (
+          // tslint:disable-next-line: no-shadowed-variable
+          item.filter(item => item.proveedor.find(a => a.idProveedor === idProveedor))
+            // tslint:disable-next-line: no-shadowed-variable
+            .map(item => ({
+              id: item.idPerfil,
+              descripcion: item.descripcion
+            }))
         );
-      }))
-    .subscribe(mappedItems => {
-      console.log('getPerfiles');
-      this.perfiles = mappedItems.perfiles;
-      this.loading = mappedItems.loading;
-    });
-    this.store.dispatch(new actions.perfil.CargarPerfiles());
+      }));
   }
 
-  getProveedores(idProveedor: number) {
-    this.store.select('proveedor')
-    .pipe(
-      map(item => ({ proveedores: item.proveedores, loading: item.loading })),
-      map(mappedItems => {
-        return (({
-          proveedores: (mappedItems.proveedores ? mappedItems.proveedores : [])
-          // .filter(item => item.proveedor.find(a => a.idProveedor === idProveedor))
-          .map(item => ({
-            id: item.idProveedor,
-            descripcion: item.nombre
-          })),
-          loading: mappedItems.loading
-        })
+  getProveedoresFromStore() {
+    this.proveedores$ = this.store.select(state => state.proveedor.proveedores).pipe(
+      map(item => {
+        console.log('state.perfil.proveedores');
+        return (
+          item
+            // tslint:disable-next-line: no-shadowed-variable
+            .map(item => ({
+              id: item.idProveedor,
+              descripcion: item.nombre
+            }))
         );
-      }))
-    .subscribe(mappedItems => {
-      console.log('getProveedores');
-      this.proveedores = mappedItems.proveedores;
-      this.loading = mappedItems.loading;
-    });
-    this.store.dispatch(new actions.proveedor.CargarProveedores(idProveedor));
+      }));
   }
 
   passBack() {

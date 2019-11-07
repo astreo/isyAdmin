@@ -49,4 +49,4 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
   }
 }
 
-export const getPerfiles = (state: State) => state.perfiles;
+// export const getPerfiles = (state: State) => state.perfiles;

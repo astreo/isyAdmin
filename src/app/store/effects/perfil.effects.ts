@@ -6,7 +6,7 @@ import { switchMap, map, catchError, withLatestFrom, concatMap } from 'rxjs/oper
 import Swal from 'sweetalert2';
 import { PerfilService } from 'src/app/services/perfil.service';
 import { Store, select } from '@ngrx/store';
-import { AppState, getPerfiles } from '../app.reducer';
+import { AppState } from '../app.reducer';
 import { perfil as reducer } from '../reducers';
 import { Perfil } from '../../models/perfil.model';
 
@@ -17,7 +17,7 @@ export class PerfilEffects {
     private actions$: Actions, public perfilService: PerfilService, public store: Store<AppState>
   ) { }
 
-  /*
+
   @Effect()
   cargarPerfiles$ = this.actions$
     .pipe(
@@ -42,10 +42,10 @@ export class PerfilEffects {
         })
       )
     );
-    */
 
 
-  @Effect()
+
+  /*@Effect()
   cargarPerfiles$ = this.actions$
     .pipe(
       ofType(actions.CARGAR_PERFILES),
@@ -67,7 +67,7 @@ export class PerfilEffects {
             })
           );
       })
-    );
+    );*/
 
 
 }

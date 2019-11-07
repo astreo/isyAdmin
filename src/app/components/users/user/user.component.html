@@ -46,14 +46,14 @@
               <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
               <select class="form-control form-control-sm" formControlName='idPerfil'>
                 <option value="">{{'PAGES.DefaultListItems.Profile' | translate}}</option>
-                <option *ngFor="let perfil of perfiles" [ngValue]="perfil.id">{{perfil.descripcion}}</option>
+                <option *ngFor="let perfil of perfiles$ | async" [ngValue]="perfil.id">{{perfil.descripcion}}</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Provider' | translate}}</label>
               <select class="form-control form-control-sm" formControlName='idProveedor'>
                 <option value="">{{'PAGES.DefaultListItems.Provider' | translate}}</option>
-                <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor.id">{{proveedor.descripcion}}
+                <option *ngFor="let proveedor of proveedores$ | async" [ngValue]="proveedor.id">{{proveedor.descripcion}}
                 </option>
               </select>
             </div>
