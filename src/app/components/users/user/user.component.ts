@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UsuarioListComp } from '../../../models/usuarios.model';
-import { AbstractControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UsuarioListComp, UsuarioList } from '../../../models/usuarios.model';
+import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducer';
 import * as actions from '../../../store/actions';
@@ -10,13 +10,14 @@ import { SelectionModel } from 'src/app/models/misc.model';
 import { Subscription, Observable } from 'rxjs';
 
 declare class MyFormDataStructure {
-  fields: UsuarioListComp;
+  fields: UsuarioList;
   controls: {
-    // id: AbstractControl;
     fechaCreacion: AbstractControl;
     nombres: AbstractControl;
     apellidos: AbstractControl;
     username: AbstractControl;
+    password: AbstractControl;
+    confirmPassword: AbstractControl;
     email: AbstractControl;
     telefono: AbstractControl;
     estado: AbstractControl;
@@ -84,6 +85,8 @@ export class UserComponent implements OnInit {
       nombres: [this.user.nombres, Validators.required],
       apellidos: [this.user.apellidos, Validators.required],
       username: [this.user.username, Validators.required],
+      password: '',
+      confirmPassword: '',
       email: [this.user.email, Validators.required],
       telefono: [this.user.telefono, Validators.required],
       estado: [this.user.estado, Validators.required],
@@ -100,6 +103,17 @@ export class UserComponent implements OnInit {
 
   get ctrls() {
     return this.form.controls;
+  }
+
+  getErrorMessage(fc: FormControl) {
+    let resp = '';
+    resp += fc.hasError('required') ? 'Debe ingresar un valor. ' : '';
+    resp += fc.hasError('minlength') ? 'Debe ingresar mínimo 6 dígitos. ' : '';
+    resp += fc.hasError('loteValidator')
+      ? 'Debe empezar con fecha mayor que la actual y en formato AAMMDD. '
+      : '';
+    console.log(resp);
+    return resp;
   }
 
   getPerfilesFromStore(idProveedor: number) {

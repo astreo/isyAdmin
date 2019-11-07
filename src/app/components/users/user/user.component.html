@@ -12,23 +12,38 @@
           <div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Names' | translate}}</label>
-              <input type="text" class="form-control" formControlName='nombres'>
+              <input type="text" class="form-control" formControlName='nombres' [ngClass]="{ 'is-invalid': ctrls.nombres.invalid }" >
+              <div *ngIf="ctrls.nombres.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.nombres)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.LastNames' | translate}}</label>
-              <input type="text" class="form-control" formControlName='apellidos'>
+              <input type="text" class="form-control" formControlName='apellidos' [ngClass]="{ 'is-invalid': ctrls.apellidos.invalid }">
+              <div *ngIf="ctrls.apellidos.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.apellidos)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.User' | translate}}</label>
-              <input type="text" class="form-control" formControlName='username'>
+              <input type="text" class="form-control" formControlName='username' [ngClass]="{ 'is-invalid': ctrls.username.invalid }">
+              <div *ngIf="ctrls.username.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.username)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Password' | translate}}</label>
-              <input type="text" class="form-control">
+              <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': ctrls.password.invalid }">
+              <div *ngIf="ctrls.password.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.password)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.ConfirmPassword' | translate}}</label>
-              <input type="text" class="form-control">
+              <input type="password" class="form-control" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': ctrls.confirmPassword.invalid }">
+              <div *ngIf="ctrls.confirmPassword.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.confirmPassword)}}
+              </div>
             </div>
           </div>
         </div>
@@ -36,11 +51,17 @@
           <div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
-              <input type="text" class="form-control" formControlName='telefono'>
+              <input type="text" class="form-control" formControlName='telefono' [ngClass]="{ 'is-invalid': ctrls.telefono.invalid }">
+              <div *ngIf="ctrls.telefono.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.telefono)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Email' | translate}}</label>
-              <input type="text" class="form-control" formControlName='email'>
+              <input type="text" class="form-control" formControlName='email' [ngClass]="{ 'is-invalid': ctrls.email.invalid }">
+              <div *ngIf="ctrls.email.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.email)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
@@ -53,7 +74,8 @@
               <label class="form-label">{{'PAGES.Labels.Provider' | translate}}</label>
               <select class="form-control form-control-sm" formControlName='idProveedor'>
                 <option value="">{{'PAGES.DefaultListItems.Provider' | translate}}</option>
-                <option *ngFor="let proveedor of proveedores$ | async" [ngValue]="proveedor.id">{{proveedor.descripcion}}
+                <option *ngFor="let proveedor of proveedores$ | async" [ngValue]="proveedor.id">
+                  {{proveedor.descripcion}}
                 </option>
               </select>
             </div>

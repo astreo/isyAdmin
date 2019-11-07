@@ -1,5 +1,6 @@
 import { Proveedor } from './proveedor.model';
 import { Perfil } from './perfil.model';
+import { PerfilNivel } from './relaciones.model';
 
 
 export interface PerfilProveedor {
@@ -19,7 +20,7 @@ export interface UsuarioList {
   nroDoc?: any;
   username: string;
   password: string;
-  confirmPassword?: any;
+  confirmPassword?: string;
   direccion?: any;
   email: string;
   telefono: string;
@@ -35,7 +36,7 @@ export interface UsuarioList {
   perfilProveedor: PerfilProveedor;
   proveedor: Proveedor;
   perfil: Perfil;
-  perfilNivel: any[];
+  perfilNivel: PerfilNivel[];
   idProveedorWeb: number;
   idUsuarioWeb: number;
   proveedorWeb?: any;
