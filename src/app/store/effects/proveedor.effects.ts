@@ -19,13 +19,9 @@ export class ProveedorEffects {
       ofType(actions.CARGAR_PROVEEDORES),
       pipe(
         switchMap((action: actions.CargarProveedores) => {
-          console.log('effects');
           return this.proveedorService.getProveedores(action.idProveedor)
             .pipe(
               map(proveedores => {
-                // debugger;
-                console.log('effect');
-                console.log(proveedores);
                 return new actions.CargarProveedoresSuccess(proveedores);
               }),
               catchError((error) => {

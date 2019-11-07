@@ -18,82 +18,112 @@ import { UsuarioListComp } from 'src/app/models/usuarios.model';
   providers: [DecimalPipe]
 })
 export class UsersListComponent implements OnInit, OnDestroy {
-  loading: boolean;
+  loading$: Observable<boolean>;
   usuarios = {} as UsuarioListComp[];
   usuarios$: Observable<UsuarioListComp[]>;
+
+  loaded$ = this.store.select(state => state.users.loaded);
+
   pageSize = 10;
   page = 1;
-  accountSuscription = new Subscription();
-  usersSuscription = new Subscription();
+  accountSubscription = new Subscription();
+  getUsersFromStoreSubscription  = new Subscription();
   filter = new FormControl('');
 
   constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal) { }
 
   ngOnInit() {
-    this.accountSuscription = this.store.select('account')
-      .subscribe(result => {
-        this.getUsers(result.usuario.proveedor.idProveedor);
-      });
+    this.loading$ = this.store.select(state => state.users.loading);
+    this.loaded$.subscribe(loaded => {
+      if (!loaded) {
+        this.accountSubscription = this.store.select('account')
+          .subscribe(result => {
+            this.store.dispatch(new actions.CargarUsuarios(result.usuario.proveedor.idProveedor));
+          });
+      } else {
+        this.getUsersFromStore();
+      }
+    });
   }
 
   ngOnDestroy() {
-    this.accountSuscription.unsubscribe();
-    this.usersSuscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
+    this.getUsersFromStoreSubscription.unsubscribe();
   }
 
-  getUsers(idProveedor: number) {
-    this.store.select('users')
-    .pipe(
-      map(item => ({ users: item.usuarios, loading: item.loading })),
-      map(mappedItems => {
-        return (({
-          users: (mappedItems.users ? mappedItems.users : []).map(item => ({
-            fechaCreacion: item.fechaCreacion,
-            nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
-            estado: item.estado,
-            idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
-            idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion
-          })),
-          loading: mappedItems.loading
-        })
-        );
-      }))
-    .subscribe(mappedItems => {
-      this.usuarios = mappedItems.users;
-      this.loading = mappedItems.loading;
+
+  getUsersFromStore() {
+    this.store.select(state => state.users.usuarios).pipe(map((item) => {
+      return (
+        // tslint:disable-next-line: no-shadowed-variable
+        item.map(item => ({
+          fechaCreacion: item.fechaCreacion,
+          nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
+          estado: item.estado,
+          idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
+          idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion
+        }))
+      );
+    })).subscribe(mappedItems => {
+      console.log('getUsers');
+      this.usuarios = mappedItems;
       this.usuarios$ = this.filter.valueChanges.pipe(
         startWith(''),
         map(text => this.search(text, this.pipe))
       );
-      console.log('subscribe');
     });
+  }
+
+  getUsersFromServer(idProveedor: number) {
+    this.store.select('users')
+      .pipe(
+        map(item => ({ users: item.usuarios, loading: item.loading })),
+        map(mappedItems => {
+          return (({
+            users: (mappedItems.users ? mappedItems.users : []).map(item => ({
+              fechaCreacion: item.fechaCreacion,
+              nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
+              estado: item.estado,
+              idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
+              idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion
+            })),
+            loading: mappedItems.loading
+          })
+          );
+        }))
+      .subscribe(mappedItems => {
+        console.log('getUsers');
+        this.usuarios = mappedItems.users;
+        // this.loading = mappedItems.loading;
+        this.usuarios$ = this.filter.valueChanges.pipe(
+          startWith(''),
+          map(text => this.search(text, this.pipe))
+        );
+      });
     this.store.dispatch(new actions.CargarUsuarios(idProveedor));
   }
 
   openModal(user: UsuarioListComp) {
     // const indice = this.usuarios.indexOf(user);
-    const modalRef = this.modalService.open(UserComponent, { size: 'lg',  backdrop: 'static' });
+    const modalRef = this.modalService.open(UserComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
     modalRef.result.then((result) => {
       if (result) {
-        console.log(result);
+        // console.log(result);
       }
     });
-    // modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-    //   console.log(receivedEntry);
-    // })
   }
 
   search(text: string, pipe: PipeTransform): UsuarioListComp[] {
     return this.usuarios.filter(usuario => {
       const term = text.toLowerCase();
       return usuario.nombres.toLowerCase().includes(term)
-          || usuario.apellidos.toLowerCase().includes(term)
-          || usuario.username.toLowerCase().includes(term)
-          || usuario.proveedor.toLowerCase().includes(term)
-          || usuario.perfil.toLowerCase().includes(term)
-          || usuario.fechaCreacion.includes(term)
-          ;
+        || usuario.apellidos.toLowerCase().includes(term)
+        || usuario.username.toLowerCase().includes(term)
+        || usuario.proveedor.toLowerCase().includes(term)
+        || usuario.perfil.toLowerCase().includes(term)
+        || usuario.fechaCreacion.includes(term)
+        ;
     });
   }
 }

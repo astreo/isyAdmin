@@ -18,7 +18,6 @@ const estadoInicial: State = {
 export function reducer(state = estadoInicial, action: actions.accion): State {
   switch (action.type) {
     case actions.CARGAR_PERFILES:
-        console.log('reducer cargar');
       return {
         ...state,
         loading: true,
@@ -26,8 +25,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.CARGAR_PERFILES_SUCCESS:
-        console.log('reducer success');
-        console.log(action.perfiles);
       return {
         ...state,
         loading: false,
@@ -36,8 +33,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.CARGAR_PERFILES_FAIL:
-        console.log('reducer fail');
-        console.log(action.payload);
       return {
         ...state,
         loading: false,
@@ -53,3 +48,5 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return state;
   }
 }
+
+export const getPerfiles = (state: State) => state.perfiles;

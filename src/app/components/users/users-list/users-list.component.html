@@ -3,11 +3,11 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{ 'PAGES.Titles.Users' | translate }}</h4>
-        <ng-container *ngIf="loading">
+        <ng-container *ngIf="loading$ | async">
             <i class="fa fa-spin fa-sync"></i>
             {{ 'PAGES.Messages.Processing' | translate }}...
         </ng-container>
-        <ng-container *ngIf="!loading">
+        <ng-container *ngIf="!(loading$ | async)">
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon bg-primary border-primary" id="colored-addon2">
@@ -48,7 +48,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of usuarios$ | async | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                <tr *ngFor="let user of (usuarios$) | async | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                   <td>
                     <ngb-highlight [result]="user.fechaCreacion" [term]="filter.value"></ngb-highlight>
                   </td>

@@ -1,7 +1,6 @@
 import { usuarios as actions } from '../actions';
 import { UsuarioList } from '../../models/usuarios.model';
 
-
 export interface State {
   usuarios: UsuarioList[];
   loaded: boolean;
@@ -19,7 +18,6 @@ const estadoInicial: State = {
 export function reducer(state = estadoInicial, action: actions.accion): State {
   switch (action.type) {
     case actions.CARGAR_USUARIOS:
-        console.log('reducer cargar');
       return {
         ...state,
         loading: true,
@@ -27,8 +25,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.CARGAR_USUARIOS_SUCCESS:
-        console.log('reducer success');
-        console.log(action.usuarios);
       return {
         ...state,
         loading: false,
@@ -37,8 +33,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.CARGAR_USUARIOS_FAIL:
-        console.log('reducer fail');
-        console.log(action.payload);
       return {
         ...state,
         loading: false,
@@ -54,3 +48,5 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return state;
   }
 }
+
+export const getUsuarios = (state: State) => state.usuarios;

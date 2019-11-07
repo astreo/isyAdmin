@@ -51,7 +51,6 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('indice en modal: ' + this.user);
     this.accountSuscription = this.store.select('account')
       .subscribe(result => {
         this.getPerfiles(result.usuario.proveedor.idProveedor);
@@ -98,11 +97,9 @@ export class UserComponent implements OnInit {
         );
       }))
     .subscribe(mappedItems => {
+      console.log('getPerfiles');
       this.perfiles = mappedItems.perfiles;
-      console.log('perfiles');
-      console.log(this.perfiles);
       this.loading = mappedItems.loading;
-      console.log('subscribe');
     });
     this.store.dispatch(new actions.perfil.CargarPerfiles());
   }
@@ -124,11 +121,9 @@ export class UserComponent implements OnInit {
         );
       }))
     .subscribe(mappedItems => {
+      console.log('getProveedores');
       this.proveedores = mappedItems.proveedores;
-      console.log('proveedores');
-      console.log(this.proveedores);
       this.loading = mappedItems.loading;
-      console.log('subscribe');
     });
     this.store.dispatch(new actions.proveedor.CargarProveedores(idProveedor));
   }

@@ -22,8 +22,7 @@ export class ProveedorService {
       .pipe(
         map(
           (resp: any) => {
-            console.log('service');
-            console.log(resp);
+            console.log('getProveedores Service');
             return resp.body;
           }
         )

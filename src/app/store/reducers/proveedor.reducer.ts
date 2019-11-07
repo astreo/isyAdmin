@@ -18,7 +18,6 @@ const estadoInicial: State = {
 export function reducer(state = estadoInicial, action: actions.accion): State {
   switch (action.type) {
     case actions.CARGAR_PROVEEDORES:
-        console.log('reducer cargar proveedores');
       return {
         ...state,
         loading: true,
@@ -26,8 +25,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.CARGAR_PROVEEDORES_SUCCESS:
-        console.log('reducer success proveedores');
-        console.log(action.proveedores);
       return {
         ...state,
         loading: false,
@@ -36,8 +33,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.CARGAR_PROVEEDORES_FAIL:
-        console.log('reducer fail proveedores');
-        console.log(action.payload);
       return {
         ...state,
         loading: false,
