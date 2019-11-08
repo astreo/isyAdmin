@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuarioListComp, UsuarioList } from '../../../models/usuarios.model';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -8,9 +8,10 @@ import * as actions from '../../../store/actions';
 import { map } from 'rxjs/operators';
 import { SelectionModel } from 'src/app/models/misc.model';
 import { Subscription, Observable } from 'rxjs';
+import { equalValidator } from 'src/app/validators/equal.validator';
 
 declare class MyFormDataStructure {
-  fields: UsuarioList;
+  fields: UsuarioListComp;
   controls: {
     fechaCreacion: AbstractControl;
     nombres: AbstractControl;
@@ -49,6 +50,7 @@ export class UserComponent implements OnInit {
   idProveedor: number;
   // @Input() public elementIndex;
   @Input() public user: UsuarioListComp;
+  @Output() passEntry: EventEmitter<any> = new EventEmitter();
   form: MyForm;
 
   constructor(
@@ -85,8 +87,8 @@ export class UserComponent implements OnInit {
       nombres: [this.user.nombres, Validators.required],
       apellidos: [this.user.apellidos, Validators.required],
       username: [this.user.username, Validators.required],
-      password: '',
-      confirmPassword: '',
+      password: ['', equalValidator('password', 'confirmPassword')],
+      confirmPassword: ['', equalValidator('password', 'confirmPassword')],
       email: [this.user.email, Validators.required],
       telefono: [this.user.telefono, Validators.required],
       estado: [this.user.estado, Validators.required],
@@ -109,9 +111,7 @@ export class UserComponent implements OnInit {
     let resp = '';
     resp += fc.hasError('required') ? 'Debe ingresar un valor. ' : '';
     resp += fc.hasError('minlength') ? 'Debe ingresar mínimo 6 dígitos. ' : '';
-    resp += fc.hasError('loteValidator')
-      ? 'Debe empezar con fecha mayor que la actual y en formato AAMMDD. '
-      : '';
+    resp += fc.hasError('mustMatch') ? 'Los valores no coinciden ' : '';
     console.log(resp);
     return resp;
   }
@@ -147,9 +147,23 @@ export class UserComponent implements OnInit {
       }));
   }
 
-  passBack() {
-    // this.passEntry.emit(this.user);
-    this.activeModal.close();
+  onPerfilChange(event) {
+    console.log('event');
+    this.ctrls.perfil.setValue(event.target[event.target.selectedIndex].label);
+    // debugger;
+  }
+
+  onProveedorChange(event) {
+    console.log('event');
+    this.ctrls.proveedor.setValue(event.target[event.target.selectedIndex].label);
+    // debugger;
+  }
+
+  ok() {
+    this.user = this.form.value;
+    // debugger;
+    this.passEntry.emit(this.user);
+    this.activeModal.close(this.user);
   }
 
 }

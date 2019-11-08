@@ -61,7 +61,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
           nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
           estado: item.estado,
           idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
-          idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion
+          idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion,
+          password: '', confirmPassword: ''
         }))
       );
     })).subscribe(mappedItems => {
@@ -85,7 +86,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
               nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
               estado: item.estado,
               idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
-              idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion
+              idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion,
+              password: '', confirmPassword: ''
             })),
             loading: mappedItems.loading
           })
@@ -107,9 +109,12 @@ export class UsersListComponent implements OnInit, OnDestroy {
     // const indice = this.usuarios.indexOf(user);
     const modalRef = this.modalService.open(UserComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
-    modalRef.result.then((result) => {
+    modalRef.result.then((result: UsuarioListComp) => {
+      // debugger;
       if (result) {
-        // console.log(result);
+        console.log(result);
+        if (user) { user = Object.assign(user, result); }
+        // user.nombres = 'hola';
       }
     });
   }

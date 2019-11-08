@@ -1,9 +1,6 @@
 <div class="col-12">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{'PAGES.ModalTitles.NewUser' | translate}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
   <div class="modal-body">
     <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
@@ -65,19 +62,25 @@
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
-              <select class="form-control form-control-sm" formControlName='idPerfil'>
+              <select (change)="onPerfilChange($event)" class="form-control form-control-sm" formControlName='idPerfil' [ngClass]="{ 'is-invalid': ctrls.idPerfil.invalid }">
                 <option value="">{{'PAGES.DefaultListItems.Profile' | translate}}</option>
                 <option *ngFor="let perfil of perfiles$ | async" [ngValue]="perfil.id">{{perfil.descripcion}}</option>
               </select>
+              <div *ngIf="ctrls.idPerfil.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.idPerfil)}}
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Provider' | translate}}</label>
-              <select class="form-control form-control-sm" formControlName='idProveedor'>
+              <select (change)="onProveedorChange($event)" class="form-control form-control-sm" formControlName='idProveedor' [ngClass]="{ 'is-invalid': ctrls.idProveedor.invalid }">
                 <option value="">{{'PAGES.DefaultListItems.Provider' | translate}}</option>
                 <option *ngFor="let proveedor of proveedores$ | async" [ngValue]="proveedor.id">
                   {{proveedor.descripcion}}
                 </option>
               </select>
+              <div *ngIf="ctrls.idProveedor.invalid" class="invalid-feedback">
+                {{getErrorMessage(ctrls.idProveedor)}}
+              </div>
             </div>
             <div class="form-group form-check">
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -93,7 +96,7 @@
       (click)="activeModal.close('Close click')">{{'PAGES.Buttons.Cancel' | translate}}
     </button>
     <button type="button" class="btn btn-outline-primary"
-      (click)="activeModal.close('Close click')">{{'PAGES.Buttons.Save' | translate}}
+      (click)="ok()" [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
     </button>
   </div>
 </div>

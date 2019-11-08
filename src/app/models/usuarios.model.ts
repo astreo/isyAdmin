@@ -47,6 +47,8 @@ export interface UsuarioListComp {
   nombres: string;
   apellidos: string;
   username: string;
+  password: string;
+  confirmPassword: string;
   email: string;
   telefono: string;
   estado: string;
