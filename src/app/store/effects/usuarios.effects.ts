@@ -40,6 +40,33 @@ export class UsuariosEffects {
       )
     );
 
+  @Effect()
+  actualizarUsuario$ = this.actions$
+    .pipe(
+      ofType(actions.ACTUALIZAR_USUARIO),
+      pipe(
+        switchMap((action: actions.ActualizarUsuario) => {
+          console.log('effect1');
+          return this.usuarioService.updateUser(action.usuario)
+            .pipe(
+              map(user => {
+                console.log('effect2');
+                return new actions.ActualizarUsuarioSuccess(user);
+              }),
+              catchError((error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+                return of(new actions.CargarUsuariosFail(error));
+              })
+            );
+        })
+      )
+    );
+
   /*@Effect()
   cargarUsuarios$ = this.actions$
     .pipe(
@@ -88,29 +115,29 @@ export class UsuariosEffects {
           );
       })
     ); */
-/*
-  @Effect()
-  cargarUsuarios$ = this.actions$
-    .pipe(
-      ofType(actions.CARGAR_USUARIOS),
-      withLatestFrom(this.store.pipe(select(state => state.users.usuarios))),
-      switchMap(([action, itemsList]: [actions.CargarUsuarios, any[]]) => {
-        return this.usuarioService.getUsers(action.idProveedor)
-          .pipe(
-            map(usuarios => {
-              return new actions.CargarUsuariosSuccess(usuarios);
-            }),
-            catchError((error) => {
-              Swal.fire({
-                title: 'Error!',
-                text: error.message,
-                type: 'error',
-                confirmButtonText: 'OK'
-              });
-              return of(new actions.CargarUsuariosFail(error));
-            })
-          );
-      })
-    );
-    */
+  /*
+    @Effect()
+    cargarUsuarios$ = this.actions$
+      .pipe(
+        ofType(actions.CARGAR_USUARIOS),
+        withLatestFrom(this.store.pipe(select(state => state.users.usuarios))),
+        switchMap(([action, itemsList]: [actions.CargarUsuarios, any[]]) => {
+          return this.usuarioService.getUsers(action.idProveedor)
+            .pipe(
+              map(usuarios => {
+                return new actions.CargarUsuariosSuccess(usuarios);
+              }),
+              catchError((error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+                return of(new actions.CargarUsuariosFail(error));
+              })
+            );
+        })
+      );
+      */
 }

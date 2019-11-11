@@ -22,7 +22,6 @@ export class PerfilService {
       .pipe(
         map(
           (resp: any) => {
-            console.log('getPerfiles Service');
             return resp.body;
           }
         )

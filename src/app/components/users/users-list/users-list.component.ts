@@ -57,6 +57,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
       return (
         // tslint:disable-next-line: no-shadowed-variable
         item.map(item => ({
+          idUsuario: item.idUsuario,
           fechaCreacion: item.fechaCreacion,
           nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
           estado: item.estado,
@@ -66,7 +67,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
         }))
       );
     })).subscribe(mappedItems => {
-      console.log('getUsers');
       this.usuarios = mappedItems;
       this.usuarios$ = this.filter.valueChanges.pipe(
         startWith(''),
@@ -82,6 +82,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
         map(mappedItems => {
           return (({
             users: (mappedItems.users ? mappedItems.users : []).map(item => ({
+              idUsuario: item.idUsuario,
               fechaCreacion: item.fechaCreacion,
               nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
               estado: item.estado,
@@ -94,7 +95,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
           );
         }))
       .subscribe(mappedItems => {
-        console.log('getUsers');
         this.usuarios = mappedItems.users;
         // this.loading = mappedItems.loading;
         this.usuarios$ = this.filter.valueChanges.pipe(
@@ -112,8 +112,11 @@ export class UsersListComponent implements OnInit, OnDestroy {
     modalRef.result.then((result: UsuarioListComp) => {
       // debugger;
       if (result) {
-        console.log(result);
-        if (user) { user = Object.assign(user, result); }
+        // console.log('Modelo: ' + JSON.stringify(result));
+        if (user) {
+          user = Object.assign(user, result);
+          this.store.dispatch(new actions.ActualizarUsuario(user));
+        }
         // user.nombres = 'hola';
       }
     });

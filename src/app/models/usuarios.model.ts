@@ -43,6 +43,7 @@ export interface UsuarioList {
 }
 
 export interface UsuarioListComp {
+  idUsuario: number;
   fechaCreacion: string;
   nombres: string;
   apellidos: string;

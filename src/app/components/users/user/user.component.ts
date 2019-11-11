@@ -112,14 +112,12 @@ export class UserComponent implements OnInit {
     resp += fc.hasError('required') ? 'Debe ingresar un valor. ' : '';
     resp += fc.hasError('minlength') ? 'Debe ingresar mínimo 6 dígitos. ' : '';
     resp += fc.hasError('mustMatch') ? 'Los valores no coinciden ' : '';
-    console.log(resp);
     return resp;
   }
 
   getPerfilesFromStore(idProveedor: number) {
     this.perfiles$ = this.store.select(state => state.perfil.perfiles).pipe(
       map(item => {
-        console.log('state.perfil.perfiles');
         return (
           // tslint:disable-next-line: no-shadowed-variable
           item.filter(item => item.proveedor.find(a => a.idProveedor === idProveedor))
@@ -135,7 +133,6 @@ export class UserComponent implements OnInit {
   getProveedoresFromStore() {
     this.proveedores$ = this.store.select(state => state.proveedor.proveedores).pipe(
       map(item => {
-        console.log('state.perfil.proveedores');
         return (
           item
             // tslint:disable-next-line: no-shadowed-variable
@@ -148,13 +145,11 @@ export class UserComponent implements OnInit {
   }
 
   onPerfilChange(event) {
-    console.log('event');
     this.ctrls.perfil.setValue(event.target[event.target.selectedIndex].label);
     // debugger;
   }
 
   onProveedorChange(event) {
-    console.log('event');
     this.ctrls.proveedor.setValue(event.target[event.target.selectedIndex].label);
     // debugger;
   }
