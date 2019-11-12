@@ -40,6 +40,36 @@ export class UsuariosEffects {
       )
     );
 
+  // --
+  @Effect()
+  agregarUsuario$ = this.actions$
+    .pipe(
+      ofType(actions.AGREGAR_USUARIO),
+      pipe(
+        switchMap((action: actions.AgregarUsuario) => {
+          console.log('effect1');
+          return this.usuarioService.addUser(action.usuario)
+            .pipe(
+              map(() => {
+                console.log('effect2');
+                return new actions.AgregarUsuarioSuccess();
+                // return new actions.ActualizarUsuarioSuccess(user);
+              }),
+              catchError((error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+                return of(new actions.AgregarUsuarioFail(error));
+              })
+            );
+        })
+      )
+    );
+  // --
+
   @Effect()
   actualizarUsuario$ = this.actions$
     .pipe(
@@ -49,9 +79,10 @@ export class UsuariosEffects {
           console.log('effect1');
           return this.usuarioService.updateUser(action.usuario)
             .pipe(
-              map(user => {
+              map(() => {
                 console.log('effect2');
-                return new actions.ActualizarUsuarioSuccess(user);
+                return new actions.ActualizarUsuarioSuccess();
+                // return new actions.ActualizarUsuarioSuccess(user);
               }),
               catchError((error) => {
                 Swal.fire({
@@ -60,12 +91,42 @@ export class UsuariosEffects {
                   type: 'error',
                   confirmButtonText: 'OK'
                 });
-                return of(new actions.CargarUsuariosFail(error));
+                return of(new actions.ActualizarUsuarioFail(error));
               })
             );
         })
       )
     );
+
+
+  @Effect()
+  eliminarUsuario$ = this.actions$
+    .pipe(
+      ofType(actions.ELIMINAR_USUARIO),
+      pipe(
+        switchMap((action: actions.EliminarUsuario) => {
+          console.log('effect1');
+          return this.usuarioService.deletetUser(action.idUsuario)
+            .pipe(
+              map(() => {
+                console.log('effect2');
+                return new actions.EliminarUsuarioSuccess();
+                // return new actions.ActualizarUsuarioSuccess(user);
+              }),
+              catchError((error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+                return of(new actions.EliminarUsuarioFail(error));
+              })
+            );
+        })
+      )
+    );
+
 
   /*@Effect()
   cargarUsuarios$ = this.actions$

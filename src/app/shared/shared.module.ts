@@ -5,6 +5,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from './confirmation-dialog/confirmation-dialog.service';
 
 
 
@@ -17,12 +19,16 @@ import { TranslateModule } from '@ngx-translate/core';
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    ConfirmationDialogComponent
   ],
   exports: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
-  ]
+    SidebarComponent,
+    ConfirmationDialogComponent
+  ],
+  providers: [ ConfirmationDialogService ],
+  entryComponents: [ ConfirmationDialogComponent ]
 })
 export class SharedModule { }

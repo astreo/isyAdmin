@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserComponent } from '../user/user.component';
 import { UsuarioListComp } from 'src/app/models/usuarios.model';
+import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/confirmation-dialog.service';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
   getUsersFromStoreSubscription  = new Subscription();
   filter = new FormControl('');
 
-  constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal) { }
+  constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal,
+              public confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
     this.loading$ = this.store.select(state => state.users.loading);
@@ -105,21 +107,40 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.store.dispatch(new actions.CargarUsuarios(idProveedor));
   }
 
-  openModal(user: UsuarioListComp) {
-    // const indice = this.usuarios.indexOf(user);
+  openModal(user?: UsuarioListComp) {
+    if (!user) {
+      user = {} as UsuarioListComp;
+    }
     const modalRef = this.modalService.open(UserComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
     modalRef.result.then((result: UsuarioListComp) => {
-      // debugger;
+      debugger;
       if (result) {
         // console.log('Modelo: ' + JSON.stringify(result));
-        if (user) {
+        if (user.idUsuario) {
           user = Object.assign(user, result);
           this.store.dispatch(new actions.ActualizarUsuario(user));
+        } else {
+          this.store.dispatch(new actions.AgregarUsuario(result));
         }
         // user.nombres = 'hola';
       }
     });
+  }
+
+  openConfirmationDialog(user: UsuarioListComp) {
+    this.confirmationDialogService.confirm('Confirmación requerida',
+        `Eliminar el usuario "${user.username}" de ${user.nombres} ${user.apellidos}?`)
+    .then((result ) => {
+      // debugger;
+      if (result) {
+        if (user) {
+          // user = Object.assign(user, result);
+          this.store.dispatch(new actions.EliminarUsuario(user.idUsuario));
+        }
+      }
+    });
+    // .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
   search(text: string, pipe: PipeTransform): UsuarioListComp[] {

@@ -13,7 +13,7 @@ import { equalValidator } from 'src/app/validators/equal.validator';
 declare class MyFormDataStructure {
   fields: UsuarioListComp;
   controls: {
-    fechaCreacion: AbstractControl;
+    // fechaCreacion: AbstractControl;
     nombres: AbstractControl;
     apellidos: AbstractControl;
     username: AbstractControl;
@@ -21,7 +21,7 @@ declare class MyFormDataStructure {
     confirmPassword: AbstractControl;
     email: AbstractControl;
     telefono: AbstractControl;
-    estado: AbstractControl;
+    // estado: AbstractControl;
     idProveedor: AbstractControl;
     proveedor: AbstractControl;
     idPerfil: AbstractControl;
@@ -83,7 +83,7 @@ export class UserComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      fechaCreacion: this.user.fechaCreacion,
+      // fechaCreacion: this.user.fechaCreacion,
       nombres: [this.user.nombres, Validators.required],
       apellidos: [this.user.apellidos, Validators.required],
       username: [this.user.username, Validators.required],
@@ -91,7 +91,7 @@ export class UserComponent implements OnInit {
       confirmPassword: ['', equalValidator('password', 'confirmPassword')],
       email: [this.user.email, Validators.required],
       telefono: [this.user.telefono, Validators.required],
-      estado: [this.user.estado, Validators.required],
+      // estado: [this.user.estado, Validators.required],
       idProveedor: [this.user.idProveedor, Validators.required],
       proveedor: [this.user.proveedor, Validators.required],
       idPerfil: [this.user.idPerfil, Validators.required],
@@ -105,6 +105,10 @@ export class UserComponent implements OnInit {
 
   get ctrls() {
     return this.form.controls;
+  }
+
+  isInvalid(ctrl: AbstractControl) {
+    return  (ctrl.touched && ctrl.invalid);
   }
 
   getErrorMessage(fc: FormControl) {

@@ -35,6 +35,31 @@ export class UsuarioService {
       ;
   }
 
+  deletetUser(idUsuario: number) {
+    return this.http.delete(`${this.url}/Usuario/` + idUsuario, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
+  }
+
+  addUser(usuario: UsuarioListComp) {
+    return this.http.put(`${this.url}/Usuario/` + usuario.idUsuario, usuario, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          () => {
+            console.log(usuario);
+            return usuario;
+          }
+        )
+      )
+      ;
+  }
+
   updateUser(usuarioList: UsuarioListComp) {
     return this.getUsersById(usuarioList.idUsuario).pipe(
       switchMap(
