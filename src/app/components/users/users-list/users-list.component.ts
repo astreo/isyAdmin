@@ -63,8 +63,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
           fechaCreacion: item.fechaCreacion,
           nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
           estado: item.estado,
-          idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
-          idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion,
+          idProveedor: item.proveedor.idProveedor, descProveedor: item.proveedor.nombre,
+          idPerfil: item.perfil.idPerfil, descPerfil: item.perfil.descripcion,
           password: '', confirmPassword: ''
         }))
       );
@@ -88,8 +88,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
               fechaCreacion: item.fechaCreacion,
               nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
               estado: item.estado,
-              idProveedor: item.proveedor.idProveedor, proveedor: item.proveedor.nombre,
-              idPerfil: item.perfil.idPerfil, perfil: item.perfil.descripcion,
+              idProveedor: item.proveedor.idProveedor, descProveedor: item.proveedor.nombre,
+              idPerfil: item.perfil.idPerfil, descPerfil: item.perfil.descripcion,
               password: '', confirmPassword: ''
             })),
             loading: mappedItems.loading
@@ -114,12 +114,12 @@ export class UsersListComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(UserComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
     modalRef.result.then((result: UsuarioListComp) => {
-      debugger;
+      // debugger;
       if (result) {
         // console.log('Modelo: ' + JSON.stringify(result));
         if (user.idUsuario) {
-          user = Object.assign(user, result);
-          this.store.dispatch(new actions.ActualizarUsuario(user));
+          // user = Object.assign(user, result);
+          this.store.dispatch(new actions.ActualizarUsuario(Object.assign(user, result)));
         } else {
           this.store.dispatch(new actions.AgregarUsuario(result));
         }
@@ -136,7 +136,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
       if (result) {
         if (user) {
           // user = Object.assign(user, result);
-          this.store.dispatch(new actions.EliminarUsuario(user.idUsuario));
+          this.store.dispatch(new actions.EliminarUsuario(user));
         }
       }
     });
@@ -149,8 +149,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
       return usuario.nombres.toLowerCase().includes(term)
         || usuario.apellidos.toLowerCase().includes(term)
         || usuario.username.toLowerCase().includes(term)
-        || usuario.proveedor.toLowerCase().includes(term)
-        || usuario.perfil.toLowerCase().includes(term)
+        || usuario.descProveedor.toLowerCase().includes(term)
+        || usuario.descPerfil.toLowerCase().includes(term)
         || usuario.fechaCreacion.includes(term)
         ;
     });

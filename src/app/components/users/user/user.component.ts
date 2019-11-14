@@ -23,9 +23,9 @@ declare class MyFormDataStructure {
     telefono: AbstractControl;
     // estado: AbstractControl;
     idProveedor: AbstractControl;
-    proveedor: AbstractControl;
+    descProveedor: AbstractControl;
     idPerfil: AbstractControl;
-    perfil: AbstractControl;
+    descPerfil: AbstractControl;
   };
 }
 
@@ -93,9 +93,9 @@ export class UserComponent implements OnInit {
       telefono: [this.user.telefono, Validators.required],
       // estado: [this.user.estado, Validators.required],
       idProveedor: [this.user.idProveedor, Validators.required],
-      proveedor: [this.user.proveedor, Validators.required],
+      descProveedor: [this.user.descProveedor, Validators.required],
       idPerfil: [this.user.idPerfil, Validators.required],
-      perfil: [this.user.perfil, Validators.required],
+      descPerfil: [this.user.descPerfil, Validators.required],
     }) as MyForm;
   }
 
@@ -149,12 +149,12 @@ export class UserComponent implements OnInit {
   }
 
   onPerfilChange(event) {
-    this.ctrls.perfil.setValue(event.target[event.target.selectedIndex].label);
+    this.ctrls.descPerfil.setValue(event.target[event.target.selectedIndex].label);
     // debugger;
   }
 
   onProveedorChange(event) {
-    this.ctrls.proveedor.setValue(event.target[event.target.selectedIndex].label);
+    this.ctrls.descProveedor.setValue(event.target[event.target.selectedIndex].label);
     // debugger;
   }
 

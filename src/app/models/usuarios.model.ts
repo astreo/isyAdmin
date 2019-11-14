@@ -54,7 +54,7 @@ export interface UsuarioListComp {
   telefono: string;
   estado: string;
   idProveedor: number;
-  proveedor: string;
+  descProveedor: string;
   idPerfil: number;
-  perfil: string;
+  descPerfil: string;
 }

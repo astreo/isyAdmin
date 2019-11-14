@@ -31,7 +31,8 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
         ...state,
         loading: false,
         loaded: true,
-        // usuarios: [...state.usuarios]
+        usuarios: [...state.usuarios.slice(0, action.usuario),
+          ...state.usuarios.slice(action.usuario + 1)]
       };
     // --
     case actions.AGREGAR_USUARIO:
@@ -42,14 +43,43 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       };
 
     case actions.AGREGAR_USUARIO_SUCCESS:
+        console.log('nuevo usuario');
+      console.log(action.usuario);
       return {
         ...state,
         loading: false,
         loaded: true,
-        // usuarios: [...state.usuarios]
+        usuarios: [...state.usuarios, action.usuario]
       };
 
     case actions.AGREGAR_USUARIO_FAIL:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error: {
+          status: action.payload.status,
+          message: action.payload.message,
+          url: action.payload.url
+        }
+      };
+    // --
+    case actions.CARGAR_USUARIO:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+
+    case actions.CARGAR_USUARIO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        usuarios: [...action.usuarios]
+      };
+
+    case actions.CARGAR_USUARIO_FAIL:
       return {
         ...state,
         loading: false,

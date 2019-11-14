@@ -40,6 +40,8 @@ export class UsuarioService {
       .pipe(
         map(
           (resp: any) => {
+            console.log('service delete');
+            console.log(resp);
             return resp.body;
           }
         )
@@ -48,12 +50,19 @@ export class UsuarioService {
   }
 
   addUser(usuario: UsuarioListComp) {
-    return this.http.put(`${this.url}/Usuario/` + usuario.idUsuario, usuario, { headers: this.headers, observe: 'response' })
+    console.log(`${this.url}/Usuario`);
+    console.log('UsuarioListComp: ' + JSON.stringify(usuario));
+    // debugger;
+    // let userNew = new UsuarioList;
+    // console.log('UsuarioList: ' + JSON.stringify(userNew));
+    // userNew = Object.assign(userNew, usuario);
+    // console.log('Object.assign: ' + JSON.stringify(userNew));
+    // debugger;
+    return this.http.post(`${this.url}/Usuario`, usuario, { headers: this.headers, observe: 'response' })
       .pipe(
         map(
-          () => {
-            console.log(usuario);
-            return usuario;
+          (resp: any) => {
+            return resp.body;
           }
         )
       )

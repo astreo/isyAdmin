@@ -50,9 +50,9 @@ export class UsuariosEffects {
           console.log('effect1');
           return this.usuarioService.addUser(action.usuario)
             .pipe(
-              map(() => {
+              map(user => {
                 console.log('effect2');
-                return new actions.AgregarUsuarioSuccess();
+                return new actions.AgregarUsuarioSuccess(user);
                 // return new actions.ActualizarUsuarioSuccess(user);
               }),
               catchError((error) => {
@@ -106,11 +106,11 @@ export class UsuariosEffects {
       pipe(
         switchMap((action: actions.EliminarUsuario) => {
           console.log('effect1');
-          return this.usuarioService.deletetUser(action.idUsuario)
+          return this.usuarioService.deletetUser(action.usuario.idUsuario)
             .pipe(
               map(() => {
                 console.log('effect2');
-                return new actions.EliminarUsuarioSuccess();
+                return new actions.EliminarUsuarioSuccess(action.usuario);
                 // return new actions.ActualizarUsuarioSuccess(user);
               }),
               catchError((error) => {
