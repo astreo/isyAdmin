@@ -31,8 +31,7 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
         ...state,
         loading: false,
         loaded: true,
-        usuarios: [...state.usuarios.slice(0, action.usuario),
-          ...state.usuarios.slice(action.usuario + 1)]
+        usuarios: state.usuarios.filter(item => item.idUsuario !== action.idUsuario)
       };
     // --
     case actions.AGREGAR_USUARIO:

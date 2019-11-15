@@ -51,9 +51,13 @@ export class UsuariosEffects {
           return this.usuarioService.addUser(action.usuario)
             .pipe(
               map(user => {
-                console.log('effect2');
+                Swal.fire({
+                  title: 'Agregado!',
+                  text: `El usuario ${action.usuario.username} ha sido agregado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
                 return new actions.AgregarUsuarioSuccess(user);
-                // return new actions.ActualizarUsuarioSuccess(user);
               }),
               catchError((error) => {
                 Swal.fire({
@@ -80,9 +84,13 @@ export class UsuariosEffects {
           return this.usuarioService.updateUser(action.usuario)
             .pipe(
               map(() => {
-                console.log('effect2');
+                Swal.fire({
+                  title: 'Actualizado!',
+                  text: `El usuario ${action.usuario.username} ha sido actualizado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
                 return new actions.ActualizarUsuarioSuccess();
-                // return new actions.ActualizarUsuarioSuccess(user);
               }),
               catchError((error) => {
                 Swal.fire({
@@ -106,12 +114,16 @@ export class UsuariosEffects {
       pipe(
         switchMap((action: actions.EliminarUsuario) => {
           console.log('effect1');
-          return this.usuarioService.deletetUser(action.usuario.idUsuario)
+          return this.usuarioService.deletetUser(action.idUsuario)
             .pipe(
               map(() => {
-                console.log('effect2');
-                return new actions.EliminarUsuarioSuccess(action.usuario);
-                // return new actions.ActualizarUsuarioSuccess(user);
+                Swal.fire({
+                  title: 'Eliminado!',
+                  text: `El usuario ${action.idUsuario} ha sido eliminado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                return new actions.EliminarUsuarioSuccess(action.idUsuario);
               }),
               catchError((error) => {
                 Swal.fire({

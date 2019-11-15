@@ -132,11 +132,11 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.confirmationDialogService.confirm('Confirmación requerida',
         `Eliminar el usuario "${user.username}" de ${user.nombres} ${user.apellidos}?`)
     .then((result ) => {
-      // debugger;
       if (result) {
         if (user) {
           // user = Object.assign(user, result);
-          this.store.dispatch(new actions.EliminarUsuario(user));
+          // debugger;
+          this.store.dispatch(new actions.EliminarUsuario(user.idUsuario));
         }
       }
     });

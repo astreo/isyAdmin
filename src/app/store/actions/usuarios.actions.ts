@@ -24,12 +24,12 @@ export const CARGAR_USUARIOS_SUCCESS = '[usuarios] Cargar usuarios SUCCESS';
 
 export class EliminarUsuario implements Action {
   readonly type = ELIMINAR_USUARIO;
-  constructor(public usuario: UsuarioList) {}
+  constructor(public idUsuario: number) {}
 }
 
 export class EliminarUsuarioSuccess implements Action {
   readonly type = ELIMINAR_USUARIO_SUCCESS;
-  constructor(public usuario: UsuarioList) {}
+  constructor(public idUsuario: number) {}
 }
 
 export class EliminarUsuarioFail implements Action {
