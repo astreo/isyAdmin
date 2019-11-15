@@ -7,9 +7,10 @@ import { Subscription, Observable } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserComponent } from '../user/user.component';
+import { UserComponent, FormObject } from '../user/user.component';
 import { UsuarioListComp } from 'src/app/models/usuarios.model';
 import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/confirmation-dialog.service';
+import { FormType } from '../../../models/enum';
 
 
 @Component({
@@ -19,6 +20,10 @@ import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/co
   providers: [DecimalPipe]
 })
 export class UsersListComponent implements OnInit, OnDestroy {
+  FormObject = FormObject;
+  formObject: FormObject;
+  FormType = FormType;
+  formType: FormType;
   loading$: Observable<boolean>;
   usuarios = {} as UsuarioListComp[];
   usuarios$: Observable<UsuarioListComp[]>;
@@ -107,12 +112,15 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.store.dispatch(new actions.CargarUsuarios(idProveedor));
   }
 
-  openModal(user?: UsuarioListComp) {
+  openModal(formObject: FormObject, formType: FormType, user?: UsuarioListComp) {
     if (!user) {
       user = {} as UsuarioListComp;
     }
-    const modalRef = this.modalService.open(UserComponent, { size: 'lg', backdrop: 'static' });
+    const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
+    const modalRef = this.modalService.open(UserComponent, { size: size, backdrop: 'static' });
     modalRef.componentInstance.user = user;
+    modalRef.componentInstance.formObject = formObject;
+    modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: UsuarioListComp) => {
       // debugger;
       if (result) {

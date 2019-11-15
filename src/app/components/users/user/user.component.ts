@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { SelectionModel } from 'src/app/models/misc.model';
 import { Subscription, Observable } from 'rxjs';
 import { equalValidator } from 'src/app/validators/equal.validator';
+import { FormType } from '../../../models/enum';
 
 declare class MyFormDataStructure {
   fields: UsuarioListComp;
@@ -34,13 +35,22 @@ declare interface MyForm extends FormGroup {
   controls: MyFormDataStructure['controls'];
 }
 
+export enum FormObject {
+  USER,
+  PASSWORD
+}
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+  FormObject = FormObject;
+  formTitle: string;
+  FormType = FormType;
   loading: boolean;
+  hideField: boolean;
   // perfiles = {} as SelectionModel[];
   perfiles$: Observable<SelectionModel[]>;
   proveedores$: Observable<SelectionModel[]>;
@@ -48,7 +58,9 @@ export class UserComponent implements OnInit {
   perfilesLoaded$ = this.store.select(state => state.perfil.loaded);
   proveedoresLoaded$ = this.store.select(state => state.proveedor.loaded);
   idProveedor: number;
-  // @Input() public elementIndex;
+
+  @Input() formObject: FormObject;
+  @Input() formType: FormType;
   @Input() public user: UsuarioListComp;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   form: MyForm;
@@ -58,6 +70,26 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // debugger;
+    // this.formObject = this.data.formType;
+    // this.recipe = <Recipe>{};
+    if (this.formObject === FormObject.USER) {
+      this.hideField = false;
+      switch (this.formType) {
+        case FormType.NEW:
+          this.formTitle = 'PAGES.ModalTitles.NewUser';
+          break;
+        case FormType.EDIT:
+          this.formTitle = 'PAGES.ModalTitles.EditUser';
+          break;
+        default:
+          break;
+      }
+    } else {
+      this.formTitle = 'PAGES.ModalTitles.ResetPassword';
+      this.hideField = true;
+    }
+
     this.accountSubscription = this.store.select(state => state.account.usuario.proveedor.idProveedor)
       .subscribe(idProveedor => {
         this.idProveedor = idProveedor;
@@ -83,15 +115,16 @@ export class UserComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      // fechaCreacion: this.user.fechaCreacion,
+
       nombres: [this.user.nombres, Validators.required],
       apellidos: [this.user.apellidos, Validators.required],
       username: [this.user.username, Validators.required],
+
       password: ['', equalValidator('password', 'confirmPassword')],
       confirmPassword: ['', equalValidator('password', 'confirmPassword')],
+
       email: [this.user.email, Validators.required],
       telefono: [this.user.telefono, Validators.required],
-      // estado: [this.user.estado, Validators.required],
       idProveedor: [this.user.idProveedor, Validators.required],
       descProveedor: [this.user.descProveedor, Validators.required],
       idPerfil: [this.user.idPerfil, Validators.required],
@@ -108,7 +141,7 @@ export class UserComponent implements OnInit {
   }
 
   isInvalid(ctrl: AbstractControl) {
-    return  (ctrl.touched && ctrl.invalid);
+    return (ctrl.touched && ctrl.invalid);
   }
 
   getErrorMessage(fc: FormControl) {

@@ -1,20 +1,20 @@
 <div class="col-12">
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{'PAGES.ModalTitles.NewUser' | translate}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
   </div>
   <div class="modal-body">
     <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
       <div class="row">
-        <div class="col-md-6">
+        <div [ngClass]='{"col-md-6": !hideField, "col-md-12": hideField}'>
           <div>
-            <div class="form-group">
+            <div class="form-group" [hidden]="hideField">
               <label class="form-label">{{'PAGES.Labels.Names' | translate}}</label>
               <input type="text" class="form-control" formControlName='nombres' [ngClass]="{ 'is-invalid': isInvalid(ctrls.nombres) }" >
               <div *ngIf="isInvalid(ctrls.nombres)" class="invalid-feedback">
                 {{getErrorMessage(ctrls.nombres)}}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [hidden]="hideField">
               <label class="form-label">{{'PAGES.Labels.LastNames' | translate}}</label>
               <input type="text" class="form-control" formControlName='apellidos' [ngClass]="{ 'is-invalid': isInvalid(ctrls.apellidos) }">
               <div *ngIf="isInvalid(ctrls.apellidos)" class="invalid-feedback">
@@ -44,23 +44,23 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div [ngClass]='{"col-md-6": !hideField}'>
           <div>
-            <div class="form-group">
+            <div class="form-group" [hidden]="hideField">
               <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
               <input type="text" class="form-control" formControlName='telefono' [ngClass]="{ 'is-invalid': isInvalid(ctrls.telefono) }">
               <div *ngIf="isInvalid(ctrls.telefono)" class="invalid-feedback">
                 {{getErrorMessage(ctrls.telefono)}}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [hidden]="hideField">
               <label class="form-label">{{'PAGES.Labels.Email' | translate}}</label>
               <input type="text" class="form-control" formControlName='email' [ngClass]="{ 'is-invalid': isInvalid(ctrls.email) }">
               <div *ngIf="isInvalid(ctrls.email)" class="invalid-feedback">
                 {{getErrorMessage(ctrls.email)}}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [hidden]="hideField">
               <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
               <select (change)="onPerfilChange($event)" class="form-control form-control-sm" formControlName='idPerfil' [ngClass]="{ 'is-invalid': isInvalid(ctrls.idPerfil) }">
                 <option value="">{{'PAGES.DefaultListItems.Profile' | translate}}</option>
@@ -70,7 +70,7 @@
                 {{getErrorMessage(ctrls.idPerfil)}}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [hidden]="hideField">
               <label class="form-label">{{'PAGES.Labels.Provider' | translate}}</label>
               <select (change)="onProveedorChange($event)" class="form-control form-control-sm" formControlName='idProveedor' [ngClass]="{ 'is-invalid': isInvalid(ctrls.idProveedor) }">
                 <option value="">{{'PAGES.DefaultListItems.Provider' | translate}}</option>
@@ -82,7 +82,7 @@
                 {{getErrorMessage(ctrls.idProveedor)}}
               </div>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" [hidden]="hideField">
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
               <label class="form-label" for="exampleCheck1">Check me out</label>
             </div>

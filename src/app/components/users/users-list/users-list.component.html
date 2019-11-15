@@ -43,7 +43,7 @@
                     {{'PAGES.TableHeaders.Profile' | translate}}
                   </th>
                   <th>
-                      <button (click)="openModal()" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-plus"></i></button>
+                      <button (click)="openModal(FormObject.USER, FormType.NEW)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-plus"></i></button>
                   </th>
                 </tr>
               </thead>
@@ -72,9 +72,9 @@
                   </td>
                   <td>
                       <div class="btn-group" role="group" aria-label="Basic example">
-                          <button (click)="openModal(user)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+                          <button (click)="openModal(FormObject.USER, FormType.EDIT, user)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
                           <button (click)="openConfirmationDialog(user)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
-                          <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-gear"></i></button>
+                          <button (click)="openModal(FormObject.PASSWORD, FormType.EDIT, user)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-gear"></i></button>
                         </div>
                   </td>
                 </tr>
