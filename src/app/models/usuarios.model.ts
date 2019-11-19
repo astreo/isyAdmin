@@ -58,3 +58,9 @@ export interface UsuarioListComp {
   idPerfil: number;
   descPerfil: string;
 }
+
+export interface UsuarioNewPwd {
+  user: string;
+  password: string;
+  confirmPassword: string;
+}

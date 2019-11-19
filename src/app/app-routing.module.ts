@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
-import { RegisterComponent } from './components/auth/register/register.component';
+import { NewPwdComponent } from './components/auth/new-pwd/new-pwd.component';
 
 const routes: Routes = [
 
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
+    { path: 'newPwd', component: NewPwdComponent },
     {
         path: '',
         loadChildren: './components/main/main.module#MainModule',

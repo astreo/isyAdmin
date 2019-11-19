@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { NewPwdComponent } from './new-pwd/new-pwd.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent,
+    NewPwdComponent,
   ],
   imports: [
     CommonModule,

@@ -148,7 +148,7 @@ export class UserComponent implements OnInit {
     let resp = '';
     resp += fc.hasError('required') ? 'Debe ingresar un valor. ' : '';
     resp += fc.hasError('minlength') ? 'Debe ingresar mínimo 6 dígitos. ' : '';
-    resp += fc.hasError('mustMatch') ? 'Los valores no coinciden ' : '';
+    resp += fc.hasError('equalValidator') ? 'Los valores no coinciden ' : '';
     return resp;
   }
 

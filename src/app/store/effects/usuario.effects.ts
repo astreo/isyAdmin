@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import {usuario as actions} from '../actions';
+import { usuario as actions } from '../actions';
 import { of, pipe } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
@@ -23,7 +23,13 @@ export class UsuarioEffects {
           return this.usuariosService.login(action.usuario)
             .pipe(
               map(user => {
-                this.router.navigate(['/home']);
+                console.log(user);
+                // debugger;
+                if (user.resetPassword) {
+                  this.router.navigate(['/newPwd', { username: user.username }], { skipLocationChange: true });
+                } else {
+                  this.router.navigate(['/home']);
+                }
                 return new actions.CargarUsuarioSuccess(user);
               }),
               catchError((error) => {
