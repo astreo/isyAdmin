@@ -7,12 +7,13 @@ import Swal from 'sweetalert2';
 import { UsuarioService } from '../../services/usuario.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UsuariosEffects {
 
   constructor(
-    private actions$: Actions, public usuarioService: UsuarioService, public store: Store<AppState>
+    private actions$: Actions, public usuarioService: UsuarioService, public store: Store<AppState>, private router: Router
   ) { }
 
   @Effect()
@@ -105,6 +106,40 @@ export class UsuariosEffects {
         })
       )
     );
+
+  // ---
+  @Effect()
+  actualizarPassword$ = this.actions$
+    .pipe(
+      ofType(actions.ACTUALIZAR_PASSWORD),
+      pipe(
+        switchMap((action: actions.ActualizarPassword) => {
+          console.log('effect1');
+          return this.usuarioService.updatePassword(action.usuario)
+            .pipe(
+              map(() => {
+                Swal.fire({
+                  title: 'Procesado!',
+                  text: `El proceso de cambio de password para ${action.usuario.username} se ha iniciado`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                return new actions.ActualizarPasswordSuccess();
+              }),
+              catchError((error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+                return of(new actions.ActualizarPasswordFail(error));
+              })
+            );
+        })
+      )
+    );
+  // ---
 
 
   @Effect()

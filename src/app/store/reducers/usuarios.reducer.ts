@@ -117,6 +117,36 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
         }
       };
 
+      // ---
+      case actions.ACTUALIZAR_PASSWORD:
+        return {
+          ...state,
+          loading: true,
+          error: null
+        };
+
+      case actions.ACTUALIZAR_PASSWORD_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          loaded: true,
+          // usuarios: [...state.usuarios]
+        };
+
+      case actions.ACTUALIZAR_PASSWORD_FAIL:
+        return {
+          ...state,
+          loading: false,
+          loaded: false,
+          error: {
+            status: action.payload.status,
+            message: action.payload.message,
+            url: action.payload.url
+          }
+        };
+
+      // ---
+
     case actions.CARGAR_USUARIOS:
       return {
         ...state,

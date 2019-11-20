@@ -14,6 +14,10 @@ export const ACTUALIZAR_USUARIO = '[usuarios] Actualizar usuario';
 export const ACTUALIZAR_USUARIO_SUCCESS = '[usuarios] Actualizar usuario SUCCESS';
 export const ACTUALIZAR_USUARIO_FAIL = '[usuarios] Actualizar usuario FAIL';
 
+export const ACTUALIZAR_PASSWORD = '[usuarios] Actualizar password';
+export const ACTUALIZAR_PASSWORD_SUCCESS = '[usuarios] Actualizar password SUCCESS';
+export const ACTUALIZAR_PASSWORD_FAIL = '[usuarios] Actualizar password FAIL';
+
 export const CARGAR_USUARIO = '[usuarios] Cargar usuario';
 export const CARGAR_USUARIO_FAIL = '[usuarios] Cargar usuario FAIL';
 export const CARGAR_USUARIO_SUCCESS = '[usuarios] Cargar usuario SUCCESS';
@@ -69,6 +73,25 @@ export class ActualizarUsuarioFail implements Action {
   constructor( public payload: any ) {}
 }
 
+// ---
+
+export class ActualizarPassword implements Action {
+  readonly type = ACTUALIZAR_PASSWORD;
+  constructor(public usuario: UsuarioListComp) {}
+}
+
+export class ActualizarPasswordSuccess implements Action {
+  readonly type = ACTUALIZAR_PASSWORD_SUCCESS;
+  // constructor(public usuario: UsuarioList) {}
+}
+
+export class ActualizarPasswordFail implements Action {
+  readonly type = ACTUALIZAR_PASSWORD_FAIL;
+  constructor( public payload: any ) {}
+}
+
+// ---
+
 export class CargarUsuario implements Action {
   readonly type = CARGAR_USUARIO;
   constructor(public idProveedor: number) {}
@@ -102,5 +125,6 @@ export class CargarUsuariosSuccess implements Action {
 export type accion = EliminarUsuario | EliminarUsuarioSuccess | EliminarUsuarioFail
                   | AgregarUsuario | AgregarUsuarioSuccess | AgregarUsuarioFail
                   | ActualizarUsuario | ActualizarUsuarioSuccess | ActualizarUsuarioFail
+                  | ActualizarPassword | ActualizarPasswordSuccess | ActualizarPasswordFail
                   | CargarUsuario | CargarUsuarioSuccess | CargarUsuarioFail
                   | CargarUsuarios | CargarUsuariosSuccess | CargarUsuariosFail;

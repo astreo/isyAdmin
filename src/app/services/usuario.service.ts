@@ -94,6 +94,30 @@ export class UsuarioService {
     );
   }
 
+  updatePassword(usuarioList: UsuarioListComp) {
+    return this.getUsersById(usuarioList.idUsuario).pipe(
+      switchMap(
+        (result: UsuarioList[]) => {
+          console.log('updateUser');
+          const usuario = result[0];
+          usuario.password = usuarioList.password;
+          usuario.confirmPassword = usuarioList.confirmPassword;
+          return this.http.put(`${this.url}/Usuario/resetpass/` + usuario.idUsuario,
+                              usuario, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  console.log(usuario);
+                  return usuario;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
   getUsersById(IdUsuario: number) {
     return this.store.select(state => state.users.usuarios).pipe(
       map(item => {

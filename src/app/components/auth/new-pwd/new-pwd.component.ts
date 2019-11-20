@@ -1,8 +1,11 @@
 import { equalValidator } from './../../../validators/equal.validator';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, AbstractControl, NgModel } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
+import { UsuarioNewPwd } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-new-pwd',
@@ -10,19 +13,17 @@ import { FormControl, AbstractControl, NgModel } from '@angular/forms';
   styles: []
 })
 export class NewPwdComponent implements OnInit, OnDestroy {
-  cargando: boolean;
+  procesando = false;
   subscription = new Subscription();
   // equalValidatorVar = equalValidator;
   password: string;
   confirmPassword: string;
-  ac: AbstractControl;
+  username: string;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, public authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    const username = this.route.snapshot.paramMap.get('username');
-    equalValidator(this.password, this.confirmPassword);
-    // debugger;
+    this.username = this.route.snapshot.paramMap.get('username');
   }
 
   ngOnDestroy() {
@@ -33,7 +34,9 @@ export class NewPwdComponent implements OnInit, OnDestroy {
     const ctrl = model.control;
     if (model.name === 'confirmPassword' && !ctrl.pristine) {
       const res = equalValidator('password', 'confirmPassword') (ctrl);
-      ctrl.setErrors({'equalValidator': res});
+      if (res) {
+        ctrl.setErrors({'equalValidator': true});
+      }
     }
     return (ctrl.touched && ctrl.invalid);
   }
@@ -50,13 +53,23 @@ export class NewPwdComponent implements OnInit, OnDestroy {
     return resp;
   }
 
-
-
-  onSubmit(data: any) {
-    debugger;
-    const res = equalValidator('password', 'confirmPassword');
-    console.log(data);
-
+  onSubmit(data: UsuarioNewPwd) {
+    this.procesando = true;
+    data.user = this.username;
+    this.authService.updatePwd(data).subscribe(
+      (/*suc*/) => {
+        this.router.navigate(['/login']);
+      },
+      error => {
+        this.procesando = false;
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
   }
 
 }

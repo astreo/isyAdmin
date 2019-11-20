@@ -21,7 +21,7 @@ import { FormType } from '../../../models/enum';
 })
 export class UsersListComponent implements OnInit, OnDestroy {
   FormObject = FormObject;
-  formObject: FormObject;
+  // formObject: FormObject;
   FormType = FormType;
   formType: FormType;
   loading$: Observable<boolean>;
@@ -33,11 +33,11 @@ export class UsersListComponent implements OnInit, OnDestroy {
   pageSize = 10;
   page = 1;
   accountSubscription = new Subscription();
-  getUsersFromStoreSubscription  = new Subscription();
+  getUsersFromStoreSubscription = new Subscription();
   filter = new FormControl('');
 
   constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal,
-              public confirmationDialogService: ConfirmationDialogService) { }
+    public confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
     this.loading$ = this.store.select(state => state.users.loading);
@@ -122,32 +122,34 @@ export class UsersListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.formObject = formObject;
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: UsuarioListComp) => {
-      // debugger;
       if (result) {
         // console.log('Modelo: ' + JSON.stringify(result));
-        if (user.idUsuario) {
-          // user = Object.assign(user, result);
-          this.store.dispatch(new actions.ActualizarUsuario(Object.assign(user, result)));
+        if (formObject === FormObject.PASSWORD) {
+          this.store.dispatch(new actions.ActualizarPassword(Object.assign(user, result)));
         } else {
-          this.store.dispatch(new actions.AgregarUsuario(result));
+          if (user.idUsuario) {
+            // user = Object.assign(user, result);
+            this.store.dispatch(new actions.ActualizarUsuario(Object.assign(user, result)));
+          } else {
+            this.store.dispatch(new actions.AgregarUsuario(result));
+          }
         }
-        // user.nombres = 'hola';
       }
     });
   }
 
   openConfirmationDialog(user: UsuarioListComp) {
     this.confirmationDialogService.confirm('Confirmación requerida',
-        `Eliminar el usuario "${user.username}" de ${user.nombres} ${user.apellidos}?`)
-    .then((result ) => {
-      if (result) {
-        if (user) {
-          // user = Object.assign(user, result);
-          // debugger;
-          this.store.dispatch(new actions.EliminarUsuario(user.idUsuario));
+      `Eliminar el usuario "${user.username}" de ${user.nombres} ${user.apellidos}?`)
+      .then((result) => {
+        if (result) {
+          if (user) {
+            // user = Object.assign(user, result);
+            // debugger;
+            this.store.dispatch(new actions.EliminarUsuario(user.idUsuario));
+          }
         }
-      }
-    });
+      });
     // .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 

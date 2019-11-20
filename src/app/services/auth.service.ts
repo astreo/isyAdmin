@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { LoginData } from '../models/usuario.model';
 import { UtilService } from './util.service';
 import { environment } from '../../environments/environment';
+import { UsuarioNewPwd } from '../models/usuario.model';
 
 
 @Injectable({
@@ -29,5 +30,10 @@ export class AuthService {
         )
       )
       ;
+  }
+
+  updatePwd(model: UsuarioNewPwd) {
+    console.log(model, 'resetPwd');
+    return this.http.put(`${this.url}/Account/ResetPassword`, model, { headers: this.headers, observe: 'response' });
   }
 }
