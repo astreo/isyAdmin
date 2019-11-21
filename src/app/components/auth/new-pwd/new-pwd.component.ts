@@ -56,7 +56,7 @@ export class NewPwdComponent implements OnInit, OnDestroy {
   onSubmit(data: UsuarioNewPwd) {
     this.procesando = true;
     data.user = this.username;
-    this.authService.updatePwd(data).subscribe(
+    this.subscription = this.authService.updatePwd(data).subscribe(
       (/*suc*/) => {
         this.router.navigate(['/login']);
       },

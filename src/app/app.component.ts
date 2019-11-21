@@ -13,7 +13,8 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'ISY';
   autenticathed = false;
-  suscription = new Subscription();
+  authSubscription = new Subscription();
+  routerSubscription = new Subscription();
   currentUrl: string;
 
   constructor(private translate: TranslateService, private router: Router, public store: Store<AppState>) {
@@ -21,14 +22,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.router.events.subscribe(e => {
+    this.routerSubscription = this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         this.currentUrl = e.url.split(';')[0];
         console.log(this.currentUrl , 'navigationend');
       }
     });
 
-    this.suscription = this.store.select('account')
+    this.authSubscription = this.store.select('account')
       .subscribe(result => {
         this.autenticathed = result.authenticated;
         if (!this.autenticathed && this.currentUrl !== '/newPwd') { this.router.navigate(['/login']); }
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.suscription.unsubscribe();
+    this.routerSubscription.unsubscribe();
+    this.authSubscription.unsubscribe();
   }
 }

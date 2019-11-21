@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuarioListComp, UsuarioList } from '../../../models/usuarios.model';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -45,16 +45,20 @@ export enum FormObject {
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   FormObject = FormObject;
   formTitle: string;
   FormType = FormType;
   loading: boolean;
   hideField: boolean;
-  // perfiles = {} as SelectionModel[];
+
   perfiles$: Observable<SelectionModel[]>;
   proveedores$: Observable<SelectionModel[]>;
+
   accountSubscription = new Subscription();
+  perfilesLoadedSubscription = new Subscription();
+  proveedoresLoadedSubscription = new Subscription();
+
   perfilesLoaded$ = this.store.select(state => state.perfil.loaded);
   proveedoresLoaded$ = this.store.select(state => state.proveedor.loaded);
   idProveedor: number;
@@ -95,7 +99,7 @@ export class UserComponent implements OnInit {
         this.idProveedor = idProveedor;
       });
 
-    this.perfilesLoaded$.subscribe(loaded => {
+    this.perfilesLoadedSubscription = this.perfilesLoaded$.subscribe(loaded => {
       if (!loaded) {
         this.store.dispatch(new actions.perfil.CargarPerfiles());
       } else {
@@ -105,7 +109,7 @@ export class UserComponent implements OnInit {
       }
     });
 
-    this.proveedoresLoaded$.subscribe(loaded => {
+    this.proveedoresLoadedSubscription = this.proveedoresLoaded$.subscribe(loaded => {
       if (!loaded) {
         while (!this.idProveedor) { }
         this.store.dispatch(new actions.proveedor.CargarProveedores(this.idProveedor));
@@ -130,6 +134,12 @@ export class UserComponent implements OnInit {
       idPerfil: [this.user.idPerfil, Validators.required],
       descPerfil: [this.user.descPerfil, Validators.required],
     }) as MyForm;
+  }
+
+  ngOnDestroy() {
+    this.accountSubscription.unsubscribe();
+    this.perfilesLoadedSubscription.unsubscribe();
+    this.proveedoresLoadedSubscription.unsubscribe();
   }
 
   get flds() {

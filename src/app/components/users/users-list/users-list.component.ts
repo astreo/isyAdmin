@@ -27,13 +27,16 @@ export class UsersListComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
   usuarios = {} as UsuarioListComp[];
   usuarios$: Observable<UsuarioListComp[]>;
-
   loaded$ = this.store.select(state => state.users.loaded);
+
+  loadedSubsctiption = new Subscription();
+  accountSubscription = new Subscription();
+  getUsersFromStoreSubscription = new Subscription();
+  getUsersFromServerSubscription = new Subscription();
 
   pageSize = 10;
   page = 1;
-  accountSubscription = new Subscription();
-  getUsersFromStoreSubscription = new Subscription();
+
   filter = new FormControl('');
 
   constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal,
@@ -41,7 +44,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading$ = this.store.select(state => state.users.loading);
-    this.loaded$.subscribe(loaded => {
+    this.loadedSubsctiption = this.loaded$.subscribe(loaded => {
       if (!loaded) {
         this.accountSubscription = this.store.select('account')
           .subscribe(result => {
@@ -56,11 +59,13 @@ export class UsersListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.accountSubscription.unsubscribe();
     this.getUsersFromStoreSubscription.unsubscribe();
+    this.getUsersFromServerSubscription.unsubscribe();
+    this.loadedSubsctiption.unsubscribe();
   }
 
 
   getUsersFromStore() {
-    this.store.select(state => state.users.usuarios).pipe(map((item) => {
+    this.getUsersFromStoreSubscription = this.store.select(state => state.users.usuarios).pipe(map((item) => {
       return (
         // tslint:disable-next-line: no-shadowed-variable
         item.map(item => ({
@@ -83,7 +88,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   }
 
   getUsersFromServer(idProveedor: number) {
-    this.store.select('users')
+    this.getUsersFromServerSubscription = this.store.select('users')
       .pipe(
         map(item => ({ users: item.usuarios, loading: item.loading })),
         map(mappedItems => {
