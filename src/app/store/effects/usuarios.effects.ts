@@ -20,92 +20,83 @@ export class UsuariosEffects {
   cargarUsuarios$ = this.actions$
     .pipe(
       ofType(actions.CARGAR_USUARIOS),
-      pipe(
-        switchMap((action: actions.CargarUsuarios) => {
-          return this.usuarioService.getUsers(action.idProveedor)
-            .pipe(
-              map(users => {
-                return new actions.CargarUsuariosSuccess(users);
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.CargarUsuariosFail(error));
-              })
-            );
-        })
+      map((action: actions.CargarUsuarios) => action.idProveedor),
+      switchMap((idProveedor) => this.usuarioService.getUsers(idProveedor)
+        .pipe(
+          map(response => new actions.CargarUsuariosSuccess(response)
+          ),
+          catchError(error => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+            return of(new actions.CargarUsuariosFail(error));
+          }
+          ))
       )
     );
 
   // --
   @Effect()
-  agregarUsuario$ = this.actions$
-    .pipe(
-      ofType(actions.AGREGAR_USUARIO),
-      pipe(
-        switchMap((action: actions.AgregarUsuario) => {
-          console.log('effect1');
-          return this.usuarioService.addUser(action.usuario)
-            .pipe(
-              map(user => {
-                Swal.fire({
-                  title: 'Agregado!',
-                  text: `El usuario ${action.usuario.username} ha sido agregado con éxito`,
-                  type: 'success',
-                  confirmButtonText: 'OK'
-                });
-                return new actions.AgregarUsuarioSuccess(user);
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.AgregarUsuarioFail(error));
-              })
-            );
-        })
-      )
-    );
+  agregarUsuario$ = this.actions$.pipe(
+    ofType(actions.AGREGAR_USUARIO),
+    map((action: actions.AgregarUsuario) => action),
+    switchMap((action) => this.usuarioService.addUser(action.usuario)
+      .pipe(
+        map(response => {
+          Swal.fire({
+            title: 'Agregado!',
+            text: `El usuario ${action.usuario.username} ha sido agregado con éxito`,
+            type: 'success',
+            confirmButtonText: 'OK'
+          });
+          return new actions.AgregarUsuarioSuccess(response);
+        }
+        ),
+        catchError(error => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+          return of(new actions.AgregarUsuarioFail(error));
+        }
+        ))
+    )
+  );
   // --
 
   @Effect()
-  actualizarUsuario$ = this.actions$
-    .pipe(
-      ofType(actions.ACTUALIZAR_USUARIO),
-      pipe(
-        switchMap((action: actions.ActualizarUsuario) => {
-          console.log('effect1');
-          return this.usuarioService.updateUser(action.usuario)
-            .pipe(
-              map(() => {
-                Swal.fire({
-                  title: 'Actualizado!',
-                  text: `El usuario ${action.usuario.username} ha sido actualizado con éxito`,
-                  type: 'success',
-                  confirmButtonText: 'OK'
-                });
-                return new actions.ActualizarUsuarioSuccess();
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.ActualizarUsuarioFail(error));
-              })
-            );
-        })
-      )
-    );
+  actualizarUsuario = this.actions$.pipe(
+    ofType(actions.ACTUALIZAR_USUARIO),
+    map((action: actions.ActualizarUsuario) => action),
+    switchMap((payload) => this.usuarioService.updateUser(payload.usuario)
+      .pipe(
+        map(response => {
+          Swal.fire({
+            title: 'Actualizado!',
+            text: `El usuario ${response.username} ha sido actualizado con éxito`,
+            type: 'success',
+            confirmButtonText: 'OK'
+          });
+          return new actions.ActualizarUsuarioSuccess();
+        }
+        ),
+        catchError(error => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+          return of(new actions.ActualizarUsuarioFail(error));
+        }
+        ))
+    )
+  );
 
   // ---
   @Effect()

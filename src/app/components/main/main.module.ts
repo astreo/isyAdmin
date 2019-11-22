@@ -12,6 +12,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UsersListComponent } from '../users/users-list/users-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserComponent } from '../users/user/user.component';
+// import { ReportsComponent } from '../reports/reports.component';
+// import { CustomersListComponent } from '../reports/customers-list/customers-list.component';
 
 
 
@@ -22,6 +24,8 @@ import { UserComponent } from '../users/user/user.component';
     MainComponent,
     UsersListComponent,
     UserComponent,
+    // ReportsComponent,
+    // CustomersListComponent,
   ],
   imports: [
     NgbModule,
