@@ -70,7 +70,7 @@ export class UsuariosEffects {
   // --
 
   @Effect()
-  actualizarUsuario = this.actions$.pipe(
+  actualizarUsuario$ = this.actions$.pipe(
     ofType(actions.ACTUALIZAR_USUARIO),
     map((action: actions.ActualizarUsuario) => action),
     switchMap((payload) => this.usuarioService.updateUser(payload.usuario)
@@ -100,143 +100,62 @@ export class UsuariosEffects {
 
   // ---
   @Effect()
-  actualizarPassword$ = this.actions$
-    .pipe(
-      ofType(actions.ACTUALIZAR_PASSWORD),
-      pipe(
-        switchMap((action: actions.ActualizarPassword) => {
-          console.log('effect1');
-          return this.usuarioService.updatePassword(action.usuario)
-            .pipe(
-              map(() => {
-                Swal.fire({
-                  title: 'Procesado!',
-                  text: `El proceso de cambio de password para ${action.usuario.username} se ha iniciado`,
-                  type: 'success',
-                  confirmButtonText: 'OK'
-                });
-                return new actions.ActualizarPasswordSuccess();
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.ActualizarPasswordFail(error));
-              })
-            );
-        })
-      )
-    );
+  actualizarPassword$ = this.actions$.pipe(
+    ofType(actions.ACTUALIZAR_PASSWORD),
+    map((action: actions.ActualizarPassword) => action),
+    switchMap((payload) => this.usuarioService.updatePassword(payload.usuario)
+      .pipe(
+        map(response => {
+          Swal.fire({
+            title: 'Procesado!',
+            text: `El proceso de cambio de password para ${response.username} se ha iniciado`,
+            type: 'success',
+            confirmButtonText: 'OK'
+          });
+          return new actions.ActualizarUsuarioSuccess();
+        }
+        ),
+        catchError(error => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+          return of(new actions.ActualizarUsuarioFail(error));
+        }
+        ))
+    )
+  );
   // ---
 
 
   @Effect()
-  eliminarUsuario$ = this.actions$
-    .pipe(
-      ofType(actions.ELIMINAR_USUARIO),
-      pipe(
-        switchMap((action: actions.EliminarUsuario) => {
-          console.log('effect1');
-          return this.usuarioService.deletetUser(action.idUsuario)
-            .pipe(
-              map(() => {
-                Swal.fire({
-                  title: 'Eliminado!',
-                  text: `El usuario ${action.idUsuario} ha sido eliminado con éxito`,
-                  type: 'success',
-                  confirmButtonText: 'OK'
-                });
-                return new actions.EliminarUsuarioSuccess(action.idUsuario);
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.EliminarUsuarioFail(error));
-              })
-            );
-        })
-      )
-    );
-
-
-  /*@Effect()
-  cargarUsuarios$ = this.actions$
-    .pipe(
-      ofType(actions.CARGAR_USUARIOS),
-      pipe(
-        switchMap((action: actions.CargarUsuarios) => {
-          return this.usuarioService.getUsers(action.idProveedor)
-            .pipe(
-              map(users => {
-                return new actions.CargarUsuariosSuccess(users);
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.CargarUsuariosFail(error));
-              })
-            );
-        })
-      )
-    );*/
-
-  /* @Effect()
-  cargarUsuarios$ = this.actions$
-    .pipe(
-      ofType(actions.CARGAR_USUARIOS),
-      withLatestFrom(this.store.pipe(select(getUsuarios))),
-      switchMap(([action, itemsList]: [actions.CargarUsuarios, any[]]) => {
-        return this.usuarioService.getUsers(action.idProveedor)
-          .pipe(
-            map(usuarios => {
-              return new actions.CargarUsuariosSuccess(usuarios);
-            }),
-            catchError((error) => {
-              Swal.fire({
-                title: 'Error!',
-                text: error.message,
-                type: 'error',
-                confirmButtonText: 'OK'
-              });
-              return of(new actions.CargarUsuariosFail(error));
-            })
-          );
-      })
-    ); */
-  /*
-    @Effect()
-    cargarUsuarios$ = this.actions$
+  eliminarUsuario$ = this.actions$.pipe(
+    ofType(actions.ELIMINAR_USUARIO),
+    map((action: actions.EliminarUsuario) => action),
+    switchMap((payload) => this.usuarioService.deletetUser(payload.idUsuario)
       .pipe(
-        ofType(actions.CARGAR_USUARIOS),
-        withLatestFrom(this.store.pipe(select(state => state.users.usuarios))),
-        switchMap(([action, itemsList]: [actions.CargarUsuarios, any[]]) => {
-          return this.usuarioService.getUsers(action.idProveedor)
-            .pipe(
-              map(usuarios => {
-                return new actions.CargarUsuariosSuccess(usuarios);
-              }),
-              catchError((error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-                return of(new actions.CargarUsuariosFail(error));
-              })
-            );
-        })
-      );
-      */
+        map(() => {
+          Swal.fire({
+            title: 'Eliminado!',
+            text: `El usuario ${payload.idUsuario} ha sido eliminado con éxito`,
+            type: 'success',
+            confirmButtonText: 'OK'
+          });
+          return new actions.EliminarUsuarioSuccess(payload.idUsuario);
+        }
+        ),
+        catchError(error => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+          return of(new actions.EliminarUsuarioFail(error));
+        }
+        ))
+    )
+  );
 }

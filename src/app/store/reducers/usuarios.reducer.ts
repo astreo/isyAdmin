@@ -23,7 +23,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return {
         ...state,
         loading: true,
-        error: null
       };
 
     case actions.ELIMINAR_USUARIO_SUCCESS:
@@ -38,7 +37,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return {
         ...state,
         loading: true,
-        error: null
       };
 
     case actions.AGREGAR_USUARIO_SUCCESS:
@@ -67,7 +65,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return {
         ...state,
         loading: true,
-        error: null
       };
 
     case actions.CARGAR_USUARIO_SUCCESS:
@@ -94,7 +91,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return {
         ...state,
         loading: true,
-        error: null
       };
 
     case actions.ACTUALIZAR_USUARIO_SUCCESS:
@@ -122,7 +118,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
         return {
           ...state,
           loading: true,
-          error: null
         };
 
       case actions.ACTUALIZAR_PASSWORD_SUCCESS:
@@ -151,7 +146,6 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
       return {
         ...state,
         loading: true,
-        error: null
       };
 
     case actions.CARGAR_USUARIOS_SUCCESS:
