@@ -32,12 +32,12 @@ export class UsersListComponent implements OnInit, OnDestroy {
   loadedSubsctiption = new Subscription();
   accountSubscription = new Subscription();
   getUsersFromStoreSubscription = new Subscription();
-  getUsersFromServerSubscription = new Subscription();
 
   pageSize = 10;
   page = 1;
 
-  filter = new FormControl('');
+  textFilter = new FormControl('');
+  date1Filter = new FormControl('');
 
   constructor(public store: Store<AppState>, public pipe: DecimalPipe, public modalService: NgbModal,
     public confirmationDialogService: ConfirmationDialogService) { }
@@ -59,7 +59,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.accountSubscription.unsubscribe();
     this.getUsersFromStoreSubscription.unsubscribe();
-    this.getUsersFromServerSubscription.unsubscribe();
     this.loadedSubsctiption.unsubscribe();
   }
 
@@ -80,41 +79,15 @@ export class UsersListComponent implements OnInit, OnDestroy {
       );
     })).subscribe(mappedItems => {
       this.usuarios = mappedItems;
-      this.usuarios$ = this.filter.valueChanges.pipe(
+      this.usuarios$ = this.textFilter.valueChanges.pipe(
         startWith(''),
-        map(text => this.search(text, this.pipe))
+        map(text => this.searchText(text, this.pipe))
       );
+      /*this.usuarios$ = this.date1Filter.valueChanges.pipe(
+        startWith(''),
+        map(date => this.searchDate(date, this.pipe))
+      );*/
     });
-  }
-
-  getUsersFromServer(idProveedor: number) {
-    this.getUsersFromServerSubscription = this.store.select('users')
-      .pipe(
-        map(item => ({ users: item.usuarios, loading: item.loading })),
-        map(mappedItems => {
-          return (({
-            users: (mappedItems.users ? mappedItems.users : []).map(item => ({
-              idUsuario: item.idUsuario,
-              fechaCreacion: item.fechaCreacion,
-              nombres: item.nombres, apellidos: item.apellidos, username: item.username, email: item.email, telefono: item.telefono,
-              estado: item.estado,
-              idProveedor: item.proveedor.idProveedor, descProveedor: item.proveedor.nombre,
-              idPerfil: item.perfil.idPerfil, descPerfil: item.perfil.descripcion,
-              password: '', confirmPassword: ''
-            })),
-            loading: mappedItems.loading
-          })
-          );
-        }))
-      .subscribe(mappedItems => {
-        this.usuarios = mappedItems.users;
-        // this.loading = mappedItems.loading;
-        this.usuarios$ = this.filter.valueChanges.pipe(
-          startWith(''),
-          map(text => this.search(text, this.pipe))
-        );
-      });
-    this.store.dispatch(new actions.CargarUsuarios(idProveedor));
   }
 
   openModal(formObject: FormObject, formType: FormType, user?: UsuarioListComp) {
@@ -158,7 +131,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
     // .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
-  search(text: string, pipe: PipeTransform): UsuarioListComp[] {
+  searchText(text: string, pipe: PipeTransform): UsuarioListComp[] {
     return this.usuarios.filter(usuario => {
       const term = text.toLowerCase();
       return usuario.nombres.toLowerCase().includes(term)
@@ -167,6 +140,24 @@ export class UsersListComponent implements OnInit, OnDestroy {
         || usuario.descProveedor.toLowerCase().includes(term)
         || usuario.descPerfil.toLowerCase().includes(term)
         || usuario.fechaCreacion.includes(term)
+        ;
+    });
+  }
+
+  searchDate(date: any, pipe: PipeTransform): UsuarioListComp[] {
+    return this.usuarios.filter(usuario => {
+      // const term = text.toLowerCase();
+      // debugger;
+      const dateParts = usuario.fechaCreacion.split('-');
+      const dateObject = new Date(`${dateParts[1]}/${dateParts[0]}/${dateParts[2]}`);
+      const filterDate = new Date(`${date.month}/${date.day}/${date.year}`);
+      // const filterDate = new Date('01/01/2019');
+      // const formDate = new Date(usuario.fechaCreacion);
+      console.log(date, 'date');
+      console.log(filterDate, 'fecha control');
+      console.log(dateObject, 'fecha form');
+      console.log(usuario.fechaCreacion, 'formato natural');
+      return dateObject > filterDate
         ;
     });
   }

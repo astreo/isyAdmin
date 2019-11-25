@@ -4,6 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReportsComponent } from './reports.component';
 import { Routes, RouterModule } from '@angular/router';
 import { CustomersListComponent } from './customers-list/customers-list.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: ReportsComponent },
@@ -13,6 +15,9 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild(),
   ],
