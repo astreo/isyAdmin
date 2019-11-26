@@ -5,6 +5,7 @@ import { ClienteList } from 'src/app/models/reports.model';
 import { ReportsService } from '../../../services/reports.service';
 import { UtilService } from '../../../services/util.service';
 import { NgbDate } from 'src/app/models/misc.model';
+import * as XLSX from 'xlsx';
 
 
 
@@ -52,11 +53,18 @@ export class CustomersListComponent implements OnInit, OnDestroy {
           console.log('Elaboracion: ' + JSON.stringify(result));
           this.clientes = result;
         },
-        (/*error*/) => {}
+        (/*error*/) => { }
       );
   }
 
   download() {
+    console.log('Export to Excel');
+    // this.jsonExcel();
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.clientes);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
+
+    XLSX.writeFile(wb, 'Listado de Clientes.xlsx');
   }
 
 
