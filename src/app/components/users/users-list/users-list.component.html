@@ -18,14 +18,6 @@
               <input [formControl]="textFilter" type="text" class="form-control" placeholder="{{ 'PAGES.Placeholders.Search' | translate }}" aria-label="Buscar"
                 aria-describedby="colored-addon2">
             </div>
-
-            <div class="input-group col-md-3">
-                <input [formControl]="date1Filter" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-append">
-                  <button (click)="d.toggle()" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-calendar"></i></button>
-                </div>
-              </div>
-
           </div>
 
 
@@ -95,7 +87,8 @@
           </div>
           <br>
           <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-            [collectionSize]="(usuarios$ | async).length" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+            [collectionSize]="(usuarios$ | async).length" [(page)]="page" [maxSize]="10"
+            [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
         </ng-container>
       </div>
     </div>

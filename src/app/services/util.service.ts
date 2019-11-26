@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+import { NgbDate } from '../models/misc.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,24 @@ export class UtilService {
     return new HttpHeaders({
       'Content-Type': 'application/json'
     });
+  }
+
+  dateToString(date: Date): string {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+  }
+
+  ngbDateToString(date: NgbDate): string {
+    // debugger;
+    if (date) {
+    const day = date.day;
+    const month = date.month;
+    const year = date.year;
+    return `${year}-${month}-${day}`;
+    } else {
+      return '1900-01-01';
+    }
   }
 }
