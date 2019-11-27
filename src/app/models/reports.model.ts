@@ -1,4 +1,18 @@
 export interface ClienteList {
+  nombres: string;
+  apellidos: string;
+  nroDocumento: string;
+  telefono: string;
+  email?: string;
+  ruc: string;
+  personaJuridica: string;
+  esCliente?: any;
+  esTitular: string;
+  fechaCreacion: string;
+  dependientes: number;
+}
+
+/*export interface ClienteList {
   idPersona: number;
   nombres: string;
   apellidos: string;
@@ -16,4 +30,5 @@ export interface ClienteList {
   fechaCreacionUtc: string;
   dependientes: number;
   total: number;
-}
+}*/
+

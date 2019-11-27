@@ -6,6 +6,7 @@ import { ReportsService } from '../../../services/reports.service';
 import { UtilService } from '../../../services/util.service';
 import { NgbDate } from 'src/app/models/misc.model';
 import * as XLSX from 'xlsx';
+import { map } from 'rxjs/operators';
 
 
 
@@ -19,7 +20,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   fechaFin: NgbDate;
   tipo = 'TO';
   myFecha = false;
-  loading$: Observable<boolean>;
+  loading = false;
   clientes: ClienteList[];
   subscription = new Subscription();
 
@@ -40,18 +41,36 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   }
 
   ok() {
+    this.loading = true;
     this.subscription = this.reportsService
       .getClientesList(
         this.utilService.ngbDateToString(this.fechaInicio),
         this.utilService.ngbDateToString(this.fechaFin),
         this.tipo,
         this.myFecha
-      )
+      ).pipe(map((items: ClienteList[]) => items.map(item => {
+        {
+          return {
+            fechaCreacion: item.fechaCreacion,
+            nroDocumento: item.nroDocumento,
+            ruc: item.ruc,
+            nombres: item.nombres,
+            apellidos: item.apellidos,
+            email: item.email,
+            telefono: item.telefono,
+            esCliente: item.esCliente,
+            esTitular: item.esTitular,
+            personaJuridica: item.personaJuridica,
+            dependientes: item.dependientes
+          };
+        }
+      })))
       .subscribe(
         result => {
           // if (permisos.length === 0) return;
           console.log('Elaboracion: ' + JSON.stringify(result));
           this.clientes = result;
+          this.loading = false;
         },
         (/*error*/) => { }
       );

@@ -3,12 +3,6 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{ 'PAGES.Titles.ReportsList.Customers' | translate }}</h4>
-        <ng-container *ngIf="loading$ | async">
-          <i class="fa fa-spin fa-sync"></i>
-          {{ 'PAGES.Messages.Processing' | translate }}...
-        </ng-container>
-
-
           <form #f="ngForm">
             <div class="form-group row">
 
@@ -58,14 +52,20 @@
               </div>
 
               <div class="col-xs-6 col-md-6" style="margin-top:25px">
-                <button type="button" (click)="download()"
+                <button type="button" (click)="download()" [disabled]="!clientes"
                   class="btn btn-outline-primary float-right">{{'PAGES.Buttons.Download' | translate}}
                   <i class="fa fa-download"></i>
                 </button>
-                <button type="button" (click)="ok()"
-                  class="btn btn-primary float-right">{{'PAGES.Buttons.Search' | translate}}
-                  <i class="fa fa-search"></i>
-                </button>
+                <div class="float-right">
+                  <button *ngIf="!loading" type="button" (click)="ok()"
+                    class="btn btn-primary">{{'PAGES.Buttons.Search' | translate}}
+                    <i class="fa fa-search"></i>
+                  </button>
+                  <button *ngIf="loading" [disabled]="true" class="btn btn-primary submit-btn btn-block">
+                    <i class="fa fa-spin fa-sync"></i>
+                    Espere...
+                  </button>
+                </div>
               </div>
             </div>
 
