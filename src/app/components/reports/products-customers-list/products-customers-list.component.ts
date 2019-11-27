@@ -11,11 +11,11 @@ import { map } from 'rxjs/operators';
 
 
 @Component({
-  selector: 'app-customers-list',
-  templateUrl: './customers-list.component.html',
-  styleUrls: ['./customers-list.component.scss']
+  selector: 'app-products-customers-list',
+  templateUrl: './products-customers-list.component.html',
+  styleUrls: ['./products-customers-list.component.scss']
 })
-export class CustomersListComponent implements OnInit, OnDestroy {
+export class ProductsCustomersListComponent implements OnInit, OnDestroy {
   fechaInicio: NgbDate;
   fechaFin: NgbDate;
   tipo = 'TO';
@@ -43,7 +43,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   ok() {
     this.loading = true;
     this.subscription = this.reportsService
-      .getClientesList(
+      .getProductosporClienteList(
         this.utilService.ngbDateToString(this.fechaInicio),
         this.utilService.ngbDateToString(this.fechaFin),
         this.tipo,
@@ -83,7 +83,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
 
-    XLSX.writeFile(wb, 'Listado de Clientes.xlsx');
+    XLSX.writeFile(wb, 'Listado de Productos por Clientes.xlsx');
   }
 
 
