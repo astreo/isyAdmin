@@ -57,6 +57,19 @@ export class ReportsService {
       ;
   }
 
+  getAppUse(anho: number) {
+    return this.http.get(`${this.url}/reporte/uso/${anho}`,
+     { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
+  }
+
   getClientesList3(fechaInicio: string, fechaFin: string, tipo: string, myFecha: boolean) {
     return this.http.get(`${this.url}/reporte/desde/${fechaInicio}/hasta/${fechaFin}/tipo/${tipo}/myFecha/${myFecha}`,
      { headers: this.headers, observe: 'response' });

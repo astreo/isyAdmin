@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
 import { ClienteList } from 'src/app/models/reports.model';
 import { ReportsService } from '../../../services/reports.service';
 import { UtilService } from '../../../services/util.service';
@@ -26,9 +25,6 @@ export class ProductsCustomersListComponent implements OnInit, OnDestroy {
 
   pageSize = 10;
   page = 1;
-
-  textFilter = new FormControl('');
-  date1Filter = new FormControl('');
 
   constructor(private reportsService: ReportsService, private utilService: UtilService) { }
 
@@ -68,7 +64,7 @@ export class ProductsCustomersListComponent implements OnInit, OnDestroy {
       .subscribe(
         result => {
           // if (permisos.length === 0) return;
-          console.log('Elaboracion: ' + JSON.stringify(result));
+          console.log(JSON.stringify(result));
           this.clientes = result;
           this.loading = false;
         },
@@ -83,7 +79,7 @@ export class ProductsCustomersListComponent implements OnInit, OnDestroy {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
 
-    XLSX.writeFile(wb, 'Listado de Productos por Clientes.xlsx');
+    XLSX.writeFile(wb, 'Listado de Uso de la App.xlsx');
   }
 
 
