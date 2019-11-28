@@ -7,11 +7,13 @@ import { CustomersListComponent } from './customers-list/customers-list.componen
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsCustomersListComponent } from './products-customers-list/products-customers-list.component';
+import { CustomerStatsComponent } from './customer-stats/customer-stats.component';
 
 const routes: Routes = [
   { path: '', component: ReportsComponent },
   { path: 'clientes', component: CustomersListComponent },
-  { path: 'productosclientes', component: ProductsCustomersListComponent }
+  { path: 'productosclientes', component: ProductsCustomersListComponent },
+  { path: 'estadisticaclientes', component: CustomerStatsComponent }
 ];
 
 @NgModule({
@@ -26,7 +28,8 @@ const routes: Routes = [
   declarations: [
     ReportsComponent,
     CustomersListComponent,
-    ProductsCustomersListComponent
+    ProductsCustomersListComponent,
+    CustomerStatsComponent
   ]
 })
 export class ReportsModule { }

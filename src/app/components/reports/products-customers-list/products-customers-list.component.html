@@ -3,75 +3,75 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{ 'PAGES.Titles.ReportsList.ProductsPerCustomer' | translate }}</h4>
-          <form #f="ngForm">
-            <div class="form-group row">
+        <form #f="ngForm">
+          <div class="form-group row">
 
-              <div class="col-md-2 form-group">
-                <div class="input-group form-check">
-                  <label class="form-label">{{ 'PAGES.Labels.SelectDate' | translate }}</label>
-                  <input [(ngModel)]="myFecha" name="myFecha" type="checkbox" class="form-check-input">
-                </div>
+            <div class="col-md-2 form-group">
+              <div class="input-group form-check">
+                <label class="form-label">{{ 'PAGES.Labels.SelectDate' | translate }}</label>
+                <input [(ngModel)]="myFecha" name="myFecha" type="checkbox" class="form-check-input">
               </div>
-
-              <ng-container *ngIf="myFecha">
-                <div class="col-md-5 form-group">
-                  <label class="form-label">{{'PAGES.Labels.FromDate' | translate}}</label>
-                  <div class="input-group">
-                    <input [(ngModel)]="fechaInicio" name="fechaInicio" class="form-control" placeholder="yyyy-mm-dd"
-                      name="dp" ngbDatepicker #d1="ngbDatepicker">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
-                        <i class="fa fa-calendar"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-5 form-group">
-                  <label class="form-label">{{'PAGES.Labels.UntilDate' | translate}}</label>
-                  <div class="input-group">
-                    <input [(ngModel)]="fechaFin" name="fechaFin" class="form-control" placeholder="yyyy-mm-dd"
-                      name="dp" ngbDatepicker #d2="ngbDatepicker">
-                    <div class="input-group-append">
-                      <button (click)="d2.toggle()" type="button" class="btn btn-outline-secondary"><i
-                          class="fa fa-calendar"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </ng-container>
             </div>
 
-            <div class="form-group row">
-              <div class="col-xs-6 col-md-6">
-                <label for="Cliente">{{'PAGES.Labels.CustomerType' | translate}}</label>
-                <select name="Cliente" [(ngModel)]="tipo" name="tipo" class="form-control">
-                  <option value="TO">{{'PAGES.DefaultListItems.All' | translate}}</option>
-                  <option value="CT">{{'PAGES.DefaultListItems.CustomerHolder' | translate}}</option>
-                  <option value="CN">{{'PAGES.DefaultListItems.DependentCustomer' | translate}}</option>
-                </select>
+            <ng-container *ngIf="myFecha">
+              <div class="col-md-5 form-group">
+                <label class="form-label">{{'PAGES.Labels.FromDate' | translate}}</label>
+                <div class="input-group">
+                  <input [(ngModel)]="fechaInicio" name="fechaInicio" class="form-control" placeholder="yyyy-mm-dd"
+                    name="dp" ngbDatepicker #d1="ngbDatepicker">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div class="col-xs-6 col-md-6" style="margin-top:25px">
-                <button type="button" (click)="download()" [disabled]="!clientes"
-                  class="btn btn-outline-primary float-right">{{'PAGES.Buttons.Download' | translate}}
-                  <i class="fa fa-download"></i>
+              <div class="col-md-5 form-group">
+                <label class="form-label">{{'PAGES.Labels.UntilDate' | translate}}</label>
+                <div class="input-group">
+                  <input [(ngModel)]="fechaFin" name="fechaFin" class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                    ngbDatepicker #d2="ngbDatepicker">
+                  <div class="input-group-append">
+                    <button (click)="d2.toggle()" type="button" class="btn btn-outline-secondary"><i
+                        class="fa fa-calendar"></i></button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-xs-6 col-md-6">
+              <label for="Cliente">{{'PAGES.Labels.CustomerType' | translate}}</label>
+              <select name="Cliente" [(ngModel)]="tipo" name="tipo" class="form-control">
+                <option value="TO">{{'PAGES.DefaultListItems.All' | translate}}</option>
+                <option value="CT">{{'PAGES.DefaultListItems.CustomerHolder' | translate}}</option>
+                <option value="CN">{{'PAGES.DefaultListItems.DependentCustomer' | translate}}</option>
+              </select>
+            </div>
+
+            <div class="col-xs-6 col-md-6" style="margin-top:25px">
+              <button type="button" (click)="download()" [disabled]="!clientes"
+                class="btn btn-outline-primary float-right">{{'PAGES.Buttons.Download' | translate}}
+                <i class="fa fa-download"></i>
+              </button>
+              <div class="float-right">
+                <button *ngIf="!loading" type="button" (click)="ok()"
+                  class="btn btn-primary">{{'PAGES.Buttons.Search' | translate}}
+                  <i class="fa fa-search"></i>
                 </button>
-                <div class="float-right">
-                  <button *ngIf="!loading" type="button" (click)="ok()"
-                    class="btn btn-primary">{{'PAGES.Buttons.Search' | translate}}
-                    <i class="fa fa-search"></i>
-                  </button>
-                  <button *ngIf="loading" [disabled]="true" class="btn btn-primary submit-btn btn-block">
-                    <i class="fa fa-spin fa-sync"></i>
-                    Espere...
-                  </button>
-                </div>
+                <button *ngIf="loading" [disabled]="true" class="btn btn-primary submit-btn btn-block">
+                  <i class="fa fa-spin fa-sync"></i>
+                  Espere...
+                </button>
               </div>
             </div>
+          </div>
 
-          </form>
-          <br>
-          <ng-container *ngIf="clientes">
+        </form>
+        <br>
+        <ng-container *ngIf="clientes">
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
@@ -104,8 +104,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  *ngFor="let cliente of clientes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                <tr *ngFor="let cliente of clientes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                   <td>
                     {{cliente.fechaCreacion}}
                   </td>
@@ -136,8 +135,8 @@
           </div>
           <br>
           <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-            [collectionSize]="clientes.length" [(page)]="page" [maxSize]="10"
-            [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+            [collectionSize]="clientes.length" [(page)]="page" [maxSize]="10" [rotate]="true" [boundaryLinks]="true">
+          </ngb-pagination>
         </ng-container>
       </div>
     </div>
