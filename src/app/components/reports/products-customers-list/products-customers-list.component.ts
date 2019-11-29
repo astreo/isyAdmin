@@ -39,7 +39,7 @@ export class ProductsCustomersListComponent implements OnInit, OnDestroy {
   ok() {
     this.loading = true;
     this.subscription = this.reportsService
-      .getProductosporClienteList(
+      .getProductosPorClienteList(
         this.utilService.ngbDateToString(this.fechaInicio),
         this.utilService.ngbDateToString(this.fechaFin),
         this.tipo,
