@@ -9,13 +9,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsCustomersListComponent } from './products-customers-list/products-customers-list.component';
 import { CustomerStatsComponent } from './customer-stats/customer-stats.component';
 import { AppUseListComponent } from './app-use-list/app-use-list.component';
+import { CustomersPanelListComponent } from './customers-panel-list/customers-panel-list.component';
 
 const routes: Routes = [
   { path: '', component: ReportsComponent },
   { path: 'clientes', component: CustomersListComponent },
   { path: 'productosclientes', component: ProductsCustomersListComponent },
   { path: 'estadisticaclientes', component: CustomerStatsComponent },
-  { path: 'usoaplicacion', component: AppUseListComponent }
+  { path: 'usoaplicacion', component: AppUseListComponent },
+  { path: 'clientesporpanel', component: CustomersPanelListComponent }
 ];
 
 @NgModule({
@@ -32,7 +34,8 @@ const routes: Routes = [
     CustomersListComponent,
     ProductsCustomersListComponent,
     CustomerStatsComponent,
-    AppUseListComponent
+    AppUseListComponent,
+    CustomersPanelListComponent
   ]
 })
 export class ReportsModule { }
