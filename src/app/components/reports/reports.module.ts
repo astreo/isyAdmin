@@ -10,6 +10,7 @@ import { ProductsCustomersListComponent } from './products-customers-list/produc
 import { CustomerStatsComponent } from './customer-stats/customer-stats.component';
 import { AppUseListComponent } from './app-use-list/app-use-list.component';
 import { CustomersPanelListComponent } from './customers-panel-list/customers-panel-list.component';
+import { CustomersPortfolioListComponent } from './customers-portfolio-list/customers-portfolio-list.component';
 
 const routes: Routes = [
   { path: '', component: ReportsComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'productosclientes', component: ProductsCustomersListComponent },
   { path: 'estadisticaclientes', component: CustomerStatsComponent },
   { path: 'usoaplicacion', component: AppUseListComponent },
-  { path: 'clientesporpanel', component: CustomersPanelListComponent }
+  { path: 'clientesporpanel', component: CustomersPanelListComponent },
+  { path: 'carteradeclientes', component: CustomersPortfolioListComponent }
 ];
 
 @NgModule({
@@ -35,7 +37,8 @@ const routes: Routes = [
     ProductsCustomersListComponent,
     CustomerStatsComponent,
     AppUseListComponent,
-    CustomersPanelListComponent
+    CustomersPanelListComponent,
+    CustomersPortfolioListComponent
   ]
 })
 export class ReportsModule { }
