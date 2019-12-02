@@ -50,26 +50,28 @@ export class UsuarioService {
   }
 
   addUser(usuario: UsuarioListComp) {
-    console.log(`${this.url}/Usuario`);
-    console.log('UsuarioListComp: ' + JSON.stringify(usuario));
-    // debugger;
-    // let userNew = new UsuarioList;
-    // console.log('UsuarioList: ' + JSON.stringify(userNew));
-    // userNew = Object.assign(userNew, usuario);
-    // console.log('Object.assign: ' + JSON.stringify(userNew));
-    // debugger;
-    return this.http.post(`${this.url}/Usuario`, usuario, { headers: this.headers, observe: 'response' })
-      .pipe(
-        map(
-          (resp: any) => {
-            return resp.body;
-          }
-        )
+    let userNew = {} as UsuarioList;
+    userNew = Object.assign(userNew, usuario);
+    return this.getUserData().pipe(
+      switchMap(
+        (data) => {
+          userNew.idUsuarioWeb = data.idUsuario;
+          userNew.idProveedorWeb = data.idProveedor;
+          return this.http.post(`${this.url}/Usuario`, userNew, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
       )
-      ;
+    );
   }
 
-  updateUser(usuarioList: UsuarioListComp) {
+  /*updateUser(usuarioList: UsuarioListComp) {
     return this.getUsersById(usuarioList.idUsuario).pipe(
       switchMap(
         (result: UsuarioList[]) => {
@@ -92,27 +94,69 @@ export class UsuarioService {
         }
       )
     );
+  }*/
+
+  updateUser(usuarioList: UsuarioListComp) {
+    return this.getUserData().pipe(
+      switchMap(
+        (data) => {
+          return this.getUsersById(usuarioList.idUsuario).pipe(
+            switchMap(
+              (result: UsuarioList[]) => {
+                console.log('updateUser');
+                const usuario = result[0];
+                usuario.nombres = usuarioList.nombres;
+                usuario.apellidos = usuarioList.apellidos;
+                usuario.idPerfil = usuario.perfil.idPerfil;
+                usuario.idProveedor = usuario.proveedor.idProveedor;
+                usuario.idUsuarioWeb = data.idUsuario;
+                usuario.idProveedorWeb = data.idProveedor;
+                return this.http.put(`${this.url}/Usuario/` + usuario.idUsuario, usuario, { headers: this.headers, observe: 'response' })
+
+                  .pipe(
+                    map(
+                      () => {
+                        console.log(usuario);
+                        return usuario;
+                      }
+                    )
+                  )
+                  ;
+              }
+            )
+          );
+        }
+      )
+    );
   }
 
   updatePassword(usuarioList: UsuarioListComp) {
-    return this.getUsersById(usuarioList.idUsuario).pipe(
+    return this.getUserData().pipe(
       switchMap(
-        (result: UsuarioList[]) => {
-          console.log('updateUser');
-          const usuario = result[0];
-          usuario.password = usuarioList.password;
-          usuario.confirmPassword = usuarioList.confirmPassword;
-          return this.http.put(`${this.url}/Usuario/resetpass/` + usuario.idUsuario,
-                              usuario, { headers: this.headers, observe: 'response' })
-            .pipe(
-              map(
-                () => {
-                  console.log(usuario);
-                  return usuario;
-                }
-              )
+        (data) => {
+          return this.getUsersById(usuarioList.idUsuario).pipe(
+            switchMap(
+              (result: UsuarioList[]) => {
+                console.log('updateUser');
+                const usuario = result[0];
+                usuario.password = usuarioList.password;
+                usuario.confirmPassword = usuarioList.confirmPassword;
+                usuario.idUsuarioWeb = data.idUsuario;
+                usuario.idProveedorWeb = data.idProveedor;
+                return this.http.put(`${this.url}/Usuario/resetpass/` + usuario.idUsuario,
+                  usuario, { headers: this.headers, observe: 'response' })
+                  .pipe(
+                    map(
+                      () => {
+                        console.log(usuario);
+                        return usuario;
+                      }
+                    )
+                  )
+                  ;
+              }
             )
-            ;
+          );
         }
       )
     );
@@ -127,5 +171,22 @@ export class UsuarioService {
           // .map(item2 => item2)
         );
       }));
+  }
+
+  getProveedorId() {
+    return this.store.select(state => state.account.usuario.proveedor.idProveedor);
+  }
+
+  getUserData() {
+    return this.store.select(state => state.account.usuario).pipe(
+      map(item => {
+        return (
+          {
+            idUsuario: item.idUsuario,
+            idProveedor: item.proveedor.idProveedor
+          }
+        );
+      })
+    );
   }
 }
