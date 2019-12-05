@@ -1,0 +1,56 @@
+<div class="col-12">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
+              <select class="form-control form-control-sm" formControlName='tipo'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.tipo) }">
+                <option value="">{{'PAGES.DefaultListItems.Profile' | translate}}</option>
+                <option *ngFor="let tipo of tipos" [ngValue]="tipo.id">{{tipo.descripcion}}</option>
+              </select>
+              <div *ngIf="isInvalid(ctrls.tipo)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.tipo)}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
+              <input type="text" class="form-control" formControlName='telefono'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.telefono) }">
+              <div *ngIf="isInvalid(ctrls.telefono)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.telefono)}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Description' | translate}}</label>
+              <textarea type="text" class="form-control" formControlName='descripcion'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.descripcion) }" rows="6" maxlength="260">
+              </textarea>
+              <div *ngIf="isInvalid(ctrls.descripcion)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.descripcion)}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>

@@ -37,7 +37,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    this.subscription.unsubscribe();
   }
 
   ok() {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UsuarioListComp, UsuarioList } from '../../../models/usuarios.model';
+import { UsuarioListComp } from '../../../models/usuarios.model';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducer';

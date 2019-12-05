@@ -12,6 +12,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UsersListComponent } from '../users/users-list/users-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserComponent } from '../users/user/user.component';
+import { PointsListComponent } from '../points-of-interest/points-list/points-list.component';
+import { PointComponent } from '../points-of-interest/point/point.component';
 // import { ReportsComponent } from '../reports/reports.component';
 // import { CustomersListComponent } from '../reports/customers-list/customers-list.component';
 
@@ -24,6 +26,8 @@ import { UserComponent } from '../users/user/user.component';
     MainComponent,
     UsersListComponent,
     UserComponent,
+    PointsListComponent,
+    PointComponent,
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -37,6 +41,6 @@ import { UserComponent } from '../users/user/user.component';
     TranslateModule.forChild(),
     // StoreModule.forFeature('account', reducer)
   ],
-  entryComponents: [ UserComponent ]
+  entryComponents: [ UserComponent, PointComponent ]
 })
 export class MainModule { }

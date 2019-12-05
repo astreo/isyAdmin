@@ -1,5 +1,5 @@
 export interface SelectionModel {
-  id: number;
+  id: any;
   descripcion: string;
 }
 
