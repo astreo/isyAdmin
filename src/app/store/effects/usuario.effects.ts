@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { usuario as actions } from '../actions';
 import { of, pipe } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { AuthService } from '../../services/auth.service';
+import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 export class UsuarioEffects {
 
   constructor(
-    private actions$: Actions, public usuariosService: AuthService, private router: Router
+    private actions$: Actions, public accountService: AccountService, private router: Router
   ) { }
 
   @Effect()
@@ -20,7 +20,7 @@ export class UsuarioEffects {
       ofType(actions.CARGAR_USUARIO),
       pipe(
         switchMap((action: actions.CargarUsuario) => {
-          return this.usuariosService.login(action.usuario)
+          return this.accountService.login(action.usuario)
             .pipe(
               map(user => {
                 console.log(user);

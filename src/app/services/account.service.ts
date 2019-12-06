@@ -5,12 +5,13 @@ import { LoginData } from '../models/usuario.model';
 import { UtilService } from './util.service';
 import { environment } from '../../environments/environment';
 import { UsuarioNewPwd } from '../models/usuario.model';
-
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AccountService {
 
   private get url() {
     return environment.url;
@@ -18,7 +19,7 @@ export class AuthService {
 
   private get headers() { return this.utilService.getHeather(); }
 
-  constructor(private http: HttpClient, private utilService: UtilService) { }
+  constructor(private http: HttpClient, private utilService: UtilService, public store: Store<AppState>) { }
 
   login(loginData: LoginData) {
     return this.http.post(`${this.url}/Account/Login`, loginData, { headers: this.headers, observe: 'response' })
@@ -35,5 +36,24 @@ export class AuthService {
   updatePwd(model: UsuarioNewPwd) {
     console.log(model, 'resetPwd');
     return this.http.put(`${this.url}/Account/ResetPassword`, model, { headers: this.headers, observe: 'response' });
+  }
+
+  getProveedorId() {
+    return this.store.select(state => state.account.usuario.proveedor.idProveedor);
+  }
+
+  getAccountData() {
+    console.log('Entrando en getAccountData');
+    return this.store.select(state => state.account.usuario).pipe(
+      map(item => {
+        console.log('Saliendo de AccountData: ' + JSON.stringify(item));
+        return (
+          {
+            idUsuario: item.idUsuario,
+            idProveedor: item.proveedor.idProveedor
+          }
+        );
+      })
+    );
   }
 }

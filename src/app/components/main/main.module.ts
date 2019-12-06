@@ -16,6 +16,7 @@ import { PointsListComponent } from '../points-of-interest/points-list/points-li
 import { PointComponent } from '../points-of-interest/point/point.component';
 // import { ReportsComponent } from '../reports/reports.component';
 // import { CustomersListComponent } from '../reports/customers-list/customers-list.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 
@@ -39,6 +40,9 @@ import { PointComponent } from '../points-of-interest/point/point.component';
     SharedModule,
     MainRoutingModule,
     TranslateModule.forChild(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBTl_nawpJjCbIttRuv5yyViHtSrGtghpM'
+    })
     // StoreModule.forFeature('account', reducer)
   ],
   entryComponents: [ UserComponent, PointComponent ]

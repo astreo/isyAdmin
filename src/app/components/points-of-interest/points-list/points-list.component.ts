@@ -6,8 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { PuntosDeInteresService } from '../../../services/puntos-de-interes.service';
-import { map, startWith } from 'rxjs/operators';
-import { DecimalPipe } from '@angular/common';
+import { map, startWith, catchError } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PointComponent } from '../point/point.component';
 
@@ -33,7 +33,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
   textFilter = new FormControl('');
 
   constructor(public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
-              private puntosDeInteresService: PuntosDeInteresService) { }
+    private puntosDeInteresService: PuntosDeInteresService) { }
 
   ngOnInit() {
     this.getList();
@@ -57,6 +57,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
   }
 
   openModal(formType: FormType, item?: PuntoDeInteres) {
+    // debugger;
     if (!item) {
       item = {} as PuntoDeInteres;
     }
@@ -66,7 +67,26 @@ export class PointsListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: PuntoDeInteres) => {
       if (result) {
-
+        // tslint:disable-next-line: no-shadowed-variable
+        this.puntosDeInteresService.addPunto(result).subscribe(
+          response => {
+            Swal.fire({
+              title: 'Agregado!',
+              text: `El punto ha sido agregado con éxito`,
+              type: 'success',
+              confirmButtonText: 'OK'
+            });
+            // return new actions.AgregarUsuarioSuccess(response);
+          }
+          ,
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
       }
     });
   }

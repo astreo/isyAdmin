@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
 import { UsuarioList, UsuarioListComp } from '../models/usuarios.model';
 import { Subscription } from 'rxjs';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class UsuarioService {
 
   private get headers() { return this.utilService.getHeather(); }
 
-  constructor(private http: HttpClient, private utilService: UtilService, public store: Store<AppState>) { }
+  constructor(private http: HttpClient, private utilService: UtilService, private accountService: AccountService,
+              public store: Store<AppState>) { }
 
   getUsers(idProveedor: number) {
     return this.http.get(`${this.url}/Usuario/proveedor/` + idProveedor, { headers: this.headers, observe: 'response' })
@@ -52,7 +54,7 @@ export class UsuarioService {
   addUser(usuario: UsuarioListComp) {
     let userNew = {} as UsuarioList;
     userNew = Object.assign(userNew, usuario);
-    return this.getUserData().pipe(
+    return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
           userNew.idUsuarioWeb = data.idUsuario;
@@ -97,7 +99,7 @@ export class UsuarioService {
   }*/
 
   updateUser(usuarioList: UsuarioListComp) {
-    return this.getUserData().pipe(
+    return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
           return this.getUsersById(usuarioList.idUsuario).pipe(
@@ -131,7 +133,7 @@ export class UsuarioService {
   }
 
   updatePassword(usuarioList: UsuarioListComp) {
-    return this.getUserData().pipe(
+    return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
           return this.getUsersById(usuarioList.idUsuario).pipe(
@@ -173,20 +175,4 @@ export class UsuarioService {
       }));
   }
 
-  getProveedorId() {
-    return this.store.select(state => state.account.usuario.proveedor.idProveedor);
-  }
-
-  getUserData() {
-    return this.store.select(state => state.account.usuario).pipe(
-      map(item => {
-        return (
-          {
-            idUsuario: item.idUsuario,
-            idProveedor: item.proveedor.idProveedor
-          }
-        );
-      })
-    );
-  }
 }

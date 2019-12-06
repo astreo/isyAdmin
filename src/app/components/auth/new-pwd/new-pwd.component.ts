@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, AbstractControl, NgModel } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
+import { AccountService } from '../../../services/account.service';
 import Swal from 'sweetalert2';
 import { UsuarioNewPwd } from '../../../models/usuario.model';
 
@@ -20,7 +20,7 @@ export class NewPwdComponent implements OnInit, OnDestroy {
   confirmPassword: string;
   username: string;
 
-  constructor(private route: ActivatedRoute, public authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute, public authService: AccountService, private router: Router) { }
 
   ngOnInit() {
     this.username = this.route.snapshot.paramMap.get('username');

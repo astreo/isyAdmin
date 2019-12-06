@@ -1,4 +1,5 @@
-<div class="col-12">
+
+<div class="col-12 card">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
   </div>
@@ -39,7 +40,11 @@
         </div>
         <div class="col-md-6">
           <div>
-
+            <agm-map (mapClick)="agregarMarcador($event.coords)" [latitude]="initialLat" [longitude]="initialLng"
+              [fullscreenControl]='true' [zoom]=15>
+              <agm-marker [latitude]="lat" [longitude]="lng">
+              </agm-marker>
+            </agm-map>
           </div>
         </div>
       </div>

@@ -35,6 +35,11 @@ export class PointComponent implements OnInit {
   loading: boolean;
   subscription = new Subscription();
 
+  initialLat: number; // = 51.678418;
+  initialLng: number; // = 7.809007;
+  lat: number; // = 51.678418;
+  lng: number; // = 7.809007;
+
   tipos: SelectionModel[] = [
     {
       id: 'BOM',
@@ -62,6 +67,7 @@ export class PointComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    // debugger;
     switch (this.formType) {
       case FormType.NEW:
         this.formTitle = 'PAGES.ModalTitles.NewPointOfInterest';
@@ -78,6 +84,8 @@ export class PointComponent implements OnInit {
       telefono: [this.punto.telefono, Validators.required],
       descripcion: [this.punto.descripcion, Validators.required],
     }) as MyForm;
+
+    this.getCurrentPos();
   }
 
   get ctrls() {
@@ -96,8 +104,43 @@ export class PointComponent implements OnInit {
     return resp;
   }
 
+  getCurrentPos() {
+    if (window.navigator && window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        position => {
+          this.initialLat = position.coords.latitude;
+          this.initialLng = position.coords.longitude;
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+        },
+        error => {
+          switch (error.code) {
+            case 1:
+              console.log('Permiso denegado');
+              break;
+            case 2:
+              console.log('Posición no disponible');
+              break;
+            case 3:
+              console.log('Timeout');
+              break;
+          }
+        }
+      );
+    }
+  }
+
+  agregarMarcador(coords) {
+    console.log(coords);
+    // const coords: { lat: number, lng: number } = rawCoords;
+    this.lat = coords.lat;
+    this.lng = coords.lng;
+  }
+
   ok() {
     this.punto = this.form.value;
+    this.punto.latitud = this.lat;
+    this.punto.longitud = this.lng;
     // debugger;
     this.passEntry.emit(this.punto);
     this.activeModal.close(this.punto);

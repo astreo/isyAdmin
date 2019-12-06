@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UtilService } from './util.service';
 import { map, switchMap } from 'rxjs/operators';
-import { UsuarioService } from './usuario.service';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class ReportsService {
 
   private get headers() { return this.utilService.getHeather(); }
 
-  constructor(private http: HttpClient, private utilService: UtilService, private accountService: UsuarioService) { }
+  constructor(private http: HttpClient, private utilService: UtilService, private accountService: AccountService) { }
 
   getClientesList(fechaInicio: string, fechaFin: string, tipo: string, myFecha: boolean) {
     return this.accountService.getProveedorId().pipe(
