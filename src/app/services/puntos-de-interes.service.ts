@@ -77,4 +77,44 @@ export class PuntosDeInteresService {
       )
     );
   }
+
+  updatePunto(id: number, punto: PuntoDeInteres) {
+    console.log('addPunto: ' + JSON.stringify(punto));
+    // let userNew = {} as UsuarioList;
+    // userNew = Object.assign(userNew, usuario);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          console.log('AccountData: ' + JSON.stringify(data));
+          punto.idUsuarioWeb = data.idUsuario;
+          punto.idProveedorWeb = data.idProveedor;
+          punto.idProveedor = data.idProveedor;
+          punto.idPuntoInteres = id;
+          return this.http.put(`${this.url}/PuntoInteres/${id}`, punto, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  deletePunto(id: number) {
+    return this.http.delete(`${this.url}/PuntoInteres/${id}`, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            console.log('service delete');
+            console.log(resp);
+            return resp.body;
+          }
+        )
+      )
+      ;
+  }
 }

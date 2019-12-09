@@ -10,6 +10,7 @@ import { map, startWith, catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PointComponent } from '../point/point.component';
+import { UtilService } from '../../../services/util.service';
 
 @Component({
   selector: 'app-points-list',
@@ -32,7 +33,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
 
   textFilter = new FormControl('');
 
-  constructor(public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
+  constructor(public utilService: UtilService, public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
     private puntosDeInteresService: PuntosDeInteresService) { }
 
   ngOnInit() {
@@ -67,16 +68,31 @@ export class PointsListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: PuntoDeInteres) => {
       if (result) {
+        console.log('item: ', result);
         // tslint:disable-next-line: no-shadowed-variable
-        this.puntosDeInteresService.addPunto(result).subscribe(
+        let action: Observable<any>;
+        let actionResult: string;
+        debugger;
+        if (formType === FormType.NEW) {
+          actionResult = 'agregado';
+          action = this.puntosDeInteresService.addPunto(result);
+        } else {
+          actionResult = 'actualizado';
+          action = this.puntosDeInteresService.updatePunto(item.idPuntoInteres, result);
+        }
+        action.subscribe(
           response => {
             Swal.fire({
-              title: 'Agregado!',
-              text: `El punto ha sido agregado con éxito`,
+              title: `${this.utilService.textToTitleCase(actionResult)}!`,
+              text: `El punto ha sido ${actionResult} con éxito`,
               type: 'success',
               confirmButtonText: 'OK'
             });
-            // return new actions.AgregarUsuarioSuccess(response);
+            // debugger;
+            Object.assign(item, result);
+            if (formType === FormType.NEW) {
+              this.getList();
+            }
           }
           ,
           (error) => {
@@ -93,11 +109,29 @@ export class PointsListComponent implements OnInit, OnDestroy {
 
   openConfirmationDialog(item: PuntoDeInteres) {
     this.confirmationDialogService.confirm('Confirmación requerida',
-      `Eliminar el usuario "${item.descripcion}"?`)
+      `Eliminar el punto "${item.descripcion}"?`)
       .then((result) => {
         if (result) {
           if (item) {
-
+            this.puntosDeInteresService.deletePunto(item.idPuntoInteres).subscribe(
+              response => {
+                Swal.fire({
+                  title: `Eliminado!`,
+                  text: `El punto ha sido eliminado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                  this.getList();
+              }
+              ,
+              (error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+              });
           }
         }
       });

@@ -34,12 +34,16 @@ export class UtilService {
   ngbDateToString(date: NgbDate): string {
     // debugger;
     if (date) {
-    const day = date.day;
-    const month = date.month;
-    const year = date.year;
-    return `${year}-${month}-${day}`;
+      const day = date.day;
+      const month = date.month;
+      const year = date.year;
+      return `${year}-${month}-${day}`;
     } else {
       return '1900-01-01';
     }
+  }
+
+  textToTitleCase(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 }
