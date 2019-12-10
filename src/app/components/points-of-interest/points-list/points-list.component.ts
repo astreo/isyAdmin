@@ -44,7 +44,6 @@ export class PointsListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-
   getList() {
     this.loading = true;
     this.subscription = this.puntosDeInteresService.getPuntos(8).subscribe(result => {

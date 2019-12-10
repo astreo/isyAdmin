@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{ 'PAGES.Titles.VerificationCodes' | translate }}</h4>
+        <form #f="ngForm">
+
+          <div class="form-group row">
+            <div class="col-xs-6 col-md-6">
+              <label for="Cliente">{{'PAGES.Labels.Phone' | translate}}</label>
+              <input type="text" name="phone" [(ngModel)]="phone" name="phone" class="form-control">
+            </div>
+
+            <div class="col-xs-6 col-md-6" style="margin-top:25px">
+              <div class="float-right">
+                <button *ngIf="!loading" type="button" (click)="ok()"
+                  class="btn btn-primary">{{'PAGES.Buttons.Search' | translate}}
+                  <i class="fa fa-search"></i>
+                </button>
+                <button *ngIf="loading" [disabled]="true" class="btn btn-primary submit-btn btn-block">
+                  <i class="fa fa-spin fa-sync"></i>
+                  Espere...
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+        <br>
+        <ng-container *ngIf="codigoList.codigoVerificacion">
+          <div class="form-group row">
+
+            <div class="col-md-6">
+                <label>{{ 'PAGES.TableHeaders.Name' | translate }}:
+                  <strong>{{ codigoList.nombres.trim() + ' ' + codigoList.apellidos.trim() }}</strong></label>
+                <!-- <label>{{ codigoList.nombres.trim() + ' ' + codigoList.apellidos.trim() }}</label> -->
+            </div>
+
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>
+                    {{ 'PAGES.TableHeaders.CreatedDate' | translate }}
+                  </th>
+                  <th>
+                    {{'PAGES.TableHeaders.SmsCode' | translate}}
+                  </th>
+                  <th>
+                    {{'PAGES.TableHeaders.EmailCode' | translate}}
+                  </th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let codigo of codigoList.codigoVerificacion | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                  <td>
+                    {{codigo.fechaCreacion}}
+                  </td>
+                  <td>
+                    <span class="bg-success flag" *ngIf="codigo.estadoSms == 'V'">Verificado</span>
+                    <span class="bg-warning flag" *ngIf="codigo.estadoSms == 'G'">Generado</span>
+                    <span class="bg-danger flag" *ngIf="codigo.estadoSms == 'N'">No Generado</span>
+                    &nbsp;{{codigo.codigoSms}}
+                  </td>
+                  <td>
+                    <span class="bg-success flag" *ngIf="codigo.estadoCorreo == 'V'">Verificado</span>
+                    <span class="bg-warning flag" *ngIf="codigo.estadoCorreo == 'G'">Generado</span>
+                    <span class="bg-danger flag" *ngIf="codigo.estadoCorreo == 'N'">No Generado</span>
+                    &nbsp;{{codigo.codigoCorreo}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+            [collectionSize]="codigoList.codigoVerificacion.length" [(page)]="page" [maxSize]="10" [rotate]="true"
+            [boundaryLinks]="true">
+          </ngb-pagination>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

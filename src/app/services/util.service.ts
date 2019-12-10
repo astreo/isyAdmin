@@ -46,4 +46,11 @@ export class UtilService {
   textToTitleCase(text: string): string {
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
+
+  textToPhone(text: string): string {
+    let phone: string;
+    phone = text.replace(/\+/g, '').replace(/\s/g, '');
+    // debugger;
+    return phone;
+  }
 }

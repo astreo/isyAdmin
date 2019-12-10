@@ -17,6 +17,7 @@ import { PointComponent } from '../points-of-interest/point/point.component';
 // import { ReportsComponent } from '../reports/reports.component';
 // import { CustomersListComponent } from '../reports/customers-list/customers-list.component';
 import { AgmCoreModule } from '@agm/core';
+import { VerificationCodesListComponent } from '../verification-codes/verification-codes-list/verification-codes-list.component';
 
 
 
@@ -29,6 +30,7 @@ import { AgmCoreModule } from '@agm/core';
     UserComponent,
     PointsListComponent,
     PointComponent,
+    VerificationCodesListComponent,
     // ReportsComponent,
     // CustomersListComponent,
   ],

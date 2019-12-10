@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UtilService } from './util.service';
 import { map, switchMap } from 'rxjs/operators';
 import { AccountService } from './account.service';
+import { CodigoVerificacionList } from '../models/reports.model';
 
 @Injectable({
   providedIn: 'root'
@@ -114,6 +115,19 @@ export class ReportsService {
         }
       )
     );
+  }
+
+  getCodigosPorTelefono(phone: string) {
+    return this.http.get(`${this.url}/persona/searchByTel/${phone}`,
+      { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body as CodigoVerificacionList[];
+          }
+        )
+      )
+      ;
   }
 
   getPortfolio(anho: number) {

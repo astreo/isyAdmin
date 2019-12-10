@@ -5,6 +5,7 @@ import { UsersListComponent } from '../users/users-list/users-list.component';
 // import { ReportsComponent } from '../reports/reports.component';
 // import { CustomersListComponent } from '../reports/customers-list/customers-list.component';
 import { PointsListComponent } from '../points-of-interest/points-list/points-list.component';
+import { VerificationCodesListComponent } from '../verification-codes/verification-codes-list/verification-codes-list.component';
 
 
 export const mainRoutes: Routes = [
@@ -17,4 +18,5 @@ export const mainRoutes: Routes = [
     // canLoad: [ AuthGuardService ]
   },
   { path: 'puntointeres', component: PointsListComponent },
+  { path: 'codigoverificacion', component: VerificationCodesListComponent },
 ];
