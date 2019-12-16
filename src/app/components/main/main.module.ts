@@ -18,6 +18,8 @@ import { PointComponent } from '../points-of-interest/point/point.component';
 // import { CustomersListComponent } from '../reports/customers-list/customers-list.component';
 import { AgmCoreModule } from '@agm/core';
 import { VerificationCodesListComponent } from '../verification-codes/verification-codes-list/verification-codes-list.component';
+import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/danger-zones-list.component';
+import { DangerZoneComponent } from '../danger-zones/danger-zone/danger-zone.component';
 
 
 
@@ -31,6 +33,8 @@ import { VerificationCodesListComponent } from '../verification-codes/verificati
     PointsListComponent,
     PointComponent,
     VerificationCodesListComponent,
+    DangerZonesListComponent,
+    DangerZoneComponent,
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -43,10 +47,11 @@ import { VerificationCodesListComponent } from '../verification-codes/verificati
     MainRoutingModule,
     TranslateModule.forChild(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBTl_nawpJjCbIttRuv5yyViHtSrGtghpM'
+      apiKey: 'AIzaSyBTl_nawpJjCbIttRuv5yyViHtSrGtghpM',
+      libraries: ['drawing']
     })
     // StoreModule.forFeature('account', reducer)
   ],
-  entryComponents: [ UserComponent, PointComponent ]
+  entryComponents: [UserComponent, PointComponent, DangerZoneComponent]
 })
 export class MainModule { }

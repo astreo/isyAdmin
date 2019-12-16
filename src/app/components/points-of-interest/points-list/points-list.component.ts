@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
 import { FormObject } from '../../users/user/user.component';
 import { FormType } from '../../../models/enum';
-import { PuntoDeInteres } from '../../../models/puntos-de-interes';
+import { PuntoDeInteres } from '../../../models/puntos-de-interes.model';
 import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
@@ -46,7 +46,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
 
   getList() {
     this.loading = true;
-    this.subscription = this.puntosDeInteresService.getPuntos(8).subscribe(result => {
+    this.subscription = this.puntosDeInteresService.getPuntos().subscribe(result => {
       this.loading = false;
       this.points = result;
       this.points$ = this.textFilter.valueChanges.pipe(

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PuntoDeInteres } from 'src/app/models/puntos-de-interes';
+import { PuntoDeInteres } from 'src/app/models/puntos-de-interes.model';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FormType } from '../../../models/enum';
 import { SelectionModel } from 'src/app/models/misc.model';

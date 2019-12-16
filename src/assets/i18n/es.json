@@ -273,6 +273,7 @@
             "AddCategory": "Añadir Categoria",
             "ChangePhoneNumber": "Cambiar número de teléfono",
             "ChangeHolder": "Cambiar Titular",
+            "CreateNewDangerZone": "Crear Nueva Zona Peligrosa",
             "DeleteAdvice": "Eliminar Aviso",
             "DeleteAllBanner": "Eliminar Todos los Banners",
             "DeleteBanner": "Eliminar Banner",
@@ -293,6 +294,7 @@
             "DeleteTypeProvider": "Eliminar Tipo de Proveedor",
             "DeleteUser": "Eliminar Usuario",
             "EditBanner": "Editar Banner",
+            "EditDangerZone": "Editar Zona Peligrosa",
             "EditLevel": "Editar Nivel",
             "EditNews": "Editar Noticia",
             "EditPointOfInterest": "Editar Punto De Interes",
@@ -338,6 +340,7 @@
         "TableHeaders": {
             "Account": "Cuenta",
             "Actions": "Acciones",
+            "Active": "Activo",
             "Alias": "Alias",
             "AppVersion": "Versión de APP",
             "April": "Abril",

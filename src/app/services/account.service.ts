@@ -39,6 +39,7 @@ export class AccountService {
   }
 
   getProveedorId() {
+    console.log('Entrando en getProveedorId');
     return this.store.select(state => state.account.usuario.proveedor.idProveedor);
   }
 

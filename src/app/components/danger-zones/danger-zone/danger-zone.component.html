@@ -1,0 +1,65 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Name' | translate}}</label>
+              <input type="text" class="form-control" formControlName='nombre'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.nombre) }">
+              <div *ngIf="isInvalid(ctrls.nombre)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.nombre)}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Message' | translate}}</label>
+              <textarea type="text" class="form-control" formControlName='mensaje'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.mensaje) }" rows="3" maxlength="260">
+                </textarea>
+              <div *ngIf="isInvalid(ctrls.mensaje)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.mensaje)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group form-check">
+                <label class="form-label">{{'PAGES.Labels.State' | translate}}</label>
+                <input type="text" class="form-control" formControlName='visible' type="checkbox"
+                  class="form-check-input">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group form-check">
+                <label class="form-label">{{'PAGES.Labels.Visible' | translate}}</label>
+                <input type="text" class="form-control" formControlName='visible' type="checkbox"
+                  class="form-check-input">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <agm-map [latitude]="initialLat" [longitude]="initialLng"
+              (mapReady)="onMapReady($event)" [fullscreenControl]='true' [zoom]=18>
+              <agm-polygon [paths]="paths" fillColor="red" strokeColor="red" [clickable]="false">
+              </agm-polygon>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>
