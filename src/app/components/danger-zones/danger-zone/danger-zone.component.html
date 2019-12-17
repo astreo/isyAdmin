@@ -44,8 +44,9 @@
         </div>
         <div class="col-md-6">
           <div>
-            <agm-map [latitude]="initialLat" [longitude]="initialLng"
-              (mapReady)="onMapReady($event)" [fullscreenControl]='true' [zoom]=18>
+            <agm-map [latitude]="initialLat" [longitude]="initialLng" (mapReady)="onMapReady($event)"
+              [fullscreenControl]='true' [zoom]=18>
+              <button id="reset" class="btn btn-danger btn-fw" (click)="resetMap()">{{'PAGES.Buttons.ResetGeofence' | translate}}</button>
               <agm-polygon [paths]="paths" fillColor="red" strokeColor="red" [clickable]="false">
               </agm-polygon>
             </agm-map>

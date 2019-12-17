@@ -38,6 +38,7 @@ export class DangerZoneComponent implements OnInit {
   initialLng: number;
 
   drawingManager: any;
+  polygon: any;
 
   /*paths = [
     { lat: -25.279512912004993, lng: -57.558641266270456 },
@@ -49,6 +50,7 @@ export class DangerZoneComponent implements OnInit {
   ];*/
 
   paths = [] as { lat: number, lng: number }[];
+  newPaths = [] as { lat: number, lng: number }[];
 
   @Input() formType: FormType;
   @Input() public zona: ZonaPeligrosa;
@@ -106,7 +108,14 @@ export class DangerZoneComponent implements OnInit {
 
 
   onMapReady(map) {
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('reset'));
     this.initDrawingManager(map);
+  }
+
+  resetMap() {
+    this.polygon.setMap(null);
+    this.getCurrentPath();
+    this.drawingManager.setDrawingMode('polygon');
   }
 
   initDrawingManager(map: any) {
@@ -129,7 +138,24 @@ export class DangerZoneComponent implements OnInit {
       // Polygon drawn
       if (event.type === google.maps.drawing.OverlayType.POLYGON) {
         // this is the coordinate, you can assign it to a variable or pass into another function.
-        alert(event.overlay.getPath().getArray());
+        // debugger;
+        this.newPaths = [];
+        // alert(event.overlay.getPath().getArray());
+        event.overlay.getPath().getArray().forEach(element => {
+          const fields = element.toUrlValue(13).split(',');
+          const obj = {
+            lat: +fields[0],
+            lng: +fields[1]
+          } as { lat: number, lng: number };
+          // newPaths.push(element.toUrlValue(13));
+          this.newPaths.push(obj);
+        });
+
+        // event.overlay.setMap(null);
+        this.polygon = event.overlay;
+        this.drawingManager.setDrawingMode(null);
+        console.log(this.paths, 'paths');
+        console.log(this.newPaths, 'newPaths');
         this.paths = [];
       }
     });
