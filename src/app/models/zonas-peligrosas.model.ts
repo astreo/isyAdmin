@@ -6,7 +6,7 @@ export interface ZonaPeligrosa {
   nombre:                string;
   mensaje:               string;
   estado:                string;
-  vertices:              null;
+  vertices:              string;
   visible:               boolean;
   nuevo:                 boolean;
   usuarioCreacion:       number;

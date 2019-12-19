@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormType } from '../../../models/enum';
 import { Subscription } from 'rxjs';
-import { ZonaPeligrosa } from '../../../models/zonas-peligrosas.model';
+import { ZonaPeligrosa, Vertice } from '../../../models/zonas-peligrosas.model';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -50,7 +50,7 @@ export class DangerZoneComponent implements OnInit {
   ];*/
 
   paths = [] as { lat: number, lng: number }[];
-  newPaths = [] as { lat: number, lng: number }[];
+  newPaths = [] as Vertice[];
 
   @Input() formType: FormType;
   @Input() public zona: ZonaPeligrosa;
@@ -79,9 +79,14 @@ export class DangerZoneComponent implements OnInit {
       visible: [this.zona.visible, Validators.required],
     }) as MyForm;
 
-    this.getCurrentPath();
-    this.initialLat = this.paths[0].lat;
-    this.initialLng = this.paths[0].lng;
+    if (this.zona.vertice && this.zona.vertice.length !== 0) {
+      this.getCurrentPath();
+      this.initialLat = this.paths[0].lat;
+      this.initialLng = this.paths[0].lng;
+    } else {
+      this.getCurrentPos();
+    }
+
   }
 
   get ctrls() {
@@ -101,11 +106,35 @@ export class DangerZoneComponent implements OnInit {
   }
 
   getCurrentPath() {
+    this.paths = [] as { lat: number, lng: number }[];
     this.zona.vertice.forEach(element => {
       this.paths.push({ lat: element.latitud, lng: element.longitud });
     });
   }
 
+  getCurrentPos() {
+    if (window.navigator && window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        position => {
+          this.initialLat = position.coords.latitude;
+          this.initialLng = position.coords.longitude;
+        },
+        error => {
+          switch (error.code) {
+            case 1:
+              console.log('Permiso denegado');
+              break;
+            case 2:
+              console.log('Posición no disponible');
+              break;
+            case 3:
+              console.log('Timeout');
+              break;
+          }
+        }
+      );
+    }
+  }
 
   onMapReady(map) {
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('reset'));
@@ -116,6 +145,7 @@ export class DangerZoneComponent implements OnInit {
     this.polygon.setMap(null);
     this.getCurrentPath();
     this.drawingManager.setDrawingMode('polygon');
+    this.zona.nuevo = false;
   }
 
   initDrawingManager(map: any) {
@@ -138,36 +168,42 @@ export class DangerZoneComponent implements OnInit {
       // Polygon drawn
       if (event.type === google.maps.drawing.OverlayType.POLYGON) {
         // this is the coordinate, you can assign it to a variable or pass into another function.
-        // debugger;
         this.newPaths = [];
         // alert(event.overlay.getPath().getArray());
         event.overlay.getPath().getArray().forEach(element => {
           const fields = element.toUrlValue(13).split(',');
           const obj = {
-            lat: +fields[0],
-            lng: +fields[1]
-          } as { lat: number, lng: number };
+            idGeocerca: this.zona.idGeocerca,
+            latitud: +fields[0],
+            longitud: +fields[1]
+          } as Vertice;
           // newPaths.push(element.toUrlValue(13));
           this.newPaths.push(obj);
         });
-
+        this.zona.vertices = event.overlay.getPath().getArray().toString();
+        this.zona.nuevo = true;
         // event.overlay.setMap(null);
         this.polygon = event.overlay;
         this.drawingManager.setDrawingMode(null);
-        console.log(this.paths, 'paths');
-        console.log(this.newPaths, 'newPaths');
         this.paths = [];
+
+        console.log(this.paths[0], 'paths');
+        console.log(this.newPaths, 'newPaths');
       }
     });
   }
 
   ok() {
-    // this.punto = this.form.value;
+    // this.zona = this.form.value;
+    Object.assign(this.zona, this.form.value);
     // this.punto.latitud = this.lat;
     // this.punto.longitud = this.lng;
     // debugger;
+    this.zona.vertice = this.newPaths;
     this.passEntry.emit(this.zona);
     this.activeModal.close(this.zona);
+
+    console.log('Elaboracion: ' + JSON.stringify(this.zona));
   }
 
 }

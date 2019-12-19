@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
 import { UtilService } from '../../../services/util.service';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ZonasPeligrosasServiceService } from '../../../services/zonas-peligrosas-service.service';
+import { ZonasPeligrosasService } from '../../../services/zonas-peligrosas.service';
 import { startWith, map } from 'rxjs/operators';
 import { DangerZoneComponent } from '../danger-zone/danger-zone.component';
 import Swal from 'sweetalert2';
@@ -34,7 +34,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
   textFilter = new FormControl('');
 
   constructor(public utilService: UtilService, public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
-    private zonasPeligrosasService: ZonasPeligrosasServiceService) { }
+    private zonasPeligrosasService: ZonasPeligrosasService) { }
 
   ngOnInit() {
     this.getList();
@@ -70,6 +70,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
       modalRef.result.then((result: ZonaPeligrosa) => {
         if (result) {
           console.log('item: ', result);
+          debugger;
           // tslint:disable-next-line: no-shadowed-variable
           let action: Observable<any>;
           let actionResult: string;
@@ -79,7 +80,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
             // action = this.zonasPeligrosasService.addPunto(result);
           } else {
             actionResult = 'actualizado';
-            // action = this.zonasPeligrosasService.updatePunto(item.idPuntoInteres, result);
+            action = this.zonasPeligrosasService.updateZona(result);
           }
           action.subscribe(
             response => {
