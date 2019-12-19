@@ -37,6 +37,30 @@ export class ZonasPeligrosasService {
     );
   }
 
+  addPunto(zona: ZonaPeligrosa) {
+    console.log('addPunto: ' + JSON.stringify(zona));
+    // let userNew = {} as UsuarioList;
+    // userNew = Object.assign(userNew, usuario);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          console.log('AccountData: ' + JSON.stringify(data));
+          zona.idUsuarioWeb = data.idUsuario;
+          zona.idProveedorWeb = data.idProveedor;
+          return this.http.post(`${this.url}/Geocerca`, zona, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
   updateZona(zona: ZonaPeligrosa) {
     console.log('addPunto: ' + JSON.stringify(zona));
     // let userNew = {} as UsuarioList;

@@ -59,7 +59,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
 
 
     openModal(formType: FormType, item?: ZonaPeligrosa) {
-      // debugger;
+      debugger;
       if (!item) {
         item = {} as ZonaPeligrosa;
       }
@@ -74,10 +74,10 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
           // tslint:disable-next-line: no-shadowed-variable
           let action: Observable<any>;
           let actionResult: string;
-          debugger;
+          // debugger;
           if (formType === FormType.NEW) {
             actionResult = 'agregado';
-            // action = this.zonasPeligrosasService.addPunto(result);
+            action = this.zonasPeligrosasService.addPunto(result);
           } else {
             actionResult = 'actualizado';
             action = this.zonasPeligrosasService.updateZona(result);

@@ -20,6 +20,7 @@ import { AgmCoreModule } from '@agm/core';
 import { VerificationCodesListComponent } from '../verification-codes/verification-codes-list/verification-codes-list.component';
 import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/danger-zones-list.component';
 import { DangerZoneComponent } from '../danger-zones/danger-zone/danger-zone.component';
+import { CheckboxValueDirective } from 'src/app/directives/checkbox-value.directive';
 
 
 
@@ -35,6 +36,7 @@ import { DangerZoneComponent } from '../danger-zones/danger-zone/danger-zone.com
     VerificationCodesListComponent,
     DangerZonesListComponent,
     DangerZoneComponent,
+    CheckboxValueDirective
     // ReportsComponent,
     // CustomersListComponent,
   ],
