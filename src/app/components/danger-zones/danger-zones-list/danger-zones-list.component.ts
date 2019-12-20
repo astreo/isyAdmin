@@ -115,11 +115,11 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
         .then((result) => {
           if (result) {
             if (item) {
-              /* this.zonasPeligrosasService.deletePunto(item.idPuntoInteres).subscribe(
+              this.zonasPeligrosasService.deleteZona(item.idGeocerca).subscribe(
                 response => {
                   Swal.fire({
                     title: `Eliminado!`,
-                    text: `El punto ha sido eliminado con éxito`,
+                    text: `La zona ha sido eliminada con éxito`,
                     type: 'success',
                     confirmButtonText: 'OK'
                   });
@@ -133,7 +133,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
                     type: 'error',
                     confirmButtonText: 'OK'
                   });
-                }); */
+                });
             }
           }
         });

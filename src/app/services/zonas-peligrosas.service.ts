@@ -85,4 +85,18 @@ export class ZonasPeligrosasService {
       )
     );
   }
+
+  deleteZona(id: number) {
+    return this.http.delete(`${this.url}/Geocerca/${id}`, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            console.log('service delete');
+            console.log(resp);
+            return resp.body;
+          }
+        )
+      )
+      ;
+  }
 }
