@@ -1,30 +1,28 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormObject } from '../../users/user/user.component';
 import { FormType } from '../../../models/enum';
-import { ZonaPeligrosa } from 'src/app/models/zonas-peligrosas.model';
 import { Observable, Subscription } from 'rxjs';
+import { Panel } from 'src/app/models/paneles.model';
 import { FormControl } from '@angular/forms';
 import { UtilService } from '../../../services/util.service';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ZonasPeligrosasService } from '../../../services/zonas-peligrosas.service';
+import { PanelesService } from '../../../services/paneles.service';
 import { startWith, map } from 'rxjs/operators';
-import { DangerZoneComponent } from '../danger-zone/danger-zone.component';
-import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-danger-zones-list',
-  templateUrl: './danger-zones-list.component.html',
-  styleUrls: ['./danger-zones-list.component.scss']
+  selector: 'app-panels-list',
+  templateUrl: './panels-list.component.html',
+  styleUrls: ['./panels-list.component.scss']
 })
-export class DangerZonesListComponent implements OnInit, OnDestroy {
+export class PanelsListComponent implements OnInit, OnDestroy {
   FormObject = FormObject;
   // formObject: FormObject;
   FormType = FormType;
   formType: FormType;
   loading: boolean;
-  zones = {} as ZonaPeligrosa[];
-  zones$: Observable<ZonaPeligrosa[]>;
+  panels = {} as Panel[];
+  panels$: Observable<Panel[]>;
 
   subscription = new Subscription();
 
@@ -34,7 +32,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
   textFilter = new FormControl('');
 
   constructor(public utilService: UtilService, public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
-    private zonasPeligrosasService: ZonasPeligrosasService) { }
+    private panelesService: PanelesService) { }
 
   ngOnInit() {
     this.getList();
@@ -46,27 +44,28 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
 
   getList() {
     this.loading = true;
-    this.subscription = this.zonasPeligrosasService.getZonas()
+    this.subscription = this.panelesService.getZonas()
       .subscribe(result => {
         this.loading = false;
-        this.zones = result;
-        this.zones$ = this.textFilter.valueChanges.pipe(
+        this.panels = result;
+        this.panels$ = this.textFilter.valueChanges.pipe(
           startWith(''),
           map(text => this.searchText(text))
         );
       });
   }
 
-  openModal(formType: FormType, item?: ZonaPeligrosa) {
+  openModal(formType: FormType, item?: Panel) {
+    /*
     debugger;
     if (!item) {
-      item = {} as ZonaPeligrosa;
+      item = {} as Panel;
     }
     // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
     const modalRef = this.modalService.open(DangerZoneComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.zona = item;
     modalRef.componentInstance.formType = formType;
-    modalRef.result.then((result: ZonaPeligrosa) => {
+    modalRef.result.then((result: Panel) => {
       if (result) {
         console.log('item: ', result);
         debugger;
@@ -76,10 +75,10 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
         // debugger;
         if (formType === FormType.NEW) {
           actionResult = 'agregado';
-          action = this.zonasPeligrosasService.addPunto(result);
+          action = this.panelesService.addPunto(result);
         } else {
           actionResult = 'actualizado';
-          action = this.zonasPeligrosasService.updateZona(result);
+          action = this.panelesService.updateZona(result);
         }
         action.subscribe(
           response => {
@@ -106,15 +105,17 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
           });
       }
     });
+    */
   }
 
-  openConfirmationDialog(item: ZonaPeligrosa) {
+  openConfirmationDialog(item: Panel) {
+    /*
     this.confirmationDialogService.confirm('Confirmación requerida',
       `Eliminar la zona "${item.nombre}"?`)
       .then((result) => {
         if (result) {
           if (item) {
-            this.zonasPeligrosasService.deleteZona(item.idGeocerca).subscribe(
+            this.panelesService.deleteZona(item.idGeocerca).subscribe(
               response => {
                 Swal.fire({
                   title: `Eliminado!`,
@@ -136,13 +137,18 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
           }
         }
       });
+      */
   }
-  searchText(text: string): ZonaPeligrosa[] {
-    return this.zones.filter(zones => {
+
+  searchText(text: string): Panel[] {
+    return this.panels.map((obj) => {
+      obj.tipoComunicador = obj.tipoComunicador ? obj.tipoComunicador : '';
+      return obj;
+    }).filter(panels => {
       const term = text.toLowerCase();
-      return zones.nombre.toLowerCase().includes(term)
-        || zones.mensaje.toLowerCase().includes(term)
-        || zones.fechaCreacion.toLowerCase().includes(term)
+      return panels.customerId.toLowerCase().includes(term)
+        || panels.tipoComunicador.toLowerCase().includes(term)
+        || panels.fechaCreacion.toLowerCase().includes(term)
         ;
     });
   }

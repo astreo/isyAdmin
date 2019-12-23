@@ -21,6 +21,7 @@ import { VerificationCodesListComponent } from '../verification-codes/verificati
 import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/danger-zones-list.component';
 import { DangerZoneComponent } from '../danger-zones/danger-zone/danger-zone.component';
 import { CheckboxValueDirective } from 'src/app/directives/checkbox-value.directive';
+import { PanelsListComponent } from '../panels/panels-list/panels-list.component';
 
 
 
@@ -36,7 +37,8 @@ import { CheckboxValueDirective } from 'src/app/directives/checkbox-value.direct
     VerificationCodesListComponent,
     DangerZonesListComponent,
     DangerZoneComponent,
-    CheckboxValueDirective
+    CheckboxValueDirective,
+    PanelsListComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],

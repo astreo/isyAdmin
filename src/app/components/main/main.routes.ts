@@ -7,6 +7,7 @@ import { UsersListComponent } from '../users/users-list/users-list.component';
 import { PointsListComponent } from '../points-of-interest/points-list/points-list.component';
 import { VerificationCodesListComponent } from '../verification-codes/verification-codes-list/verification-codes-list.component';
 import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/danger-zones-list.component';
+import { PanelsListComponent } from '../panels/panels-list/panels-list.component';
 
 
 export const mainRoutes: Routes = [
@@ -21,4 +22,5 @@ export const mainRoutes: Routes = [
   { path: 'puntointeres', component: PointsListComponent },
   { path: 'geocerca', component: DangerZonesListComponent },
   { path: 'codigoverificacion', component: VerificationCodesListComponent },
+  { path: 'panel', component: PanelsListComponent },
 ];
