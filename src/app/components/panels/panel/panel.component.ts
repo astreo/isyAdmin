@@ -1,21 +1,20 @@
+import { Panel } from './../../../models/paneles.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PuntoDeInteres } from 'src/app/models/puntos-de-interes.model';
-import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FormType } from '../../../models/enum';
-import { SelectionModel } from 'src/app/models/misc.model';
 import { Subscription } from 'rxjs';
+import { SelectionModel } from '../../../models/misc.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl } from '@angular/forms';
 
 declare class MyFormDataStructure {
-  fields: PuntoDeInteres;
+  fields: Panel;
   controls: {
-    // fechaCreacion: AbstractControl;
-    idPuntoInteres: AbstractControl;
+    idPanel: AbstractControl;
+    customerId: AbstractControl;
     latitud: AbstractControl;
     longitud: AbstractControl;
-    telefono: AbstractControl;
-    tipo: AbstractControl;
-    descripcion: AbstractControl;
+    tipoComunicador: AbstractControl;
+    particiones: AbstractControl;
   };
 }
 
@@ -25,11 +24,11 @@ declare interface MyForm extends FormGroup {
 }
 
 @Component({
-  selector: 'app-points',
-  templateUrl: './point.component.html',
-  styleUrls: ['./point.component.scss']
+  selector: 'app-panel',
+  templateUrl: './panel.component.html',
+  styleUrls: ['./panel.component.scss']
 })
-export class PointComponent implements OnInit {
+export class PanelComponent implements OnInit {
   formTitle: string;
   FormType = FormType;
   loading: boolean;
@@ -42,25 +41,21 @@ export class PointComponent implements OnInit {
 
   tipos: SelectionModel[] = [
     {
-      id: 'BOM',
-      descripcion: 'BOMBEROS'
+      id: 'SC',
+      descripcion: 'WithoutCommunicator'
     },
     {
-      id: 'COM',
-      descripcion: 'COMISARIA'
+      id: 'TOTCON',
+      descripcion: 'TotalConnect'
     },
     {
-      id: 'HOS',
-      descripcion: 'HOSPITAL'
-    },
-    {
-      id: 'BAS',
-      descripcion: 'BASE'
+      id: 'DX',
+      descripcion: 'DxControl'
     }
   ];
 
   @Input() formType: FormType;
-  @Input() public punto: PuntoDeInteres;
+  @Input() public panel: Panel;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   form: MyForm;
 
@@ -80,14 +75,16 @@ export class PointComponent implements OnInit {
     }
 
     this.form = this.formBuilder.group({
-      tipo: [this.punto.tipo, Validators.required],
-      telefono: [this.punto.telefono, Validators.required],
-      descripcion: [this.punto.descripcion, Validators.required],
+      customerId: [this.panel.customerId, Validators.required],
+      latitud: [this.panel.latitud, Validators.required],
+      longitud: [this.panel.longitud, Validators.required],
+      tipoComunicador: [this.panel.tipoComunicador, Validators.required],
+      particiones: [this.panel.particiones, Validators.required],
     }) as MyForm;
 
     // debugger;
 
-    if (this.punto.latitud && this.punto.longitud) {
+    if (this.panel.latitud && this.panel.longitud) {
       this.setCurrentPos();
     } else {
       this.getCurrentPos();
@@ -111,10 +108,10 @@ export class PointComponent implements OnInit {
   }
 
   setCurrentPos() {
-    this.initialLat = this.punto.latitud;
-    this.initialLng = this.punto.longitud;
-    this.lat = this.punto.latitud;
-    this.lng = this.punto.longitud;
+    this.initialLat = this.panel.latitud;
+    this.initialLng = this.panel.longitud;
+    this.lat = this.panel.latitud;
+    this.lng = this.panel.longitud;
   }
 
   getCurrentPos() {
@@ -151,12 +148,12 @@ export class PointComponent implements OnInit {
   }
 
   ok() {
-    this.punto = this.form.value;
-    this.punto.latitud = this.lat;
-    this.punto.longitud = this.lng;
+    this.panel = this.form.value;
+    this.panel.latitud = this.lat;
+    this.panel.longitud = this.lng;
     // debugger;
-    this.passEntry.emit(this.punto);
-    this.activeModal.close(this.punto);
+    this.passEntry.emit(this.panel);
+    this.activeModal.close(this.panel);
   }
 
 }

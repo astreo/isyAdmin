@@ -9,6 +9,7 @@ import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/c
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PanelesService } from '../../../services/paneles.service';
 import { startWith, map } from 'rxjs/operators';
+import { PanelComponent } from '../panel/panel.component';
 
 @Component({
   selector: 'app-panels-list',
@@ -44,7 +45,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
 
   getList() {
     this.loading = true;
-    this.subscription = this.panelesService.getZonas()
+    this.subscription = this.panelesService.getPaneles()
       .subscribe(result => {
         this.loading = false;
         this.panels = result;
@@ -56,17 +57,15 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   }
 
   openModal(formType: FormType, item?: Panel) {
-    /*
-    debugger;
     if (!item) {
       item = {} as Panel;
     }
     // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
-    const modalRef = this.modalService.open(DangerZoneComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.zona = item;
+    const modalRef = this.modalService.open(PanelComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.panel = item;
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: Panel) => {
-      if (result) {
+      /* if (result) {
         console.log('item: ', result);
         debugger;
         // tslint:disable-next-line: no-shadowed-variable
@@ -103,9 +102,8 @@ export class PanelsListComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           });
-      }
+      } */
     });
-    */
   }
 
   openConfirmationDialog(item: Panel) {

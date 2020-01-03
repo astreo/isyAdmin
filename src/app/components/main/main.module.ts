@@ -22,6 +22,7 @@ import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/dang
 import { DangerZoneComponent } from '../danger-zones/danger-zone/danger-zone.component';
 import { CheckboxValueDirective } from 'src/app/directives/checkbox-value.directive';
 import { PanelsListComponent } from '../panels/panels-list/panels-list.component';
+import { PanelComponent } from '../panels/panel/panel.component';
 
 
 
@@ -38,7 +39,8 @@ import { PanelsListComponent } from '../panels/panels-list/panels-list.component
     DangerZonesListComponent,
     DangerZoneComponent,
     CheckboxValueDirective,
-    PanelsListComponent
+    PanelsListComponent,
+    PanelComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -56,6 +58,6 @@ import { PanelsListComponent } from '../panels/panels-list/panels-list.component
     })
     // StoreModule.forFeature('account', reducer)
   ],
-  entryComponents: [UserComponent, PointComponent, DangerZoneComponent]
+  entryComponents: [UserComponent, PointComponent, DangerZoneComponent, PanelComponent]
 })
 export class MainModule { }

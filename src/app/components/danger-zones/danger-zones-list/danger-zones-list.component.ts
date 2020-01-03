@@ -26,7 +26,10 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
   zones = {} as ZonaPeligrosa[];
   zones$: Observable<ZonaPeligrosa[]>;
 
-  subscription = new Subscription();
+  listSubscription = new Subscription();
+  actionSubscription = new Subscription();
+  deleteSubscription = new Subscription();
+
 
   pageSize = 10;
   page = 1;
@@ -41,12 +44,14 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.listSubscription.unsubscribe();
+    this.actionSubscription.unsubscribe();
+    this.deleteSubscription.unsubscribe();
   }
 
   getList() {
     this.loading = true;
-    this.subscription = this.zonasPeligrosasService.getZonas()
+    this.listSubscription = this.zonasPeligrosasService.getZonas()
       .subscribe(result => {
         this.loading = false;
         this.zones = result;
@@ -81,7 +86,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
           actionResult = 'actualizado';
           action = this.zonasPeligrosasService.updateZona(result);
         }
-        action.subscribe(
+        this.actionSubscription = action.subscribe(
           response => {
             Swal.fire({
               title: `${this.utilService.textToTitleCase(actionResult)}!`,
@@ -114,7 +119,7 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
       .then((result) => {
         if (result) {
           if (item) {
-            this.zonasPeligrosasService.deleteZona(item.idGeocerca).subscribe(
+            this.deleteSubscription = this.zonasPeligrosasService.deleteZona(item.idGeocerca).subscribe(
               response => {
                 Swal.fire({
                   title: `Eliminado!`,

@@ -26,7 +26,9 @@ export class PointsListComponent implements OnInit, OnDestroy {
   points = {} as PuntoDeInteres[];
   points$: Observable<PuntoDeInteres[]>;
 
-  subscription = new Subscription();
+  listSubscription = new Subscription();
+  actionSubscription = new Subscription();
+  deleteSubscription = new Subscription();
 
   pageSize = 10;
   page = 1;
@@ -41,12 +43,14 @@ export class PointsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.listSubscription.unsubscribe();
+    this.actionSubscription.unsubscribe();
+    this.deleteSubscription.unsubscribe();
   }
 
   getList() {
     this.loading = true;
-    this.subscription = this.puntosDeInteresService.getPuntos().subscribe(result => {
+    this.listSubscription = this.puntosDeInteresService.getPuntos().subscribe(result => {
       this.loading = false;
       this.points = result;
       this.points$ = this.textFilter.valueChanges.pipe(
@@ -57,7 +61,6 @@ export class PointsListComponent implements OnInit, OnDestroy {
   }
 
   openModal(formType: FormType, item?: PuntoDeInteres) {
-    // debugger;
     if (!item) {
       item = {} as PuntoDeInteres;
     }
@@ -71,7 +74,6 @@ export class PointsListComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line: no-shadowed-variable
         let action: Observable<any>;
         let actionResult: string;
-        debugger;
         if (formType === FormType.NEW) {
           actionResult = 'agregado';
           action = this.puntosDeInteresService.addPunto(result);
@@ -79,7 +81,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
           actionResult = 'actualizado';
           action = this.puntosDeInteresService.updatePunto(item.idPuntoInteres, result);
         }
-        action.subscribe(
+        this.actionSubscription = action.subscribe(
           response => {
             Swal.fire({
               title: `${this.utilService.textToTitleCase(actionResult)}!`,
@@ -112,7 +114,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
       .then((result) => {
         if (result) {
           if (item) {
-            this.puntosDeInteresService.deletePunto(item.idPuntoInteres).subscribe(
+            this.deleteSubscription = this.puntosDeInteresService.deletePunto(item.idPuntoInteres).subscribe(
               response => {
                 Swal.fire({
                   title: `Eliminado!`,
