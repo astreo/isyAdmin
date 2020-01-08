@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 import { SelectionModel } from '../../../models/misc.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Cliente } from './../../../models/cliente.model';
 
+// Formulario Principal
 declare class MyFormDataStructure {
   fields: Panel;
   controls: {
@@ -21,6 +23,23 @@ declare class MyFormDataStructure {
 declare interface MyForm extends FormGroup {
   value: MyFormDataStructure['fields'];
   controls: MyFormDataStructure['controls'];
+}
+
+// Formulario de Datos de Cliente
+declare class CustomerFormDataStructure {
+  fields: Cliente;
+  controls: {
+    idPersona: AbstractControl;
+    nombres: AbstractControl;
+    apellidos: AbstractControl;
+    nroDocumento: AbstractControl;
+    telefono: AbstractControl;
+  };
+}
+
+declare interface CustomerForm extends FormGroup {
+  value: CustomerFormDataStructure['fields'];
+  controls: CustomerFormDataStructure['controls'];
 }
 
 @Component({
@@ -58,6 +77,7 @@ export class PanelComponent implements OnInit {
   @Input() public panel: Panel;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   form: MyForm;
+  customerForm: CustomerForm;
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
 
@@ -65,22 +85,31 @@ export class PanelComponent implements OnInit {
     // debugger;
     switch (this.formType) {
       case FormType.NEW:
-        this.formTitle = 'PAGES.ModalTitles.NewPointOfInterest';
+        this.formTitle = 'PAGES.ModalTitles.NewPanel';
         break;
       case FormType.EDIT:
-        this.formTitle = 'PAGES.ModalTitles.EditPointOfInterest';
+        this.formTitle = 'PAGES.ModalTitles.EditPanel';
         break;
       default:
         break;
     }
 
     this.form = this.formBuilder.group({
+      idPanel: [this.panel.idPanel],
       customerId: [this.panel.customerId, Validators.required],
       latitud: [this.panel.latitud, Validators.required],
       longitud: [this.panel.longitud, Validators.required],
       tipoComunicador: [this.panel.tipoComunicador, Validators.required],
       particiones: [this.panel.particiones, Validators.required],
     }) as MyForm;
+
+    this.customerForm = this.formBuilder.group({
+      idPersona: '',
+      nombres: '',
+      apellidos: '',
+      nroDocumento: '',
+      telefono: ''
+    }) as CustomerForm;
 
     // debugger;
 
@@ -93,6 +122,10 @@ export class PanelComponent implements OnInit {
 
   get ctrls() {
     return this.form.controls;
+  }
+
+  get custCtrls() {
+    return this.customerForm.controls;
   }
 
   isInvalid(ctrl: AbstractControl) {
@@ -110,8 +143,8 @@ export class PanelComponent implements OnInit {
   setCurrentPos() {
     this.initialLat = this.panel.latitud;
     this.initialLng = this.panel.longitud;
-    this.lat = this.panel.latitud;
-    this.lng = this.panel.longitud;
+    // this.lat = this.panel.latitud;
+    // this.lng = this.panel.longitud;
   }
 
   getCurrentPos() {
@@ -143,15 +176,17 @@ export class PanelComponent implements OnInit {
   agregarMarcador(coords) {
     console.log(coords);
     // const coords: { lat: number, lng: number } = rawCoords;
-    this.lat = coords.lat;
-    this.lng = coords.lng;
+    // this.lat = coords.lat;
+    // this.lng = coords.lng;
+    this.ctrls.latitud.setValue(coords.lat);
+    this.ctrls.longitud.setValue(coords.lng);
   }
 
   ok() {
     this.panel = this.form.value;
-    this.panel.latitud = this.lat;
-    this.panel.longitud = this.lng;
-    // debugger;
+    // this.panel.latitud = this.lat;
+    // this.panel.longitud = this.lng;
+    debugger;
     this.passEntry.emit(this.panel);
     this.activeModal.close(this.panel);
   }

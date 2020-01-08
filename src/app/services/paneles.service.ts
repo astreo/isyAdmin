@@ -1,3 +1,4 @@
+import { Panel } from './../models/paneles.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UtilService } from './util.service';
@@ -23,6 +24,41 @@ export class PanelesService {
       switchMap(
         (idProveedor) => {
           return this.http.get(`${this.url}/panel/proveedor/${idProveedor}`, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  updatePanel(panel: Panel) {
+    console.log('addPunto: ' + JSON.stringify(panel));
+    // let userNew = {} as UsuarioList;
+    // userNew = Object.assign(userNew, usuario);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          console.log('AccountData: ' + JSON.stringify(data));
+          panel.idUsuarioWeb = data.idUsuario;
+          panel.idProveedorWeb = data.idProveedor;
+          panel.idProveedor = data.idProveedor;
+          const proveedor = {
+            nombreProveedor: data.nombreProveedor,
+            aliasProveedor: data.aliasProveedor
+          };
+          const info = {
+            panel: panel,
+            proveedor: proveedor
+          };
+          debugger;
+          // panel.idPuntoInteres = id;
+          return this.http.put(`${this.url}/panel/${panel.idPanel}`, info, { headers: this.headers, observe: 'response' })
             .pipe(
               map(
                 (resp: any) => {

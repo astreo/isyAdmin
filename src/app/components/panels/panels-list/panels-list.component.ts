@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PanelesService } from '../../../services/paneles.service';
 import { startWith, map } from 'rxjs/operators';
 import { PanelComponent } from '../panel/panel.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-panels-list',
@@ -57,6 +58,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   }
 
   openModal(formType: FormType, item?: Panel) {
+    debugger;
     if (!item) {
       item = {} as Panel;
     }
@@ -65,25 +67,24 @@ export class PanelsListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.panel = item;
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: Panel) => {
-      /* if (result) {
+      if (result) {
         console.log('item: ', result);
-        debugger;
         // tslint:disable-next-line: no-shadowed-variable
         let action: Observable<any>;
         let actionResult: string;
         // debugger;
         if (formType === FormType.NEW) {
           actionResult = 'agregado';
-          action = this.panelesService.addPunto(result);
+          // action = this.panelesService.addPunto(result);
         } else {
           actionResult = 'actualizado';
-          action = this.panelesService.updateZona(result);
+          action = this.panelesService.updatePanel(result);
         }
         action.subscribe(
           response => {
             Swal.fire({
               title: `${this.utilService.textToTitleCase(actionResult)}!`,
-              text: `El punto ha sido ${actionResult} con éxito`,
+              text: `El panel ha sido ${actionResult} con éxito`,
               type: 'success',
               confirmButtonText: 'OK'
             });
@@ -102,7 +103,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           });
-      } */
+      }
     });
   }
 

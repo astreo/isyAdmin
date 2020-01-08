@@ -3,58 +3,108 @@
     <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
   </div>
   <div class="modal-body">
-    <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
-      <div class="row">
-        <div class="col-md-6">
-          <div>
-            <div class="form-group">
-              <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
-              <select class="form-control form-control-sm" formControlName='tipoComunicador'
-                [ngClass]="{ 'is-invalid': isInvalid(ctrls.tipoComunicador) }">
-                <option value="">{{'PAGES.DefaultListItems.Profile' | translate}}</option>
-                <option *ngFor="let tipoComunicador of tipos" [ngValue]="tipoComunicador.id">{{tipoComunicador.descripcion}}</option>
-              </select>
-              <div *ngIf="isInvalid(ctrls.tipoComunicador)" class="invalid-feedback">
-                {{getErrorMessage(ctrls.tipoComunicador)}}
+    <ngb-tabset>
+      <ngb-tab title="{{'PAGES.Labels.Panel' | translate}}">
+        <ng-template ngbTabContent>
+          <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.TypeOfCommunicator' | translate}}</label>
+                    <select class="form-control form-control-sm" formControlName='tipoComunicador'
+                      [ngClass]="{ 'is-invalid': isInvalid(ctrls.tipoComunicador) }">
+                      <option value="">{{'PAGES.DefaultListItems.TypeOfCommunicator' | translate}}</option>
+                      <option *ngFor="let tipoComunicador of tipos" [ngValue]="tipoComunicador.id">{{tipoComunicador.descripcion}}</option>
+                    </select>
+                    <div *ngIf="isInvalid(ctrls.tipoComunicador)" class="invalid-feedback">
+                      {{getErrorMessage(ctrls.tipoComunicador)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.Partitions' | translate}}</label>
+                    <input type="number" min="0" class="form-control" formControlName='particiones'
+                      [ngClass]="{ 'is-invalid': isInvalid(ctrls.particiones) }">
+                    <div *ngIf="isInvalid(ctrls.particiones)" class="invalid-feedback">
+                      {{getErrorMessage(ctrls.particiones)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.Latitude' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='latitud' #latitud
+                      [ngClass]="{ 'is-invalid': isInvalid(ctrls.latitud) }">
+                    <div *ngIf="isInvalid(ctrls.latitud)" class="invalid-feedback">
+                      {{getErrorMessage(ctrls.latitud)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.Longitude' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='longitud' #longitud
+                      [ngClass]="{ 'is-invalid': isInvalid(ctrls.longitud) }">
+                    <div *ngIf="isInvalid(ctrls.longitud)" class="invalid-feedback">
+                      {{getErrorMessage(ctrls.longitud)}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <agm-map (mapClick)="agregarMarcador($event.coords)" [latitude]="initialLat" [longitude]="initialLng"
+                    [fullscreenControl]='true' [zoom]=15>
+                    <agm-marker [latitude]="+(latitud.value)" [longitude]="+(longitud.value)">
+                    </agm-marker>
+                  </agm-map>
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">{{'PAGES.Labels.Partitions' | translate}}</label>
-              <input type="text" class="form-control" formControlName='particiones'
-                [ngClass]="{ 'is-invalid': isInvalid(ctrls.particiones) }">
-              <div *ngIf="isInvalid(ctrls.particiones)" class="invalid-feedback">
-                {{getErrorMessage(ctrls.particiones)}}
+          </form>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.Customer' | translate}}">
+        <ng-template ngbTabContent>
+          <form [formGroup]='customerForm' (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</label>
+                    <input type="text" min="0" class="form-control" formControlName='nroDocumento'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nroDocumento) }">
+                    <div *ngIf="isInvalid(custCtrls.nroDocumento)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.nroDocumento)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderNames' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='nombres'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nombres) }">
+                    <div *ngIf="isInvalid(custCtrls.nombres)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.nombres)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderLastNames' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='apellidos'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.apellidos) }">
+                    <div *ngIf="isInvalid(custCtrls.apellidos)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.apellidos)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderPhone' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='telefono'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.telefono) }">
+                    <div *ngIf="isInvalid(custCtrls.telefono)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.telefono)}}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">{{'PAGES.Labels.Latitude' | translate}}</label>
-              <input type="text" class="form-control" formControlName='latitud' #latitud
-                [ngClass]="{ 'is-invalid': isInvalid(ctrls.latitud) }">
-              <div *ngIf="isInvalid(ctrls.latitud)" class="invalid-feedback">
-                {{getErrorMessage(ctrls.latitud)}}
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">{{'PAGES.Labels.Longitude' | translate}}</label>
-              <input type="text" class="form-control" formControlName='longitud' #longitud
-                [ngClass]="{ 'is-invalid': isInvalid(ctrls.longitud) }">
-              <div *ngIf="isInvalid(ctrls.longitud)" class="invalid-feedback">
-                {{getErrorMessage(ctrls.longitud)}}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div>
-            <agm-map (mapClick)="agregarMarcador($event.coords)" [latitude]="+(latitud.value)" [longitude]="+(longitud.value)"
-              [fullscreenControl]='true' [zoom]=15>
-              <agm-marker [latitude]="+(latitud.value)" [longitude]="+(longitud.value)">
-              </agm-marker>
-            </agm-map>
-          </div>
-        </div>
-      </div>
-    </form>
+          </form>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark"

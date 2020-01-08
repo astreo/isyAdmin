@@ -51,7 +51,9 @@ export class AccountService {
         return (
           {
             idUsuario: item.idUsuario,
-            idProveedor: item.proveedor.idProveedor
+            idProveedor: item.proveedor.idProveedor,
+            nombreProveedor: item.proveedor.nombre,
+            aliasProveedor: item.proveedor.alias
           }
         );
       })
