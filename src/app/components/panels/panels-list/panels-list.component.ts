@@ -8,9 +8,13 @@ import { UtilService } from '../../../services/util.service';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PanelesService } from '../../../services/paneles.service';
-import { startWith, map } from 'rxjs/operators';
+import { startWith, map, filter } from 'rxjs/operators';
 import { PanelComponent } from '../panel/panel.component';
 import Swal from 'sweetalert2';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/app.reducer';
+import { clientes as actions } from '../../../store/actions';
+import { Cliente } from '../../../models/cliente.model';
 
 @Component({
   selector: 'app-panels-list',
@@ -26,7 +30,13 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   panels = {} as Panel[];
   panels$: Observable<Panel[]>;
 
+  loaded$ = this.store.select(state => state.clientes.loaded);
+  loadedSubsctiption = new Subscription();
+
+  cliente = {} as Cliente;
+
   subscription = new Subscription();
+  getClientesFromStoreSubscription = new Subscription();
 
   pageSize = 10;
   page = 1;
@@ -34,7 +44,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   textFilter = new FormControl('');
 
   constructor(public utilService: UtilService, public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
-    private panelesService: PanelesService) { }
+    private panelesService: PanelesService, public store: Store<AppState>) { }
 
   ngOnInit() {
     this.getList();
@@ -42,6 +52,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.getClientesFromStoreSubscription.unsubscribe();
   }
 
   getList() {
@@ -57,52 +68,86 @@ export class PanelsListComponent implements OnInit, OnDestroy {
       });
   }
 
+  getClienteFromStore2(idPersona: number) {
+    this.getClientesFromStoreSubscription = this.store.select(state => state.clientes.clientes).subscribe(items => {
+      items.filter(item => item.idPersona === idPersona).map(item => (
+        this.cliente = item
+      ));
+    });
+  }
+
+
+  getClienteFromStore(idPersona: number) {
+    let cliente: Cliente;
+    return this.store.select(state => state.clientes.clientes).pipe(
+      map(items => {
+        (items.filter(item => item.idPersona === idPersona))
+          .map(item => (
+            cliente = item
+          ));
+        return cliente;
+      }));
+  }
+
   openModal(formType: FormType, item?: Panel) {
-    debugger;
-    if (!item) {
-      item = {} as Panel;
-    }
-    // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
-    const modalRef = this.modalService.open(PanelComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.panel = item;
-    modalRef.componentInstance.formType = formType;
-    modalRef.result.then((result: Panel) => {
-      if (result) {
-        console.log('item: ', result);
-        // tslint:disable-next-line: no-shadowed-variable
-        let action: Observable<any>;
-        let actionResult: string;
-        // debugger;
-        if (formType === FormType.NEW) {
-          actionResult = 'agregado';
-          // action = this.panelesService.addPunto(result);
-        } else {
-          actionResult = 'actualizado';
-          action = this.panelesService.updatePanel(result);
+    this.loadedSubsctiption = this.loaded$.subscribe(loaded => {
+      if (!loaded) {
+        this.store.dispatch(new actions.CargarClientes());
+        if (!item) {
+          item = {} as Panel;
         }
-        action.subscribe(
-          response => {
-            Swal.fire({
-              title: `${this.utilService.textToTitleCase(actionResult)}!`,
-              text: `El panel ha sido ${actionResult} con éxito`,
-              type: 'success',
-              confirmButtonText: 'OK'
+      } else {
+        this.getClientesFromStoreSubscription = this.getClienteFromStore(item.idPersona).subscribe(
+          resp => {
+            this.cliente = resp;
+            // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
+            const modalRef = this.modalService.open(PanelComponent, { size: 'lg', backdrop: 'static' });
+            modalRef.componentInstance.panel = item;
+            modalRef.componentInstance.cliente = this.cliente;
+            modalRef.componentInstance.formType = formType;
+            modalRef.result.then((result: Panel) => {
+              if (result) {
+                console.log('item: ', result);
+                // tslint:disable-next-line: no-shadowed-variable
+                let action: Observable<any>;
+                let actionResult: string;
+                // debugger;
+                if (formType === FormType.NEW) {
+                  actionResult = 'agregado';
+                  // action = this.panelesService.addPunto(result);
+                } else {
+                  actionResult = 'actualizado';
+                  action = this.panelesService.updatePanel(result);
+                }
+                action.subscribe(
+                  response => {
+                    Swal.fire({
+                      title: `${this.utilService.textToTitleCase(actionResult)}!`,
+                      text: `El panel ha sido ${actionResult} con éxito`,
+                      type: 'success',
+                      confirmButtonText: 'OK'
+                    });
+                    // debugger;
+                    Object.assign(item, result);
+                    if (formType === FormType.NEW) {
+                      this.getList();
+                    }
+                  }
+                  ,
+                  (error) => {
+                    Swal.fire({
+                      title: 'Error!',
+                      text: error.message,
+                      type: 'error',
+                      confirmButtonText: 'OK'
+                    });
+                  });
+              }
             });
-            // debugger;
-            Object.assign(item, result);
-            if (formType === FormType.NEW) {
-              this.getList();
-            }
           }
-          ,
-          (error) => {
-            Swal.fire({
-              title: 'Error!',
-              text: error.message,
-              type: 'error',
-              confirmButtonText: 'OK'
-            });
-          });
+        );
+
+
       }
     });
   }

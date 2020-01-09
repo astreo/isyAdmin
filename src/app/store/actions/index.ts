@@ -10,3 +10,6 @@ export {perfil};
 import * as proveedor from './proveedor.actions';
 export {proveedor};
 
+import * as clientes from './clientes.actions';
+export {clientes};
+

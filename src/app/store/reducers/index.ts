@@ -9,3 +9,6 @@ export {perfil};
 
 import * as proveedor from './proveedor.reducer';
 export {proveedor};
+
+import * as clientes from './clientes.reducer';
+export {clientes};

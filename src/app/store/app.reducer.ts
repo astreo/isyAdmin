@@ -7,6 +7,7 @@ export interface AppState {
   users: reducers.usuarios.State;
   perfil: reducers.perfil.State;
   proveedor: reducers.proveedor.State;
+  clientes: reducers.clientes.State;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
@@ -14,6 +15,7 @@ export const appReducers: ActionReducerMap<AppState> = {
   users: reducers.usuarios.reducer,
   perfil: reducers.perfil.reducer,
   proveedor: reducers.proveedor.reducer,
+  clientes: reducers.clientes.reducer
 };
 
 /*export const getState = createFeatureSelector<reducers.perfil.State>('perfil');

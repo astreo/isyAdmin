@@ -64,6 +64,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
 
   getUsersFromStore() {
+    debugger;
     this.getUsersFromStoreSubscription = this.store.select(state => state.users.usuarios).pipe(map((item) => {
       return (
         // tslint:disable-next-line: no-shadowed-variable

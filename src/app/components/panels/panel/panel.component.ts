@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { SelectionModel } from '../../../models/misc.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Cliente } from './../../../models/cliente.model';
+import { Cliente } from '../../../models/cliente.model';
 
 // Formulario Principal
 declare class MyFormDataStructure {
@@ -75,6 +75,7 @@ export class PanelComponent implements OnInit {
 
   @Input() formType: FormType;
   @Input() public panel: Panel;
+  @Input() public cliente: Cliente;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   form: MyForm;
   customerForm: CustomerForm;
@@ -104,11 +105,11 @@ export class PanelComponent implements OnInit {
     }) as MyForm;
 
     this.customerForm = this.formBuilder.group({
-      idPersona: '',
-      nombres: '',
-      apellidos: '',
-      nroDocumento: '',
-      telefono: ''
+      idPersona: [this.cliente.idPersona],
+      nombres: [this.cliente.nombres],
+      apellidos: [this.cliente.apellidos],
+      nroDocumento: [this.cliente.nroDocumento],
+      telefono: [this.cliente.telefono]
     }) as CustomerForm;
 
     // debugger;
