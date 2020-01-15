@@ -11,11 +11,19 @@
               <div class="col-md-6">
                 <div>
                   <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.AccountNumber' | translate}}</label>
+                    <input type="text" [readonly]="this.formType === FormType.EDIT" class="form-control" formControlName='customerId'
+                      [ngClass]="{ 'is-invalid': isInvalid(ctrls.customerId) }">
+                    <div *ngIf="isInvalid(ctrls.customerId)" class="invalid-feedback">
+                      {{getErrorMessage(ctrls.customerId)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="form-label">{{'PAGES.Labels.TypeOfCommunicator' | translate}}</label>
                     <select class="form-control form-control-sm" formControlName='tipoComunicador'
                       [ngClass]="{ 'is-invalid': isInvalid(ctrls.tipoComunicador) }">
-                      <option value="">{{'PAGES.DefaultListItems.TypeOfCommunicator' | translate}}</option>
-                      <option *ngFor="let tipoComunicador of tipos" [ngValue]="tipoComunicador.id">{{tipoComunicador.descripcion}}</option>
+                      <option value="">{{'PAGES.DefaultListItems.SelectType' | translate}}</option>
+                      <option *ngFor="let tipoComunicador of tipos" [ngValue]="tipoComunicador.id">{{'PAGES.DefaultListItems.' + tipoComunicador.descripcion | translate}}</option>
                     </select>
                     <div *ngIf="isInvalid(ctrls.tipoComunicador)" class="invalid-feedback">
                       {{getErrorMessage(ctrls.tipoComunicador)}}
@@ -102,7 +110,7 @@
               </div>
               <div class="col-md-6">
                 <div style="padding: 25%;">
-                  <button type="button" class="btn social-btn btn-primary btn-rounded"> <i style="font-size: 50px;" class="fa fa-search text-white"></i></button >
+                  <button type="button" (click)="openModal()" class="btn social-btn btn-primary btn-rounded"> <i style="font-size: 50px;" class="fa fa-search text-white"></i></button >
                 </div>
               </div>
             </div>

@@ -7,11 +7,17 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './confirmation-dialog/confirmation-dialog.service';
+import { CustomersDialogComponent } from './customers-dialog/customers-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
 @NgModule({
   imports: [
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     RouterModule,
     TranslateModule.forChild()
@@ -20,7 +26,8 @@ import { ConfirmationDialogService } from './confirmation-dialog/confirmation-di
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CustomersDialogComponent
   ],
   exports: [
     FooterComponent,
@@ -28,7 +35,7 @@ import { ConfirmationDialogService } from './confirmation-dialog/confirmation-di
     SidebarComponent,
     ConfirmationDialogComponent
   ],
-  providers: [ ConfirmationDialogService ],
-  entryComponents: [ ConfirmationDialogComponent ]
+  providers: [ ConfirmationDialogService, CustomersDialogComponent ],
+  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent ]
 })
 export class SharedModule { }

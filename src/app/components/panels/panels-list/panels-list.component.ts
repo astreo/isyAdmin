@@ -27,15 +27,15 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   FormType = FormType;
   formType: FormType;
   loading: boolean;
+  loadingCustData$: Observable<boolean>;
   panels = {} as Panel[];
   panels$: Observable<Panel[]>;
 
   loaded$ = this.store.select(state => state.clientes.loaded);
+
   loadedSubsctiption = new Subscription();
-
-  cliente = {} as Cliente;
-
   subscription = new Subscription();
+  actionSubscription = new Subscription();
   getClientesFromStoreSubscription = new Subscription();
 
   pageSize = 10;
@@ -53,6 +53,8 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.getClientesFromStoreSubscription.unsubscribe();
+    this.loadedSubsctiption.unsubscribe();
+    this.actionSubscription.unsubscribe();
   }
 
   getList() {
@@ -71,11 +73,10 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   getClienteFromStore2(idPersona: number) {
     this.getClientesFromStoreSubscription = this.store.select(state => state.clientes.clientes).subscribe(items => {
       items.filter(item => item.idPersona === idPersona).map(item => (
-        this.cliente = item
+        item
       ));
     });
   }
-
 
   getClienteFromStore(idPersona: number) {
     let cliente: Cliente;
@@ -89,65 +90,75 @@ export class PanelsListComponent implements OnInit, OnDestroy {
       }));
   }
 
-  openModal(formType: FormType, item?: Panel) {
+  openModal(formType: FormType, item?: Panel) { // ver que cuando sea new pasar cliente vacio
+    this.loadingCustData$ = this.store.select(state => state.clientes.loading);
     this.loadedSubsctiption = this.loaded$.subscribe(loaded => {
       if (!loaded) {
         this.store.dispatch(new actions.CargarClientes());
+      } else {
+        let cliente = {} as Cliente;
         if (!item) {
           item = {} as Panel;
-        }
-      } else {
-        this.getClientesFromStoreSubscription = this.getClienteFromStore(item.idPersona).subscribe(
-          resp => {
-            this.cliente = resp;
-            // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
-            const modalRef = this.modalService.open(PanelComponent, { size: 'lg', backdrop: 'static' });
-            modalRef.componentInstance.panel = item;
-            modalRef.componentInstance.cliente = this.cliente;
-            modalRef.componentInstance.formType = formType;
-            modalRef.result.then((result: Panel) => {
-              if (result) {
-                console.log('item: ', result);
-                // tslint:disable-next-line: no-shadowed-variable
-                let action: Observable<any>;
-                let actionResult: string;
-                // debugger;
-                if (formType === FormType.NEW) {
-                  actionResult = 'agregado';
-                  // action = this.panelesService.addPunto(result);
-                } else {
-                  actionResult = 'actualizado';
-                  action = this.panelesService.updatePanel(result);
+          this.loadDialog(item, cliente, formType);
+        } else {
+          if (item.idPersona) {
+            this.getClientesFromStoreSubscription = this.getClienteFromStore(item.idPersona).subscribe(
+              resp => {
+                if (resp) {
+                  cliente = resp;
+                  this.loadDialog(item, cliente, formType);
                 }
-                action.subscribe(
-                  response => {
-                    Swal.fire({
-                      title: `${this.utilService.textToTitleCase(actionResult)}!`,
-                      text: `El panel ha sido ${actionResult} con éxito`,
-                      type: 'success',
-                      confirmButtonText: 'OK'
-                    });
-                    // debugger;
-                    Object.assign(item, result);
-                    if (formType === FormType.NEW) {
-                      this.getList();
-                    }
-                  }
-                  ,
-                  (error) => {
-                    Swal.fire({
-                      title: 'Error!',
-                      text: error.message,
-                      type: 'error',
-                      confirmButtonText: 'OK'
-                    });
-                  });
               }
-            });
+            );
+          } else {
+            this.loadDialog(item, cliente, formType);
           }
-        );
+        }
+      }
+    });
+  }
 
-
+  loadDialog(item: Panel, cliente: Cliente, formType: FormType) {
+    const modalRef = this.modalService.open(PanelComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.panel = item;
+    modalRef.componentInstance.cliente = cliente;
+    modalRef.componentInstance.formType = formType;
+    modalRef.result.then((result: Panel) => {
+      if (result) {
+        // tslint:disable-next-line: no-shadowed-variable
+        let action: Observable<any>;
+        let actionResult: string;
+        // debugger;
+        if (formType === FormType.NEW) {
+          actionResult = 'agregado';
+          action = this.panelesService.addPanel(result);
+        } else {
+          actionResult = 'actualizado';
+          action = this.panelesService.updatePanel(result);
+        }
+        this.actionSubscription = action.subscribe(
+          response => {
+            Swal.fire({
+              title: `${this.utilService.textToTitleCase(actionResult)}!`,
+              text: `El panel ha sido ${actionResult} con éxito`,
+              type: 'success',
+              confirmButtonText: 'OK'
+            });
+            // debugger;
+            Object.assign(item, result);
+            if (formType === FormType.NEW) {
+              this.getList();
+            }
+          }
+          ,
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
       }
     });
   }

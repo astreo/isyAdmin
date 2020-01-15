@@ -3,9 +3,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormType } from '../../../models/enum';
 import { Subscription } from 'rxjs';
 import { SelectionModel } from '../../../models/misc.model';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Cliente } from '../../../models/cliente.model';
+import { CustomersDialogComponent } from '../../../shared/customers-dialog/customers-dialog.component';
 
 // Formulario Principal
 declare class MyFormDataStructure {
@@ -80,7 +81,7 @@ export class PanelComponent implements OnInit {
   form: MyForm;
   customerForm: CustomerForm;
 
-  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
+  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, public modalService: NgbModal) { }
 
   ngOnInit() {
     // debugger;
@@ -183,8 +184,24 @@ export class PanelComponent implements OnInit {
     this.ctrls.longitud.setValue(coords.lng);
   }
 
+  openModal() {
+
+    const modalRef = this.modalService.open(CustomersDialogComponent, { size: 'lg', backdrop: 'static' });
+
+    modalRef.result.then((result: Cliente) => {
+      if (result) {
+        // Object.assign(this.customerForm.setValue, result);
+        this.customerForm.setValue(result);
+        // this.custCtrls.idPersona.setValue(result.idPersona);
+        // this.custCtrls.nombres.setValue(result.nombres);
+        console.log('item: ', result);
+      }
+    });
+  }
+
   ok() {
     this.panel = this.form.value;
+    this.panel.idPersona = this.custCtrls.idPersona.value;
     // this.panel.latitud = this.lat;
     // this.panel.longitud = this.lng;
     debugger;

@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{ 'PAGES.Titles.Panels' | translate }}</h4>
-        <ng-container *ngIf="loading">
+        <ng-container *ngIf="loading || (loadingCustData$ | async)">
           <i class="fa fa-spin fa-sync"></i>
           {{ 'PAGES.Messages.Processing' | translate }}...
         </ng-container>
@@ -57,8 +57,8 @@
                     <div class="btn-group" role="group" aria-label="Basic example">
                       <button (click)="openModal(FormType.EDIT, item)" type="button"
                         class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
-                      <button (click)="openConfirmationDialog(item)" type="button"
-                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
+                      <!-- <button (click)="openConfirmationDialog(item)" type="button"
+                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button> -->
                     </div>
                   </td>
                 </tr>

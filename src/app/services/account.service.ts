@@ -47,7 +47,6 @@ export class AccountService {
     console.log('Entrando en getAccountData');
     return this.store.select(state => state.account.usuario).pipe(
       map(item => {
-        console.log('Saliendo de AccountData: ' + JSON.stringify(item));
         return (
           {
             idUsuario: item.idUsuario,

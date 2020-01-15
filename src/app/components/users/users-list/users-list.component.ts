@@ -133,6 +133,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   }
 
   searchText(text: string, pipe: PipeTransform): UsuarioListComp[] {
+    debugger;
     return this.usuarios.filter(usuario => {
       const term = text.toLowerCase();
       return usuario.nombres.toLowerCase().includes(term)
