@@ -23,6 +23,8 @@ import { DangerZoneComponent } from '../danger-zones/danger-zone/danger-zone.com
 import { CheckboxValueDirective } from 'src/app/directives/checkbox-value.directive';
 import { PanelsListComponent } from '../panels/panels-list/panels-list.component';
 import { PanelComponent } from '../panels/panel/panel.component';
+import { GpsListComponent } from '../gps/gps-list/gps-list.component';
+import { GpsDetailComponent } from '../gps/gps-detail/gps-detail.component';
 
 
 
@@ -40,7 +42,9 @@ import { PanelComponent } from '../panels/panel/panel.component';
     DangerZoneComponent,
     CheckboxValueDirective,
     PanelsListComponent,
-    PanelComponent
+    PanelComponent,
+    GpsListComponent,
+    GpsDetailComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -58,6 +62,6 @@ import { PanelComponent } from '../panels/panel/panel.component';
     })
     // StoreModule.forFeature('account', reducer)
   ],
-  entryComponents: [UserComponent, PointComponent, DangerZoneComponent, PanelComponent]
+  entryComponents: [UserComponent, PointComponent, DangerZoneComponent, PanelComponent, GpsDetailComponent]
 })
 export class MainModule { }

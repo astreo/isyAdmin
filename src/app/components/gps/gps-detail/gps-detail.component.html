@@ -1,0 +1,130 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <ngb-tabset>
+      <ngb-tab title="{{'PAGES.Labels.Panel' | translate}}">
+        <ng-template ngbTabContent>
+          <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.LicensePlate' | translate}}</label>
+                    <input type="text" [readonly]="this.formType === FormType.EDIT" class="form-control"
+                      formControlName='patente' [ngClass]="{ 'is-invalid': isInvalid(ctrls.patente) }">
+                    <div *ngIf="isInvalid(ctrls.patente)" class="invalid-feedback">
+                      {{getErrorMessage(ctrls.patente)}}
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="this.formType !== FormType.NEW">
+                    <div class="form-group">
+                      <label class="form-label">{{'PAGES.Labels.LastPositionDate' | translate}}</label>
+                      <input type="text" readonly class="form-control" formControlName='fechaUltimaPosicion'
+                        [ngClass]="{ 'is-invalid': isInvalid(ctrls.fechaUltimaPosicion) }">
+                      <div *ngIf="isInvalid(ctrls.fechaUltimaPosicion)" class="invalid-feedback">
+                        {{getErrorMessage(ctrls.fechaUltimaPosicion)}}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">{{'PAGES.Labels.LastPositionDate' | translate}}</label>
+                      <input type="text" readonly class="form-control" formControlName='fechaUltimaPosicion'
+                        [ngClass]="{ 'is-invalid': isInvalid(ctrls.fechaUltimaPosicion) }">
+                      <div *ngIf="isInvalid(ctrls.fechaUltimaPosicion)" class="invalid-feedback">
+                        {{getErrorMessage(ctrls.fechaUltimaPosicion)}}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">{{'PAGES.Labels.Latitude' | translate}}</label>
+                      <input type="text" readonly class="form-control" formControlName='latitud' #latitud
+                        [ngClass]="{ 'is-invalid': isInvalid(ctrls.latitud) }">
+                      <div *ngIf="isInvalid(ctrls.latitud)" class="invalid-feedback">
+                        {{getErrorMessage(ctrls.latitud)}}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">{{'PAGES.Labels.Longitude' | translate}}</label>
+                      <input type="text" readonly class="form-control" formControlName='longitud' #longitud
+                        [ngClass]="{ 'is-invalid': isInvalid(ctrls.longitud) }">
+                      <div *ngIf="isInvalid(ctrls.longitud)" class="invalid-feedback">
+                        {{getErrorMessage(ctrls.longitud)}}
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div *ngIf="this.formType !== FormType.NEW">
+                  <agm-map [latitude]="initialLat" [longitude]="initialLng" [fullscreenControl]='true' [zoom]=15>
+                    <agm-marker [latitude]="initialLat" [longitude]="initialLng">
+                    </agm-marker>
+                  </agm-map>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.Customer' | translate}}">
+        <ng-template ngbTabContent>
+          <form [formGroup]='customerForm' (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</label>
+                    <input type="text" min="0" class="form-control" formControlName='nroDocumento'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nroDocumento) }">
+                    <div *ngIf="isInvalid(custCtrls.nroDocumento)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.nroDocumento)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderNames' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='nombres'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nombres) }">
+                    <div *ngIf="isInvalid(custCtrls.nombres)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.nombres)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderLastNames' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='apellidos'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.apellidos) }">
+                    <div *ngIf="isInvalid(custCtrls.apellidos)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.apellidos)}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">{{'PAGES.Labels.HolderPhone' | translate}}</label>
+                    <input type="text" class="form-control" formControlName='telefono'
+                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.telefono) }">
+                    <div *ngIf="isInvalid(custCtrls.telefono)" class="invalid-feedback">
+                      {{getErrorMessage(custCtrls.telefono)}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div style="padding: 25%;">
+                  <button type="button" (click)="openModal()" class="btn social-btn btn-primary btn-rounded"> <i
+                      style="font-size: 50px;" class="fa fa-search text-white"></i></button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>

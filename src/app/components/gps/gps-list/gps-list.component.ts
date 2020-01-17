@@ -2,33 +2,33 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormObject } from '../../users/user/user.component';
 import { FormType } from '../../../models/enum';
 import { Observable, Subscription } from 'rxjs';
-import { Panel } from 'src/app/models/paneles.model';
+import { Gps } from '../../../models/gps.model';
 import { FormControl } from '@angular/forms';
 import { UtilService } from '../../../services/util.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PanelesService } from '../../../services/paneles.service';
-import { startWith, map, filter } from 'rxjs/operators';
-import { PanelComponent } from '../panel/panel.component';
-import Swal from 'sweetalert2';
 import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppState } from '../../../store/app.reducer';
-import { clientes as actions } from '../../../store/actions';
+import { GpsService } from '../../../services/gps.service';
+import { startWith, map } from 'rxjs/operators';
 import { Cliente } from '../../../models/cliente.model';
+import { clientes as actions } from '../../../store/actions';
+import { GpsDetailComponent } from '../gps-detail/gps-detail.component';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-panels-list',
-  templateUrl: './panels-list.component.html',
-  styleUrls: ['./panels-list.component.scss']
+  selector: 'app-gps-list',
+  templateUrl: './gps-list.component.html',
+  styleUrls: ['./gps-list.component.scss']
 })
-export class PanelsListComponent implements OnInit, OnDestroy {
+export class GpsListComponent implements OnInit, OnDestroy {
   FormObject = FormObject;
   // formObject: FormObject;
   FormType = FormType;
   formType: FormType;
   loading: boolean;
   loadingCustData$: Observable<boolean>;
-  panels = {} as Panel[];
-  panels$: Observable<Panel[]>;
+  gpsList = {} as Gps[];
+  gpsList$: Observable<Gps[]>;
 
   loaded$ = this.store.select(state => state.clientes.loaded);
 
@@ -43,7 +43,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
   textFilter = new FormControl('');
 
   constructor(public utilService: UtilService, public modalService: NgbModal,
-    private panelesService: PanelesService, public store: Store<AppState>) { }
+    private gpsService: GpsService, public store: Store<AppState>) { }
 
   ngOnInit() {
     this.getList();
@@ -58,11 +58,11 @@ export class PanelsListComponent implements OnInit, OnDestroy {
 
   getList() {
     this.loading = true;
-    this.subscription = this.panelesService.getPaneles()
+    this.subscription = this.gpsService.getGpsList()
       .subscribe(result => {
         this.loading = false;
-        this.panels = result;
-        this.panels$ = this.textFilter.valueChanges.pipe(
+        this.gpsList = result;
+        this.gpsList$ = this.textFilter.valueChanges.pipe(
           startWith(''),
           map(text => this.searchText(text))
         );
@@ -89,7 +89,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
       }));
   }
 
-  openModal(formType: FormType, item?: Panel) { // ver que cuando sea new pasar cliente vacio
+  openModal(formType: FormType, item?: Gps) { // ver que cuando sea new pasar cliente vacio
     this.loadingCustData$ = this.store.select(state => state.clientes.loading);
     this.loadedSubsctiption = this.loaded$.subscribe(loaded => {
       if (!loaded) {
@@ -97,7 +97,7 @@ export class PanelsListComponent implements OnInit, OnDestroy {
       } else {
         let cliente = {} as Cliente;
         if (!item) {
-          item = {} as Panel;
+          item = {} as Gps;
           this.loadDialog(item, cliente, formType);
         } else {
           if (item.idPersona) {
@@ -117,12 +117,12 @@ export class PanelsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadDialog(item: Panel, cliente: Cliente, formType: FormType) {
-    const modalRef = this.modalService.open(PanelComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.panel = item;
+  loadDialog(item: Gps, cliente: Cliente, formType: FormType) {
+    const modalRef = this.modalService.open(GpsDetailComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.gps = item;
     modalRef.componentInstance.cliente = cliente;
     modalRef.componentInstance.formType = formType;
-    modalRef.result.then((result: Panel) => {
+    modalRef.result.then((result: Gps) => {
       if (result) {
         // tslint:disable-next-line: no-shadowed-variable
         let action: Observable<any>;
@@ -130,10 +130,10 @@ export class PanelsListComponent implements OnInit, OnDestroy {
         // debugger;
         if (formType === FormType.NEW) {
           actionResult = 'agregado';
-          action = this.panelesService.addPanel(result);
+          action = this.gpsService.addGps(result);
         } else {
           actionResult = 'actualizado';
-          action = this.panelesService.updatePanel(result);
+          action = this.gpsService.updateGps(result);
         }
         this.actionSubscription = action.subscribe(
           response => {
@@ -162,47 +162,16 @@ export class PanelsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  openConfirmationDialog(item: Panel) {
-    /*
-    this.confirmationDialogService.confirm('Confirmación requerida',
-      `Eliminar la zona "${item.nombre}"?`)
-      .then((result) => {
-        if (result) {
-          if (item) {
-            this.panelesService.deleteZona(item.idGeocerca).subscribe(
-              response => {
-                Swal.fire({
-                  title: `Eliminado!`,
-                  text: `La zona ha sido eliminada con éxito`,
-                  type: 'success',
-                  confirmButtonText: 'OK'
-                });
-                this.getList();
-              }
-              ,
-              (error) => {
-                Swal.fire({
-                  title: 'Error!',
-                  text: error.message,
-                  type: 'error',
-                  confirmButtonText: 'OK'
-                });
-              });
-          }
-        }
-      });
-      */
-  }
 
-  searchText(text: string): Panel[] {
-    return this.panels.map((obj) => {
-      obj.tipoComunicador = obj.tipoComunicador ? obj.tipoComunicador : '';
+  searchText(text: string): Gps[] {
+    return this.gpsList.map((obj) => {
+      obj.fechaUltimaPosicion = obj.fechaUltimaPosicion ? obj.fechaUltimaPosicion : '';
       return obj;
-    }).filter(panels => {
+    }).filter(gpsList => {
       const term = text.toLowerCase();
-      return panels.customerId.toLowerCase().includes(term)
-        || panels.tipoComunicador.toLowerCase().includes(term)
-        || panels.fechaCreacion.toLowerCase().includes(term)
+      return gpsList.patente.toLowerCase().includes(term)
+        || gpsList.fechaUltimaPosicion.toLowerCase().includes(term)
+        || gpsList.fechaCreacion.toLowerCase().includes(term)
         ;
     });
   }

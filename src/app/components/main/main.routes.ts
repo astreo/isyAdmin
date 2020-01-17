@@ -8,6 +8,7 @@ import { PointsListComponent } from '../points-of-interest/points-list/points-li
 import { VerificationCodesListComponent } from '../verification-codes/verification-codes-list/verification-codes-list.component';
 import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/danger-zones-list.component';
 import { PanelsListComponent } from '../panels/panels-list/panels-list.component';
+import { GpsListComponent } from '../gps/gps-list/gps-list.component';
 
 
 export const mainRoutes: Routes = [
@@ -23,4 +24,5 @@ export const mainRoutes: Routes = [
   { path: 'geocerca', component: DangerZonesListComponent },
   { path: 'codigoverificacion', component: VerificationCodesListComponent },
   { path: 'panel', component: PanelsListComponent },
+  { path: 'gps', component: GpsListComponent },
 ];
