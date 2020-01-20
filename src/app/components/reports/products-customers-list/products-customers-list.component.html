@@ -43,11 +43,11 @@
 
           <div class="form-group row">
             <div class="col-xs-6 col-md-6">
-              <label for="Cliente">{{'PAGES.Labels.CustomerType' | translate}}</label>
+              <label for="Cliente">{{'PAGES.Labels.ProductType' | translate}}</label>
               <select name="Cliente" [(ngModel)]="tipo" name="tipo" class="form-control">
                 <option value="TO">{{'PAGES.DefaultListItems.All' | translate}}</option>
-                <option value="CT">{{'PAGES.DefaultListItems.CustomerHolder' | translate}}</option>
-                <option value="CN">{{'PAGES.DefaultListItems.DependentCustomer' | translate}}</option>
+                <option value="P">{{'PAGES.DefaultListItems.Panels' | translate}}</option>
+                <option value="G">{{'PAGES.DefaultListItems.Gps' | translate}}</option>
               </select>
             </div>
 
@@ -98,9 +98,11 @@
                     {{'PAGES.TableHeaders.IsHolder' | translate}}
                   </th>
                   <th>
-                    {{'PAGES.TableHeaders.Dependents' | translate}}
+                    {{'PAGES.TableHeaders.HasPanel' | translate}}
                   </th>
-
+                  <th>
+                    {{'PAGES.TableHeaders.HasGps' | translate}}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -127,7 +129,12 @@
                     {{cliente.esTitular}}
                   </td>
                   <td>
-                    {{cliente.dependientes}}
+                    <span *ngIf="cliente.tienePanel == 'S'"><i class="fa fa-check"></i></span>
+                    <span *ngIf="cliente.tienePanel == 'N'"><i class="fa fa-times"></i></span>
+                  </td>
+                  <td>
+                    <span *ngIf="cliente.tieneGps == 'S'"><i class="fa fa-check"></i></span>
+                    <span *ngIf="cliente.tieneGps == 'N'"><i class="fa fa-times"></i></span>
                   </td>
                 </tr>
               </tbody>

@@ -9,6 +9,7 @@ import { VerificationCodesListComponent } from '../verification-codes/verificati
 import { DangerZonesListComponent } from '../danger-zones/danger-zones-list/danger-zones-list.component';
 import { PanelsListComponent } from '../panels/panels-list/panels-list.component';
 import { GpsListComponent } from '../gps/gps-list/gps-list.component';
+import { CustomersListComponent } from '../customers/customers-list/customers-list.component';
 
 
 export const mainRoutes: Routes = [
@@ -25,4 +26,5 @@ export const mainRoutes: Routes = [
   { path: 'codigoverificacion', component: VerificationCodesListComponent },
   { path: 'panel', component: PanelsListComponent },
   { path: 'gps', component: GpsListComponent },
+  { path: 'persona', component: CustomersListComponent },
 ];

@@ -57,7 +57,8 @@ export class ProductsCustomersListComponent implements OnInit, OnDestroy {
             esCliente: item.esCliente,
             esTitular: item.esTitular,
             personaJuridica: item.personaJuridica,
-            dependientes: item.dependientes
+            tienePanel: item.tienePanel,
+            tieneGps: item.tieneGps
           };
         }
       })))

@@ -25,6 +25,8 @@ import { PanelsListComponent } from '../panels/panels-list/panels-list.component
 import { PanelComponent } from '../panels/panel/panel.component';
 import { GpsListComponent } from '../gps/gps-list/gps-list.component';
 import { GpsDetailComponent } from '../gps/gps-detail/gps-detail.component';
+import { CustomersListComponent } from '../customers/customers-list/customers-list.component';
+import { CustomerComponent } from '../customers/customer/customer.component';
 
 
 
@@ -44,7 +46,9 @@ import { GpsDetailComponent } from '../gps/gps-detail/gps-detail.component';
     PanelsListComponent,
     PanelComponent,
     GpsListComponent,
-    GpsDetailComponent
+    GpsDetailComponent,
+    CustomersListComponent,
+    CustomerComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],
