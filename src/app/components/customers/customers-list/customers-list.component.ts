@@ -1,3 +1,4 @@
+import { CustomerComponent } from './../customer/customer.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormType } from '../../../models/enum';
 import { Observable, Subscription } from 'rxjs';
@@ -67,27 +68,29 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   }
 
 
-  /*openModal(formObject: FormObject, formType: FormType, customer?: Cliente) {
+  openModal(formType: FormType, customer?: Cliente) {
     if (!customer) {
       customer = {} as Cliente;
     }
-    const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
-    const modalRef = this.modalService.open(UserComponent, { size: size, backdrop: 'static' });
-    modalRef.componentInstance.customer = customer;
-    modalRef.componentInstance.formObject = formObject;
+    // debugger;
+    const size = 'lg';
+    const modalRef = this.modalService.open(CustomerComponent, { size: size, backdrop: 'static' });
+    modalRef.componentInstance.cliente = customer;
     modalRef.componentInstance.formType = formType;
-    modalRef.result.then((result: UsuarioListComp) => {
+    modalRef.result.then((result: Cliente) => {
       if (result) {
-        // console.log('Modelo: ' + JSON.stringify(result));
+        console.log('Modelo: ' + JSON.stringify(result));
+        /*
         if (customer.idUsuario) {
           // customer = Object.assign(customer, result);
           this.store.dispatch(new actions.ActualizarUsuario(Object.assign(customer, result)));
         } else {
           this.store.dispatch(new actions.AgregarUsuario(result));
         }
+        */
       }
     });
-  }*/
+  }
 
   openConfirmationDialog(customer: Cliente) {
     this.confirmationDialogService.confirm('Confirmación requerida',

@@ -66,6 +66,6 @@ import { CustomerComponent } from '../customers/customer/customer.component';
     })
     // StoreModule.forFeature('account', reducer)
   ],
-  entryComponents: [UserComponent, PointComponent, DangerZoneComponent, PanelComponent, GpsDetailComponent]
+  entryComponents: [UserComponent, PointComponent, DangerZoneComponent, PanelComponent, GpsDetailComponent, CustomerComponent]
 })
 export class MainModule { }

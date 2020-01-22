@@ -6,4 +6,5 @@ export interface Cliente {
   apellidos:    string;
   nroDocumento: string;
   telefono:     string;
+  fechaCreacion: string;
 }

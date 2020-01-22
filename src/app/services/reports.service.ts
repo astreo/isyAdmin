@@ -43,6 +43,8 @@ export class ReportsService {
     return this.accountService.getProveedorId().pipe(
       switchMap(
         (idProv) => {
+          console.log('api_prod',
+     `${this.url}/reporte/desde/${fechaInicio}/hasta/${fechaFin}/tipoProducto/${tipo}/myFecha/${myFecha}/prov/${idProv}`);
           return this.http.get(
             `${this.url}/reporte/desde/${fechaInicio}/hasta/${fechaFin}/tipoProducto/${tipo}/myFecha/${myFecha}/prov/${idProv}`,
             { headers: this.headers, observe: 'response' })

@@ -41,8 +41,6 @@
                     {{'PAGES.TableHeaders.Phone' | translate}}
                   </th>
                   <th>
-                  </th>
-                  <th>
                       <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-plus"></i></button>
                   </th>
                 </tr>
@@ -66,9 +64,8 @@
                   </td>
                   <td>
                       <div class="btn-group" role="group" aria-label="Basic example">
-                          <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+                          <button (click)="openModal(FormType.EDIT, cliente)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
                           <button (click)="openConfirmationDialog(cliente)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
-                          <button type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-gear"></i></button>
                         </div>
                   </td>
                 </tr>

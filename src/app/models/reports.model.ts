@@ -8,8 +8,10 @@ export interface ClienteList {
   personaJuridica: string;
   esCliente?: any;
   esTitular: string;
+  tieneGps?: string;
+  tienePanel?: string;
   fechaCreacion: string;
-  dependientes: number;
+  dependientes?: number;
 }
 
 /*export interface ClienteList {
