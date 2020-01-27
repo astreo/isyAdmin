@@ -22,7 +22,7 @@ export class ClientesService {
   private get headers() { return this.utilService.getHeather(); }
 
   constructor(private http: HttpClient, private utilService: UtilService, private accountService: AccountService,
-              public store: Store<AppState>) { }
+    public store: Store<AppState>) { }
 
   getPersonasBasic() {
     return this.accountService.getAccountData().pipe(
@@ -42,16 +42,152 @@ export class ClientesService {
     );
   }
 
+  getTitular(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/persona/titular/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
 
-  /*getCustomerById(IdUsuario: number) {
-    return this.store.select(state => state.clientes.usuarios).pipe(
-      map(item => {
-        return (
-          // item
-          item.filter(item1 => item1.idUsuario === IdUsuario)
-          // .map(item2 => item2)
-        );
-      }));
-  }*/
+  getDependientes(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/persona/dependientes/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  getDispositivos(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/dispositivo/person/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  getCodigoVerificacion(idPersona: number) {
+    debugger;
+    return this.http.get(`${this.url}/codigoVerificacion/person/${idPersona}`,
+      { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
+
+  }
+
+  getPersonaProveedor(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/PersonaProveedor/persona/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  getPersonaPaneles(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/personapanel/person/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  getPersonaGps(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/personagps/person/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  getPersonaCamaras(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/personacamara/person/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
 
 }

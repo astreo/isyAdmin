@@ -11,7 +11,7 @@
               <div class="col-md-6">
                 <div>
                   <div class="form-group">
-                    <label class="form-label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</label>
+                    <label class="form-label">{{'PAGES.Labels.DocumentNumber' | translate}}</label>
                     <input type="text" min="0" class="form-control" formControlName='nroDocumento'
                       [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nroDocumento) }">
                     <div *ngIf="isInvalid(custCtrls.nroDocumento)" class="invalid-feedback">
@@ -19,7 +19,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">{{'PAGES.Labels.HolderNames' | translate}}</label>
+                    <label class="form-label">{{'PAGES.Labels.Names' | translate}}</label>
                     <input type="text" class="form-control" formControlName='nombres'
                       [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nombres) }">
                     <div *ngIf="isInvalid(custCtrls.nombres)" class="invalid-feedback">
@@ -30,7 +30,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="form-label">{{'PAGES.Labels.HolderPhone' | translate}}</label>
+                  <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
                   <input type="text" class="form-control" formControlName='telefono'
                     [ngClass]="{ 'is-invalid': isInvalid(custCtrls.telefono) }">
                   <div *ngIf="isInvalid(custCtrls.telefono)" class="invalid-feedback">
@@ -38,7 +38,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">{{'PAGES.Labels.HolderLastNames' | translate}}</label>
+                  <label class="form-label">{{'PAGES.Labels.LastNames' | translate}}</label>
                   <input type="text" class="form-control" formControlName='apellidos'
                     [ngClass]="{ 'is-invalid': isInvalid(custCtrls.apellidos) }">
                   <div *ngIf="isInvalid(custCtrls.apellidos)" class="invalid-feedback">
@@ -53,49 +53,346 @@
       </ngb-tab>
       <ngb-tab title="{{'PAGES.Labels.Holder' | translate}}">
         <ng-template ngbTabContent>
-          <form [formGroup]='customerForm' (keydown.enter)="$event.preventDefault()">
-            <div class="row">
-              <div class="col-md-6">
-                <div>
-                  <div class="form-group">
-                    <label class="form-label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</label>
-                    <input type="text" min="0" class="form-control" formControlName='nroDocumento'
-                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nroDocumento) }">
-                    <div *ngIf="isInvalid(custCtrls.nroDocumento)" class="invalid-feedback">
-                      {{getErrorMessage(custCtrls.nroDocumento)}}
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">{{'PAGES.Labels.HolderNames' | translate}}</label>
-                    <input type="text" class="form-control" formControlName='nombres'
-                      [ngClass]="{ 'is-invalid': isInvalid(custCtrls.nombres) }">
-                    <div *ngIf="isInvalid(custCtrls.nombres)" class="invalid-feedback">
-                      {{getErrorMessage(custCtrls.nombres)}}
-                    </div>
-                  </div>
-                </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</p>
+                <p class="field">{{this.titular.nroDocumento}}</p>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">{{'PAGES.Labels.HolderPhone' | translate}}</label>
-                  <input type="text" class="form-control" formControlName='telefono'
-                    [ngClass]="{ 'is-invalid': isInvalid(custCtrls.telefono) }">
-                  <div *ngIf="isInvalid(custCtrls.telefono)" class="invalid-feedback">
-                    {{getErrorMessage(custCtrls.telefono)}}
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">{{'PAGES.Labels.HolderLastNames' | translate}}</label>
-                  <input type="text" class="form-control" formControlName='apellidos'
-                    [ngClass]="{ 'is-invalid': isInvalid(custCtrls.apellidos) }">
-                  <div *ngIf="isInvalid(custCtrls.apellidos)" class="invalid-feedback">
-                    {{getErrorMessage(custCtrls.apellidos)}}
-                  </div>
-                </div>
-
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.HolderNames' | translate}}</p>
+                <p class="field">{{this.titular.nombres}} {{this.cliente.apellidos}}</p>
+              </div>
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.LegalPerson' | translate}}</p>
+                <p class="field" *ngIf="this.titular.personaJuridica">SÍ</p>
+                <p class="field" *ngIf="!this.titular.personaJuridica">NO</p>
               </div>
             </div>
-          </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.HolderPhone' | translate}}</p>
+                <p class="field">{{this.cliente.telefono}}</p>
+              </div>
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.Email' | translate}}</p>
+                <p class="field">{{this.titular.email}}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.DependentUsers' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>
+                      {{'PAGES.TableHeaders.DocumentNumber' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Names' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Email' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Phone' | translate}}
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let dependiente of dependientes | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
+                    <td>
+                      {{dependiente.nroDocumento}}
+                    </td>
+                    <td>
+                      {{dependiente.nombres + " " + dependiente.apellidos}}
+                    </td>
+                    <td>
+                      {{dependiente.email}}
+                    </td>
+                    <td>
+                      {{dependiente.telefono}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+              [collectionSize]="dependientes.length" [(page)]="tab1Page" [maxSize]="10"
+              [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.Devices' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>
+                      {{'PAGES.TableHeaders.PingDate' | translate}}
+                    </th>
+                    <th>
+                      App
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Os' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.OsVersion' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.AppVersion' | translate}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let dispositivo of dispositivos | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
+                    <td>
+                      {{dispositivo.fechaPing}}
+                    </td>
+                    <td>
+                      {{dispositivo.proveedor.nombre}}
+                    </td>
+                    <td>
+                      {{dispositivo.os}}
+                    </td>
+                    <td>
+                      {{dispositivo.osversion}}
+                    </td>
+                    <td>
+                      {{dispositivo.appversion}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+              [collectionSize]="dispositivos.length" [(page)]="tab1Page" [maxSize]="10"
+              [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.VerificationCodes' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>
+                      {{ 'PAGES.TableHeaders.CreatedDate' | translate }}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.SmsCode' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.EmailCode' | translate}}
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {{codigoVerificacion.fechaCreacion}}
+                    </td>
+                    <td>
+                      <span class="bg-success flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'V'">Verificado</span>
+                      <span class="bg-warning flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'G'">Generado</span>
+                      <span class="bg-danger flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'N'">No Generado</span>
+                      &nbsp;{{codigoVerificacion.codigoSms}}
+                    </td>
+                    <td>
+                      <span class="bg-success flag" style="color:white;" *ngIf="codigoVerificacion.estadoCorreo == 'V'">Verificado</span>
+                      <span class="bg-warning flag" style="color:white;" *ngIf="codigoVerificacion.estadoCorreo == 'G'">Generado</span>
+                      <span class="bg-danger flag" style="color:white;" *ngIf="codigoVerificacion.estadoCorreo == 'N'">No Generado</span>
+                      &nbsp;{{codigoVerificacion.codigoCorreo}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.ServiceProvider' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.Provider' | translate}}</p>
+                <p class="field">{{this.personaProveedor.proveedor.nombre}}</p>
+              </div>
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.State' | translate}}</p>
+                <p class="field bg-success flag" style="color:white;" *ngIf="this.personaProveedor.estadoServicio==='A'">{{'PAGES.Labels.Active' | translate}}</p>
+                <p class="field bg-warning flag" style="color:white;" *ngIf="this.personaProveedor.estadoServicio=='P'">{{'PAGES.Labels.Pending' | translate}}</p>
+                <p class="field bg-danger flag" style="color:white;" *ngIf="this.personaProveedor.estadoServicio=='I'">{{'PAGES.Labels.Inactive' | translate}}</p>
+              </div>
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.AccountNumber' | translate}}</p>
+                <p class="field">{{this.personaProveedor.nroCuenta}}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.ApprovalDate' | translate}}</p>
+                <p class="field">{{this.personaProveedor.fechaCreacion}}</p>
+              </div>
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.Total' | translate}}</p>
+                <p class="field bg-success flag" style="color:white;" *ngIf="this.personaProveedor.totalConnect">{{'PAGES.Labels.Active' | translate}}</p>
+                <p class="field bg-danger flag" style="color:white;" *ngIf="!this.personaProveedor.totalConnect">{{'PAGES.Labels.Inactive' | translate}}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.Panels' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>
+                      {{'PAGES.TableHeaders.CreatedDate' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Account' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Alias' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.TypeOfCommunicator' | translate}}
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let personaPanel of personaPaneles | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
+                    <td>
+                      {{personaPanel.fechaCreacion}}
+                    </td>
+                    <td>
+                      {{personaPanel.panel.customerId}}
+                    </td>
+                    <td>
+                      {{personaPanel.alias}}
+                    </td>
+                    <td>
+                      {{personaPanel.panel.tipoComunicador}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+              [collectionSize]="personaPaneles.length" [(page)]="tab1Page" [maxSize]="10"
+              [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.Gps' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>
+                      {{'PAGES.TableHeaders.CreatedDate' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.LicensePlate' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Alias' | translate}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let personaGpsDet of personaGps | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
+                    <td>
+                      {{personaGpsDet.fechaCreacion}}
+                    </td>
+                    <td>
+                      {{personaGpsDet.gps.patente}}
+                    </td>
+                    <td>
+                      {{personaGpsDet.alias}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+              [collectionSize]="personaGps.length" [(page)]="tab1Page" [maxSize]="10"
+              [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="{{'PAGES.Labels.Cameras' | translate}}">
+        <ng-template ngbTabContent>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>
+                      {{'PAGES.TableHeaders.CreatedDate' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Type' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Name' | translate}}
+                    </th>
+                    <th>
+                      {{'PAGES.TableHeaders.Protocol' | translate}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let personaCamara of personaCamaras | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
+                    <td>
+                      {{personaCamara.fechaCreacion}}
+                    </td>
+                    <td>
+                      {{personaCamara.camara.tipo}}
+                    </td>
+                    <td>
+                      {{personaCamara.nombre}}
+                    </td>
+                    <td>
+                      {{personaCamara.camara.protocolo}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
+              [collectionSize]="personaCamaras.length" [(page)]="tab1Page" [maxSize]="10"
+              [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+          </div>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

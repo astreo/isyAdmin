@@ -1,3 +1,5 @@
+import { CodigoVerificacion } from './cliente.model';
+
 export interface ClienteList {
   nombres: string;
   apellidos: string;
@@ -146,18 +148,3 @@ export interface CodigoVerificacionList {
   proveedorWeb:               null;
 }
 
-export interface CodigoVerificacion {
-  idCodigoVerificacion: number;
-  idPersona:            number;
-  codigoCorreo:         string;
-  estadoCorreo:         string;
-  codigoSms:            string;
-  estadoSms:            string;
-  email:                null;
-  fechaCreacion:        string;
-  fechaModificacion:    string;
-  persona:              null;
-  idProveedorWeb:       number;
-  idUsuarioWeb:         number;
-  proveedorWeb:         null;
-}

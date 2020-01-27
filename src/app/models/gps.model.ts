@@ -16,9 +16,23 @@ export interface Gps {
   fechaModificacion:   string;
   eventoGps:           any[];
   personaGps:          any[];
-  ubicacionGps:        any[];
+  ubicacionGps:        UbicacionGp[];
   proveedor:           null;
   idProveedorWeb:      number;
   idUsuarioWeb:        number;
   proveedorWeb:        null;
+}
+
+export interface UbicacionGp {
+  idUbicacionGps:  number;
+  idGps:           number;
+  latitud:         number;
+  longitud:        number;
+  velocidad:       number;
+  sentido:         number;
+  evento:          number;
+  fechaGps:        string;
+  usuarioCreacion: number;
+  fechaCreacion:   string;
+  gps:             null;
 }

@@ -394,6 +394,7 @@
             "PingDate": "Fecha de Ping",
             "Port": "Puerto",
             "Profile": "Perfil",
+            "Protocol": "Protocolo",
             "Provider": "Proveedor",
             "ReceiveNotifications": "Recibir Notificaciones",
             "Resource": "Recurso",

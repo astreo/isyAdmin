@@ -1,8 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Cliente } from '../../../models/cliente.model';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Cliente, Titular, Dependiente, Dispositivo, CodigoVerificacion } from '../../../models/cliente.model';
 import { AbstractControl, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { FormType } from '../../../models/enum';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+import { ClientesService } from '../../../services/clientes.service';
+import Swal from 'sweetalert2';
+import { PersonaProveedor, PersonaPanel, PersonaGps, PersonaCamara } from '../../../models/relaciones.model';
 
 declare class CustomerFormDataStructure {
   fields: Cliente;
@@ -25,7 +29,7 @@ declare interface CustomerForm extends FormGroup {
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, OnDestroy {
 
   formTitle: string;
   FormType = FormType;
@@ -35,7 +39,32 @@ export class CustomerComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   customerForm: CustomerForm;
 
-  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, public modalService: NgbModal) { }
+  getTitularSubscription = new Subscription();
+  getDependientesSubscription = new Subscription();
+  getDispositivosSubscription = new Subscription();
+  getCodigoVerificacionSubscription = new Subscription();
+  getPersonaProveedorSubscription = new Subscription();
+  getPersonaPanelesSubscription = new Subscription();
+  getPersonaGpsSubscription = new Subscription();
+  getPersonaCamaraSubscription = new Subscription();
+
+  titular = {} as Titular;
+  codigoVerificacion = {} as CodigoVerificacion;
+  dependientes = {} as Dependiente[];
+  dispositivos = {} as Dispositivo[];
+  personaProveedor = {} as PersonaProveedor;
+  personaPaneles = {} as PersonaPanel[];
+  personaGps = {} as PersonaGps[];
+  personaCamaras = {} as PersonaCamara[];
+
+  loading = false;
+
+  pageSize = 5;
+  tab1Page = 1;
+  tab2Page = 1;
+
+  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, public modalService: NgbModal,
+              public clientesService: ClientesService) { }
 
   ngOnInit() {
     switch (this.formType) {
@@ -57,6 +86,26 @@ export class CustomerComponent implements OnInit {
       telefono: [this.cliente.telefono]
     }) as CustomerForm;
     this.customerForm.disable();
+
+    this.getTitular(this.cliente.idPersona);
+    this.getDependientes(this.cliente.idPersona);
+    this.getDispositivos(this.cliente.idPersona);
+    this.getCodigoVerificacion(this.cliente.idPersona);
+    this.getPersonaProveedor(this.cliente.idPersona);
+    this.getPersonaPaneles(this.cliente.idPersona);
+    this.getPersonaGps(this.cliente.idPersona);
+    this.getPersonaCamaras(this.cliente.idPersona);
+  }
+
+  ngOnDestroy() {
+    this.getTitularSubscription.unsubscribe();
+    this.getDependientesSubscription.unsubscribe();
+    this.getDispositivosSubscription.unsubscribe();
+    this.getCodigoVerificacionSubscription.unsubscribe();
+    this.getPersonaProveedorSubscription.unsubscribe();
+    this.getPersonaPanelesSubscription.unsubscribe();
+    this.getPersonaGpsSubscription.unsubscribe();
+    this.getPersonaCamaraSubscription.unsubscribe();
   }
 
   get custCtrls() {
@@ -73,6 +122,254 @@ export class CustomerComponent implements OnInit {
     resp += fc.hasError('minlength') ? 'Debe ingresar mínimo 6 dígitos. ' : '';
     resp += fc.hasError('equalValidator') ? 'Los valores no coinciden ' : '';
     return resp;
+  }
+
+  getTitular(idPersona: number) {
+    this.loading = true;
+    this.getTitularSubscription = this.clientesService.getTitular(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Titular no encontrado',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.titular = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getDependientes(idPersona: number) {
+    this.loading = true;
+    this.getDependientesSubscription = this.clientesService.getDependientes(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Dependientes no encontrados',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.dependientes = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getDispositivos(idPersona: number) {
+    this.loading = true;
+    this.getDispositivosSubscription = this.clientesService.getDispositivos(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Dispositivos no encontrados',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.dispositivos = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getCodigoVerificacion(idPersona: number) {
+    this.loading = true;
+    this.getCodigoVerificacionSubscription = this.clientesService.getCodigoVerificacion(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Codigo de verificación no encontrado',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.codigoVerificacion = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getPersonaProveedor(idPersona: number) {
+    this.loading = true;
+    this.getPersonaProveedorSubscription = this.clientesService.getPersonaProveedor(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Proveedor no encontrado para esta persona',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.personaProveedor = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getPersonaPaneles(idPersona: number) {
+    this.loading = true;
+    this.getPersonaPanelesSubscription = this.clientesService.getPersonaPaneles(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Paneles no encontrados',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.personaPaneles = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getPersonaGps(idPersona: number) {
+    this.loading = true;
+    this.getPersonaGpsSubscription = this.clientesService.getPersonaGps(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Gps no encontrados',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.personaGps = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
+  }
+
+  getPersonaCamaras(idPersona: number) {
+    this.loading = true;
+    this.getPersonaCamaraSubscription = this.clientesService.getPersonaCamaras(idPersona)
+    .subscribe(
+      result => {
+        // if (permisos.length === 0) return;
+        this.loading = false;
+        // debugger;
+        if (result.length === 0) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Gps no encontrados',
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        } else {
+        console.log(JSON.stringify(result));
+        this.personaCamaras = result;
+      }
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
   }
 
   openModal() {

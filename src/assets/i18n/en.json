@@ -380,6 +380,7 @@
             "PingDate": "Ping Date",
             "Port": "Port",
             "Profile": "Profile",
+            "Protocol": "Protocol",
             "Provider": "Provider",
             "ReceiveNotifications": "Receive Notifications",
             "Resource": "Resource",
