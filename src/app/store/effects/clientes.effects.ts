@@ -38,4 +38,33 @@ export class ClientesEffects {
       )
     );
 
+  @Effect()
+  actualizarUsuario$ = this.actions$.pipe(
+    ofType(actions.ACTUALIZAR_CLIENTE),
+    map((action: actions.ActualizarUsuario) => action),
+    switchMap((payload) => this.clientesService.updatePersona(payload.cliente)
+      .pipe(
+        map(response => {
+          Swal.fire({
+            title: 'Actualizado!',
+            text: `El cliente ${response.nombres} ha sido actualizado con éxito`,
+            type: 'success',
+            confirmButtonText: 'OK'
+          });
+          return new actions.ActualizarUsuarioSuccess();
+        }
+        ),
+        catchError(error => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+          return of(new actions.ActualizarUsuarioFail(error));
+        }
+        ))
+    )
+  );
+
 }

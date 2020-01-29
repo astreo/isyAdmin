@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
 import { Subscription } from 'rxjs';
 import { AccountService } from './account.service';
+import { Cliente, ClienteVM } from '../models/cliente.model';
 
 @Injectable({
   providedIn: 'root'
@@ -100,7 +101,7 @@ export class ClientesService {
   }
 
   getCodigoVerificacion(idPersona: number) {
-    debugger;
+    // debugger;
     return this.http.get(`${this.url}/codigoVerificacion/person/${idPersona}`,
       { headers: this.headers, observe: 'response' })
       .pipe(
@@ -184,6 +185,31 @@ export class ClientesService {
                 }
               )
             )
+            ;
+        }
+      )
+    );
+  }
+
+  updatePersona(cliente: Cliente) {
+    const clienteVM = {} as  ClienteVM;
+    Object.assign(clienteVM, cliente);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          console.log('AccountData: ' + JSON.stringify(data));
+          clienteVM.idUsuarioWeb = data.idUsuario;
+          clienteVM.idProveedorWeb = data.idProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.put(`${this.url}/Persona/` + clienteVM.idPersona, clienteVM, { headers: this.headers, observe: 'response' })
+          .pipe(
+            map(
+              () => {
+                console.log(cliente);
+                return cliente;
+              }
+            )
+          )
             ;
         }
       )

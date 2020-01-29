@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs';
 import { ClientesService } from '../../../services/clientes.service';
 import Swal from 'sweetalert2';
 import { PersonaProveedor, PersonaPanel, PersonaGps, PersonaCamara } from '../../../models/relaciones.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/app.reducer';
+import { clientes as actions } from '../../../store/actions';
 
 declare class CustomerFormDataStructure {
   fields: Cliente;
@@ -64,7 +67,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
   tab2Page = 1;
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, public modalService: NgbModal,
-              public clientesService: ClientesService) { }
+              public clientesService: ClientesService,
+              public store: Store<AppState>) { }
 
   ngOnInit() {
     switch (this.formType) {
@@ -370,6 +374,21 @@ export class CustomerComponent implements OnInit, OnDestroy {
         });
       }
     );
+  }
+
+  editCliente(enable: boolean) {
+    if (enable) {
+    this.custCtrls.telefono.enable();
+     } else {
+       this.custCtrls.telefono.disable();
+       this.custCtrls.telefono.setValue(this.cliente.telefono);
+     }
+  }
+
+  saveCliente() {
+    Object.assign(this.cliente, this.customerForm.value);
+    this.store.dispatch(new actions.ActualizarUsuario(this.cliente));
+    this.custCtrls.telefono.disable();
   }
 
   openModal() {

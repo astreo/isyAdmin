@@ -49,6 +49,11 @@
               </div>
             </div>
           </form>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button *ngIf="!this.custCtrls.telefono.enabled" (click)="editCliente(true)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="this.custCtrls.telefono.enabled" (click)="editCliente(false)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!this.custCtrls.telefono.enabled" (click)="saveCliente()" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+          </div>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="{{'PAGES.Labels.Holder' | translate}}">
@@ -82,7 +87,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.DependentUsers' | translate}}">
+      <ngb-tab *ngIf="dependientes.length > 0" title="{{'PAGES.Labels.DependentUsers' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -130,7 +135,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.Devices' | translate}}">
+      <ngb-tab *ngIf="dispositivos.length > 0" title="{{'PAGES.Labels.Devices' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -259,7 +264,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.Panels' | translate}}">
+      <ngb-tab *ngIf="personaPaneles.length > 0" title="{{'PAGES.Labels.Panels' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -307,7 +312,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.Gps' | translate}}">
+      <ngb-tab *ngIf="personaGps.length > 0" title="{{'PAGES.Labels.Gps' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -348,7 +353,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.Cameras' | translate}}">
+      <ngb-tab *ngIf="personaCamaras.length > 0" title="{{'PAGES.Labels.Cameras' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -398,11 +403,8 @@
     </ngb-tabset>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark"
-      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
-    </button>
-    <button type="button" class="btn btn-outline-primary" (click)="ok()"
-      [disabled]="customerForm.invalid">{{'PAGES.Buttons.Save' | translate}}
+    <button type="button" class="btn social-btn btn-outline-secondary icon-btn"
+      (click)="activeModal.close()"><i class="fa fa-times"></i>
     </button>
   </div>
 </div>

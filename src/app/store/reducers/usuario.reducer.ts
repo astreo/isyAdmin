@@ -1,4 +1,4 @@
-import { AppState } from './../app.reducer';
+// import { AppState } from './../app.reducer';
 import { usuario as actions } from '../actions';
 import { Usuario } from '../../models/usuario.model';
 
@@ -10,9 +10,9 @@ export interface State {
   error: any;
 }
 
-export interface AppState extends AppState {
+/* export interface AppState extends AppState {
   account: State;
-}
+} */
 
 const estadoInicial: State = {
   usuario: null,
