@@ -34,17 +34,14 @@ export class AccountService {
   }
 
   updatePwd(model: UsuarioNewPwd) {
-    console.log(model, 'resetPwd');
     return this.http.put(`${this.url}/Account/ResetPassword`, model, { headers: this.headers, observe: 'response' });
   }
 
   getProveedorId() {
-    console.log('Entrando en getProveedorId');
     return this.store.select(state => state.account.usuario.proveedor.idProveedor);
   }
 
   getAccountData() {
-    console.log('Entrando en getAccountData');
     return this.store.select(state => state.account.usuario).pipe(
       map(item => {
         return (

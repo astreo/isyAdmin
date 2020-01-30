@@ -44,7 +44,6 @@ export class ZonasPeligrosasService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           zona.idUsuarioWeb = data.idUsuario;
           zona.idProveedorWeb = data.idProveedor;
           return this.http.post(`${this.url}/Geocerca`, zona, { headers: this.headers, observe: 'response' })
@@ -68,7 +67,6 @@ export class ZonasPeligrosasService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           zona.idUsuarioWeb = data.idUsuario;
           zona.idProveedorWeb = data.idProveedor;
           zona.idProveedor = data.idProveedor;
@@ -91,8 +89,6 @@ export class ZonasPeligrosasService {
       .pipe(
         map(
           (resp: any) => {
-            console.log('service delete');
-            console.log(resp);
             return resp.body;
           }
         )

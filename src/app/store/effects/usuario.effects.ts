@@ -23,7 +23,6 @@ export class UsuarioEffects {
           return this.accountService.login(action.usuario)
             .pipe(
               map(user => {
-                console.log(user);
                 // debugger;
                 if (user.resetPassword) {
                   this.router.navigate(['/newPwd', { username: user.username }], { skipLocationChange: true });

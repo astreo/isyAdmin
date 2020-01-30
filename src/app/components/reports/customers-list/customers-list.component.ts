@@ -68,7 +68,6 @@ export class CustomersListComponent implements OnInit, OnDestroy {
       .subscribe(
         result => {
           // if (permisos.length === 0) return;
-          console.log('Elaboracion: ' + JSON.stringify(result));
           this.clientes = result;
           this.loading = false;
         },

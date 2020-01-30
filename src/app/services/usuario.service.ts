@@ -42,8 +42,6 @@ export class UsuarioService {
       .pipe(
         map(
           (resp: any) => {
-            console.log('service delete');
-            console.log(resp);
             return resp.body;
           }
         )
@@ -105,7 +103,6 @@ export class UsuarioService {
           return this.getUsersById(usuarioList.idUsuario).pipe(
             switchMap(
               (result: UsuarioList[]) => {
-                console.log('updateUser');
                 const usuario = result[0];
                 usuario.nombres = usuarioList.nombres;
                 usuario.apellidos = usuarioList.apellidos;
@@ -118,7 +115,6 @@ export class UsuarioService {
                   .pipe(
                     map(
                       () => {
-                        console.log(usuario);
                         return usuario;
                       }
                     )
@@ -139,7 +135,7 @@ export class UsuarioService {
           return this.getUsersById(usuarioList.idUsuario).pipe(
             switchMap(
               (result: UsuarioList[]) => {
-                console.log('updateUser');
+
                 const usuario = result[0];
                 usuario.password = usuarioList.password;
                 usuario.confirmPassword = usuarioList.confirmPassword;
@@ -150,7 +146,6 @@ export class UsuarioService {
                   .pipe(
                     map(
                       () => {
-                        console.log(usuario);
                         return usuario;
                       }
                     )

@@ -73,8 +73,6 @@ export class DangerZonesListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: ZonaPeligrosa) => {
       if (result) {
-        console.log('item: ', result);
-        debugger;
         // tslint:disable-next-line: no-shadowed-variable
         let action: Observable<any>;
         let actionResult: string;

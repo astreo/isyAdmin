@@ -8,6 +8,7 @@ import { AppState } from '../store/app.reducer';
 import { Subscription } from 'rxjs';
 import { AccountService } from './account.service';
 import { Cliente, ClienteVM } from '../models/cliente.model';
+import { PersonaProveedor } from '../models/relaciones.model';
 
 @Injectable({
   providedIn: 'root'
@@ -215,7 +216,6 @@ export class ClientesService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           clienteVM.idUsuarioWeb = data.idUsuario;
           clienteVM.idProveedorWeb = data.idProveedor;
           // panel.idPuntoInteres = id;
@@ -223,7 +223,6 @@ export class ClientesService {
           .pipe(
             map(
               () => {
-                console.log(cliente);
                 return cliente;
               }
             )
@@ -238,7 +237,6 @@ export class ClientesService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           // panel.idProveedorWeb = data.idProveedor;
           return this.http.put(`${this.url}/Persona/${idPersona}/changeTitular/${idTitular}/prov/${data.idProveedor}`,
                               { headers: this.headers, observe: 'response' })
@@ -253,6 +251,42 @@ export class ClientesService {
         }
       )
     );
+  }
+
+  updatePersonaProveedor(personaProveedor: PersonaProveedor) {
+    // const clienteVM = {} as  ClienteVM;
+    // Object.assign(clienteVM, cliente);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          personaProveedor.idUsuarioWeb = data.idUsuario;
+          personaProveedor.idProveedorWeb = data.idProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.put(`${this.url}/PersonaProveedor/` + personaProveedor.idPersonaProveedor, personaProveedor,
+                               { headers: this.headers, observe: 'response' })
+          .pipe(
+            map(
+              () => {
+                return personaProveedor;
+              }
+            )
+          )
+            ;
+        }
+      )
+    );
+  }
+
+  deletePersonaProveedor(id: number) {
+    return this.http.delete(`${this.url}/x/${id}`, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
   }
 
 }

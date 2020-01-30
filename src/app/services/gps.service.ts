@@ -44,7 +44,6 @@ export class GpsService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           gps.idGps = 0;
           gps.idUsuarioWeb = data.idUsuario;
           gps.idProveedorWeb = data.idProveedor;
@@ -80,7 +79,6 @@ export class GpsService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           gps.idUsuarioWeb = data.idUsuario;
           gps.idProveedorWeb = data.idProveedor;
           gps.idProveedor = data.idProveedor;

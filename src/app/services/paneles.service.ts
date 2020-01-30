@@ -44,7 +44,6 @@ export class PanelesService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           panel.idPanel = 0;
           panel.idUsuarioWeb = data.idUsuario;
           panel.idProveedorWeb = data.idProveedor;
@@ -80,7 +79,6 @@ export class PanelesService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           panel.idUsuarioWeb = data.idUsuario;
           panel.idProveedorWeb = data.idProveedor;
           panel.idProveedor = data.idProveedor;

@@ -49,10 +49,13 @@
               </div>
             </div>
           </form>
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button *ngIf="!inEdition" (click)="edit('customer')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
-            <button *ngIf="inEdition" (click)="edit('customer')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
-            <button [disabled]="!inEdition" (click)="save('customer')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+          <div class="btn-group" role="group">
+            <button *ngIf="!inEdition" (click)="edit('customer')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="inEdition" (click)="edit('customer')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!inEdition" (click)="save('customer')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
           </div>
         </ng-template>
       </ngb-tab>
@@ -85,14 +88,18 @@
               </div>
             </div>
           </div>
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button *ngIf="!inEdition" (click)="edit('holder')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
-            <button *ngIf="inEdition" (click)="edit('holder')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
-            <button [disabled]="!inEdition" (click)="save('holder')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+          <div class="btn-group" role="group">
+            <button *ngIf="!inEdition" (click)="edit('holder')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="inEdition" (click)="edit('holder')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!inEdition" (click)="save('holder')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="dependentUsers" *ngIf="dependientes.length > 0" title="{{'PAGES.Labels.DependentUsers' | translate}}">
+      <ngb-tab id="dependentUsers" *ngIf="dependientes.length > 0"
+        title="{{'PAGES.Labels.DependentUsers' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -134,8 +141,8 @@
               </table>
             </div>
             <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-              [collectionSize]="dependientes.length" [(page)]="tab1Page" [maxSize]="10"
-              [rotate]="true" [boundaryLinks]="true">
+              [collectionSize]="dependientes.length" [(page)]="tab1Page" [maxSize]="10" [rotate]="true"
+              [boundaryLinks]="true">
             </ngb-pagination>
           </div>
         </ng-template>
@@ -187,8 +194,8 @@
               </table>
             </div>
             <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-              [collectionSize]="dispositivos.length" [(page)]="tab1Page" [maxSize]="10"
-              [rotate]="true" [boundaryLinks]="true">
+              [collectionSize]="dispositivos.length" [(page)]="tab1Page" [maxSize]="10" [rotate]="true"
+              [boundaryLinks]="true">
             </ngb-pagination>
           </div>
         </ng-template>
@@ -218,15 +225,21 @@
                       {{codigoVerificacion.fechaCreacion}}
                     </td>
                     <td>
-                      <span class="bg-success flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'V'">Verificado</span>
-                      <span class="bg-warning flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'G'">Generado</span>
-                      <span class="bg-danger flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'N'">No Generado</span>
+                      <span class="bg-success flag" style="color:white;"
+                        *ngIf="codigoVerificacion.estadoSms == 'V'">Verificado</span>
+                      <span class="bg-warning flag" style="color:white;"
+                        *ngIf="codigoVerificacion.estadoSms == 'G'">Generado</span>
+                      <span class="bg-danger flag" style="color:white;" *ngIf="codigoVerificacion.estadoSms == 'N'">No
+                        Generado</span>
                       &nbsp;{{codigoVerificacion.codigoSms}}
                     </td>
                     <td>
-                      <span class="bg-success flag" style="color:white;" *ngIf="codigoVerificacion.estadoCorreo == 'V'">Verificado</span>
-                      <span class="bg-warning flag" style="color:white;" *ngIf="codigoVerificacion.estadoCorreo == 'G'">Generado</span>
-                      <span class="bg-danger flag" style="color:white;" *ngIf="codigoVerificacion.estadoCorreo == 'N'">No Generado</span>
+                      <span class="bg-success flag" style="color:white;"
+                        *ngIf="codigoVerificacion.estadoCorreo == 'V'">Verificado</span>
+                      <span class="bg-warning flag" style="color:white;"
+                        *ngIf="codigoVerificacion.estadoCorreo == 'G'">Generado</span>
+                      <span class="bg-danger flag" style="color:white;"
+                        *ngIf="codigoVerificacion.estadoCorreo == 'N'">No Generado</span>
                       &nbsp;{{codigoVerificacion.codigoCorreo}}
                     </td>
                   </tr>
@@ -238,34 +251,67 @@
       </ngb-tab>
       <ngb-tab id="serviceProvider" title="{{'PAGES.Labels.ServiceProvider' | translate}}">
         <ng-template ngbTabContent>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <p class="label">{{'PAGES.Labels.Provider' | translate}}</p>
-                <p class="field">{{this.personaProveedor.proveedor.nombre}}</p>
+          <form [formGroup]='providerForm' (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <p class="label">{{'PAGES.Labels.Provider' | translate}}</p>
+                  <p class="field">{{this.personaProveedor.proveedor.nombre}}</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{'PAGES.Labels.State' | translate}}</label>
+                  <select class="form-control form-control-sm" formControlName='estadoServicio'
+                    [ngClass]="{ 'is-invalid': isInvalid(provCtrls.estadoServicio) }">
+                    <option value="">{{'PAGES.DefaultListItems.SelectType' | translate}}</option>
+                    <option *ngFor="let estadoServicio of estadosServicio" [ngValue]="estadoServicio.id">
+                      {{'PAGES.Labels.' + estadoServicio.descripcion | translate}}</option>
+                  </select>
+                  <div *ngIf="isInvalid(provCtrls.estadoServicio)" class="invalid-feedback">
+                    {{getErrorMessage(provCtrls.estadoServicio)}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{'PAGES.Labels.AccountNumber' | translate}}</label>
+                  <input type="text" class="form-control" formControlName='nroCuenta'
+                    [ngClass]="{ 'is-invalid': isInvalid(provCtrls.nroCuenta) }">
+                  <div *ngIf="isInvalid(provCtrls.nroCuenta)" class="invalid-feedback">
+                    {{getErrorMessage(provCtrls.nroCuenta)}}
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <p class="label">{{'PAGES.Labels.State' | translate}}</p>
-                <p class="field bg-success flag" style="color:white;" *ngIf="this.personaProveedor.estadoServicio==='A'">{{'PAGES.Labels.Active' | translate}}</p>
-                <p class="field bg-warning flag" style="color:white;" *ngIf="this.personaProveedor.estadoServicio=='P'">{{'PAGES.Labels.Pending' | translate}}</p>
-                <p class="field bg-danger flag" style="color:white;" *ngIf="this.personaProveedor.estadoServicio=='I'">{{'PAGES.Labels.Inactive' | translate}}</p>
-              </div>
-              <div class="form-group">
-                <p class="label">{{'PAGES.Labels.AccountNumber' | translate}}</p>
-                <p class="field">{{this.personaProveedor.nroCuenta}}</p>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">{{'PAGES.Labels.ApprovalDate' | translate}}</label>
+                  <input type="text" class="form-control" formControlName='fechaCreacion'
+                    [ngClass]="{ 'is-invalid': isInvalid(provCtrls.fechaCreacion) }">
+                  <div *ngIf="isInvalid(provCtrls.fechaCreacion)" class="invalid-feedback">
+                    {{getErrorMessage(provCtrls.fechaCreacion)}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{'PAGES.Labels.Total' | translate}}</label>
+                  <select class="form-control form-control-sm" formControlName='totalConnect'
+                    [ngClass]="{ 'is-invalid': isInvalid(provCtrls.totalConnect) }">
+                    <option value="">{{'PAGES.DefaultListItems.SelectType' | translate}}</option>
+                    <option *ngFor="let totalConnect of estadosTotalConnect" [ngValue]="totalConnect.id">
+                      {{'PAGES.Labels.' + totalConnect.descripcion | translate}}</option>
+                  </select>
+                  <div *ngIf="isInvalid(provCtrls.totalConnect)" class="invalid-feedback">
+                    {{getErrorMessage(provCtrls.totalConnect)}}
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <p class="label">{{'PAGES.Labels.ApprovalDate' | translate}}</p>
-                <p class="field">{{this.personaProveedor.fechaCreacion}}</p>
-              </div>
-              <div class="form-group">
-                <p class="label">{{'PAGES.Labels.Total' | translate}}</p>
-                <p class="field bg-success flag" style="color:white;" *ngIf="this.personaProveedor.totalConnect">{{'PAGES.Labels.Active' | translate}}</p>
-                <p class="field bg-danger flag" style="color:white;" *ngIf="!this.personaProveedor.totalConnect">{{'PAGES.Labels.Inactive' | translate}}</p>
-              </div>
-            </div>
+          </form>
+          <div class="btn-group" role="group">
+            <button *ngIf="!inEdition" (click)="edit('serviceProvider')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="inEdition" (click)="edit('serviceProvider')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!inEdition" (click)="save('serviceProvider')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+              <button (click)="openConfirmationDialog(providerForm.value)" type="button"
+                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
           </div>
         </ng-template>
       </ngb-tab>
@@ -311,8 +357,8 @@
               </table>
             </div>
             <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-              [collectionSize]="personaPaneles.length" [(page)]="tab1Page" [maxSize]="10"
-              [rotate]="true" [boundaryLinks]="true">
+              [collectionSize]="personaPaneles.length" [(page)]="tab1Page" [maxSize]="10" [rotate]="true"
+              [boundaryLinks]="true">
             </ngb-pagination>
           </div>
         </ng-template>
@@ -352,8 +398,8 @@
               </table>
             </div>
             <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-              [collectionSize]="personaGps.length" [(page)]="tab1Page" [maxSize]="10"
-              [rotate]="true" [boundaryLinks]="true">
+              [collectionSize]="personaGps.length" [(page)]="tab1Page" [maxSize]="10" [rotate]="true"
+              [boundaryLinks]="true">
             </ngb-pagination>
           </div>
         </ng-template>
@@ -399,8 +445,8 @@
               </table>
             </div>
             <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-              [collectionSize]="personaCamaras.length" [(page)]="tab1Page" [maxSize]="10"
-              [rotate]="true" [boundaryLinks]="true">
+              [collectionSize]="personaCamaras.length" [(page)]="tab1Page" [maxSize]="10" [rotate]="true"
+              [boundaryLinks]="true">
             </ngb-pagination>
           </div>
         </ng-template>
@@ -408,8 +454,8 @@
     </ngb-tabset>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn social-btn btn-outline-secondary icon-btn"
-      (click)="activeModal.close()"><i class="fa fa-times"></i>
+    <button type="button" class="btn social-btn btn-outline-secondary icon-btn" (click)="activeModal.close()"><i
+        class="fa fa-times"></i>
     </button>
   </div>
 </div>

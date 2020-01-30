@@ -55,7 +55,6 @@ export class CustomersPanelListComponent implements OnInit, OnDestroy {
       .subscribe(
         result => {
           // if (permisos.length === 0) return;
-          console.log(JSON.stringify(result));
           this.clientes = result;
           const removables = ['esCliente', 'esTitular', 'personaJuridica', 'dependientes'];
           this.clientes.forEach(function (item) {

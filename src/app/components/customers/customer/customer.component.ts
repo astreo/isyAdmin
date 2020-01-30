@@ -11,6 +11,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducer';
 import { clientes as actions } from '../../../store/actions';
 import { CustomersDialogComponent } from '../../../shared/customers-dialog/customers-dialog.component';
+import { SelectionModel } from '../../../models/misc.model';
+import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
 declare class CustomerFormDataStructure {
   fields: Cliente;
@@ -28,6 +30,23 @@ declare interface CustomerForm extends FormGroup {
   controls: CustomerFormDataStructure['controls'];
 }
 
+
+declare class ProviderFormDataStructure {
+  fields: PersonaProveedor;
+  controls: {
+    idPersonaProveedor: AbstractControl;
+    fechaCreacion: AbstractControl;
+    nroCuenta: AbstractControl;
+    estadoServicio: AbstractControl;
+    totalConnect: AbstractControl;
+  };
+}
+
+declare interface ProviderForm extends FormGroup {
+  value: ProviderFormDataStructure['fields'];
+  controls: ProviderFormDataStructure['controls'];
+}
+
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
@@ -42,6 +61,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
   @Input() public cliente: Cliente;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   customerForm: CustomerForm;
+  providerForm: ProviderForm;
 
   getTitularSubscription = new Subscription();
   getDependientesSubscription = new Subscription();
@@ -52,6 +72,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
   getPersonaGpsSubscription = new Subscription();
   getPersonaCamaraSubscription = new Subscription();
   updateTitularSubscription = new Subscription();
+  deletePersonaProveedorSubscription = new Subscription();
 
   titular = {} as Titular;
   codigoVerificacion = {} as CodigoVerificacion;
@@ -61,8 +82,33 @@ export class CustomerComponent implements OnInit, OnDestroy {
   personaPaneles = {} as PersonaPanel[];
   personaGps = {} as PersonaGps[];
   personaCamaras = {} as PersonaCamara[];
-
   originalData = {} as any;
+
+  estadosServicio: SelectionModel[] = [
+    {
+      id: 'A',
+      descripcion: 'Active'
+    },
+    {
+      id: 'P',
+      descripcion: 'Pending'
+    },
+    {
+      id: 'I',
+      descripcion: 'Inactive'
+    }
+  ];
+
+  estadosTotalConnect: SelectionModel[] = [
+    {
+      id: true,
+      descripcion: 'Active'
+    },
+    {
+      id: false,
+      descripcion: 'Inactive'
+    }
+  ];
 
   loading = false;
 
@@ -74,6 +120,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, public modalService: NgbModal,
     public clientesService: ClientesService,
+    public confirmationDialogService: ConfirmationDialogService,
     public store: Store<AppState>) { }
 
   ngOnInit() {
@@ -88,15 +135,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
         break;
     }
 
-    this.customerForm = this.formBuilder.group({
-      idPersona: [this.cliente.idPersona],
-      nombres: [this.cliente.nombres],
-      apellidos: [this.cliente.apellidos],
-      nroDocumento: [this.cliente.nroDocumento],
-      telefono: [this.cliente.telefono]
-    }) as CustomerForm;
-    this.customerForm.disable();
-
     this.getTitular(this.cliente.idPersona);
     this.getDependientes(this.cliente.idPersona);
     this.getDispositivos(this.cliente.idPersona);
@@ -105,6 +143,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getPersonaPaneles(this.cliente.idPersona);
     this.getPersonaGps(this.cliente.idPersona);
     this.getPersonaCamaras(this.cliente.idPersona);
+
+    this.setCustomerForm();
   }
 
   ngOnDestroy() {
@@ -116,10 +156,37 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getPersonaPanelesSubscription.unsubscribe();
     this.getPersonaGpsSubscription.unsubscribe();
     this.getPersonaCamaraSubscription.unsubscribe();
+    this.deletePersonaProveedorSubscription.unsubscribe();
+  }
+
+  setCustomerForm() {
+    this.customerForm = this.formBuilder.group({
+      idPersona: [this.cliente.idPersona],
+      nombres: [this.cliente.nombres],
+      apellidos: [this.cliente.apellidos],
+      nroDocumento: [this.cliente.nroDocumento],
+      telefono: [this.cliente.telefono]
+    }) as CustomerForm;
+    this.customerForm.disable();
+  }
+
+  setProviderForm() {
+    this.providerForm = this.formBuilder.group({
+      idPersonaProveedor: [this.personaProveedor.idPersonaProveedor],
+      fechaCreacion: [this.personaProveedor.fechaCreacion],
+      nroCuenta: [this.personaProveedor.nroCuenta],
+      estadoServicio: [this.personaProveedor.estadoServicio],
+      totalConnect: [this.personaProveedor.totalConnect]
+    }) as ProviderForm;
+    this.providerForm.disable();
   }
 
   get custCtrls() {
     return this.customerForm.controls;
+  }
+
+  get provCtrls() {
+    return this.providerForm.controls;
   }
 
   isInvalid(ctrl: AbstractControl) {
@@ -150,7 +217,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
             this.titular = result;
           }
         },
@@ -181,7 +247,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
             this.titular = result;
           }
         },
@@ -212,7 +277,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
+
             this.dependientes = result;
           }
         },
@@ -243,7 +308,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
+
             this.dispositivos = result;
           }
         },
@@ -274,7 +339,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
+
             this.codigoVerificacion = result;
           }
         },
@@ -305,8 +370,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
             this.personaProveedor = result;
+            this.setProviderForm();
           }
         },
         (error) => {
@@ -336,7 +401,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
+
             this.personaPaneles = result;
           }
         },
@@ -367,7 +432,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
+
             this.personaGps = result;
           }
         },
@@ -398,7 +463,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-            console.log(JSON.stringify(result));
+
             this.personaCamaras = result;
           }
         },
@@ -420,13 +485,66 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
   }
 
+  openConfirmationDialog() {
+    this.confirmationDialogService.confirm('Confirmación requerida',
+      `Eliminar el servicio del proveedor "${this.personaProveedor.proveedor.nombre}"?`)
+      .then((result) => {
+        if (result) {
+
+          this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaProveedor(this.personaProveedor.idPersonaProveedor)
+          .subscribe(
+            response => {
+              Swal.fire({
+                title: `Eliminado!`,
+                text: `El servicio ha sido eliminado con éxito`,
+                type: 'success',
+                confirmButtonText: 'OK'
+              });
+            }
+            ,
+            (error) => {
+              Swal.fire({
+                title: 'Error!',
+                text: error.message,
+                type: 'error',
+                confirmButtonText: 'OK'
+              });
+            });
+
+        }
+      });
+  }
+
   edit(tab: string) {
     this.inEdition = !this.inEdition;
     // debugger;
-    if (tab === 'customer') {
-      this.editCliente();
-    } else if (tab === 'holder') {
-      this.editTitular();
+    switch (tab) {
+      case 'customer':
+        this.editCliente();
+        break;
+      case 'holder':
+        this.editTitular();
+        break;
+      case 'serviceProvider':
+        this.editServiceProvider();
+        break;
+      default:
+        break;
+    }
+  }
+
+  editServiceProvider() {
+    if (this.inEdition) {
+      debugger;
+      Object.assign(this.originalData, this.providerForm.value);
+      this.providerForm.enable();
+      this.provCtrls.fechaCreacion.disable();
+    } else {
+      debugger;
+      // Object.assign(this.provCtrls, this.originalData);
+      this.providerForm.setValue(this.originalData);
+      this.providerForm.disable();
+      // this..setValue(this.cliente.telefono);
     }
   }
 
@@ -450,10 +568,18 @@ export class CustomerComponent implements OnInit, OnDestroy {
   save(tab: string) {
     this.inEdition = !this.inEdition;
     // debugger;
-    if (tab === 'customer') {
-      this.saveCliente();
-    } else if (tab === 'holder') {
-      this.saveTitular();
+    switch (tab) {
+      case 'customer':
+        this.saveCliente();
+        break;
+      case 'holder':
+        this.saveTitular();
+        break;
+      case 'serviceProvider':
+        this.saveServiceProvider();
+        break;
+      default:
+        break;
     }
   }
 
@@ -485,6 +611,28 @@ export class CustomerComponent implements OnInit, OnDestroy {
       });
   }
 
+  saveServiceProvider() {
+    Object.assign(this.personaProveedor, this.providerForm.value);
+    this.updateTitularSubscription = this.clientesService.updatePersonaProveedor(this.personaProveedor).subscribe(
+      response => {
+        Swal.fire({
+          title: `ACTUALIZADO!`,
+          text: `El servicio ha sido actualizado con éxito`,
+          type: 'success',
+          confirmButtonText: 'OK'
+        });
+      }
+      ,
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      });
+  }
+
   openModal() {
     const modalRef = this.modalService.open(CustomersDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.result.then((result: Cliente) => {
@@ -493,7 +641,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
         // Object.assign(this.titular, result);
         this.getPersona(result.idPersona);
         // this.customerForm.setValue(result);
-        console.log('item: ', result);
       }
     });
   }

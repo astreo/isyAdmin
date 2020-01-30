@@ -187,8 +187,6 @@ export class DangerZoneComponent implements OnInit {
         this.drawingManager.setDrawingMode(null);
         this.paths = [];
 
-        console.log(this.paths[0], 'paths');
-        console.log(this.newPaths, 'newPaths');
       }
     });
   }

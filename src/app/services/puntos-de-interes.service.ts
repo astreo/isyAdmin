@@ -44,7 +44,6 @@ export class PuntosDeInteresService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           punto.idUsuarioWeb = data.idUsuario;
           punto.idProveedorWeb = data.idProveedor;
           return this.http.post(`${this.url}/PuntoInteres`, punto, { headers: this.headers, observe: 'response' })
@@ -68,7 +67,6 @@ export class PuntosDeInteresService {
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
-          console.log('AccountData: ' + JSON.stringify(data));
           punto.idUsuarioWeb = data.idUsuario;
           punto.idProveedorWeb = data.idProveedor;
           punto.idProveedor = data.idProveedor;
@@ -92,8 +90,6 @@ export class PuntosDeInteresService {
       .pipe(
         map(
           (resp: any) => {
-            console.log('service delete');
-            console.log(resp);
             return resp.body;
           }
         )

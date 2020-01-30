@@ -49,7 +49,6 @@ export class VerificationCodesListComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK'
             });
           } else {
-          console.log(JSON.stringify(result));
           this.codigoList = result[0];
         }
         },

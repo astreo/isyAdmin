@@ -47,7 +47,6 @@ export class CustomerStatsComponent implements OnInit, OnDestroy {
       ).subscribe(
         result => {
           // if (permisos.length === 0) return;
-          console.log('Elaboracion: ' + JSON.stringify(result));
           this.estadisticas = result;
           this.estadisticas.total = this.estadisticas.totalAndroid +  this.estadisticas.totalIos;
           this.estadisticas.porcentAndroid = +((this.estadisticas.totalAndroid * 100) / this.estadisticas.total).toFixed(2);

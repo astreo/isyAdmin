@@ -79,7 +79,6 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: Cliente) => {
       if (result) {
-        console.log('Modelo: ' + JSON.stringify(result));
         /*
         if (customer.idUsuario) {
           // customer = Object.assign(customer, result);

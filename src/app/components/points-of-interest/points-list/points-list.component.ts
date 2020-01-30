@@ -122,7 +122,7 @@ export class PointsListComponent implements OnInit, OnDestroy {
                   type: 'success',
                   confirmButtonText: 'OK'
                 });
-                  this.getList();
+                this.getList();
               }
               ,
               (error) => {
@@ -136,7 +136,6 @@ export class PointsListComponent implements OnInit, OnDestroy {
           }
         }
       });
-    // .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
   searchText(text: string): PuntoDeInteres[] {

@@ -59,7 +59,7 @@ export class AppUseListComponent implements OnInit, OnDestroy {
       }))).subscribe(
         result => {
           // if (permisos.length === 0) return;
-          console.log('Elaboracion: ' + JSON.stringify(result));
+
           this.appUseList = result;
           this.loading = false;
         },
