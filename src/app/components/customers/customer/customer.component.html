@@ -3,8 +3,8 @@
     <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
   </div>
   <div class="modal-body">
-    <ngb-tabset>
-      <ngb-tab title="{{'PAGES.Labels.Customer' | translate}}">
+    <ngb-tabset (tabChange)="beforeChange($event)">
+      <ngb-tab id="customer" title="{{'PAGES.Labels.Customer' | translate}}">
         <ng-template ngbTabContent>
           <form [formGroup]='customerForm' (keydown.enter)="$event.preventDefault()">
             <div class="row">
@@ -50,13 +50,13 @@
             </div>
           </form>
           <div class="btn-group" role="group" aria-label="Basic example">
-            <button *ngIf="!this.custCtrls.telefono.enabled" (click)="editCliente(true)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
-            <button *ngIf="this.custCtrls.telefono.enabled" (click)="editCliente(false)" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
-            <button [disabled]="!this.custCtrls.telefono.enabled" (click)="saveCliente()" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+            <button *ngIf="!inEdition" (click)="edit('customer')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="inEdition" (click)="edit('customer')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!inEdition" (click)="save('customer')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.Holder' | translate}}">
+      <ngb-tab id="holder" title="{{'PAGES.Labels.Holder' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="col-md-6">
@@ -66,7 +66,7 @@
               </div>
               <div class="form-group">
                 <p class="label">{{'PAGES.Labels.HolderNames' | translate}}</p>
-                <p class="field">{{this.titular.nombres}} {{this.cliente.apellidos}}</p>
+                <p class="field">{{this.titular.nombres}} {{this.titular.apellidos}}</p>
               </div>
               <div class="form-group">
                 <p class="label">{{'PAGES.Labels.LegalPerson' | translate}}</p>
@@ -77,7 +77,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <p class="label">{{'PAGES.Labels.HolderPhone' | translate}}</p>
-                <p class="field">{{this.cliente.telefono}}</p>
+                <p class="field">{{this.titular.telefono}}</p>
               </div>
               <div class="form-group">
                 <p class="label">{{'PAGES.Labels.Email' | translate}}</p>
@@ -85,9 +85,14 @@
               </div>
             </div>
           </div>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button *ngIf="!inEdition" (click)="edit('holder')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="inEdition" (click)="edit('holder')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!inEdition" (click)="save('holder')" type="button" class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+          </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="dependientes.length > 0" title="{{'PAGES.Labels.DependentUsers' | translate}}">
+      <ngb-tab id="dependentUsers" *ngIf="dependientes.length > 0" title="{{'PAGES.Labels.DependentUsers' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -135,7 +140,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="dispositivos.length > 0" title="{{'PAGES.Labels.Devices' | translate}}">
+      <ngb-tab id="devices" *ngIf="dispositivos.length > 0" title="{{'PAGES.Labels.Devices' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -188,7 +193,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.VerificationCodes' | translate}}">
+      <ngb-tab id="verificationCodes" title="{{'PAGES.Labels.VerificationCodes' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -231,7 +236,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="{{'PAGES.Labels.ServiceProvider' | translate}}">
+      <ngb-tab id="serviceProvider" title="{{'PAGES.Labels.ServiceProvider' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="col-md-6">
@@ -264,7 +269,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="personaPaneles.length > 0" title="{{'PAGES.Labels.Panels' | translate}}">
+      <ngb-tab id="panels" *ngIf="personaPaneles.length > 0" title="{{'PAGES.Labels.Panels' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -312,7 +317,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="personaGps.length > 0" title="{{'PAGES.Labels.Gps' | translate}}">
+      <ngb-tab id="gps" *ngIf="personaGps.length > 0" title="{{'PAGES.Labels.Gps' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -353,7 +358,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="personaCamaras.length > 0" title="{{'PAGES.Labels.Cameras' | translate}}">
+      <ngb-tab id="cameras" *ngIf="personaCamaras.length > 0" title="{{'PAGES.Labels.Cameras' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">

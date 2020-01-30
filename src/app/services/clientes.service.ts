@@ -43,6 +43,24 @@ export class ClientesService {
     );
   }
 
+  getPersona(idPersona: number) {
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          return this.http.get(`${this.url}/persona/` + idPersona, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
   getTitular(idPersona: number) {
     return this.accountService.getProveedorId().pipe(
       switchMap(
@@ -210,6 +228,27 @@ export class ClientesService {
               }
             )
           )
+            ;
+        }
+      )
+    );
+  }
+
+  updateTitular(idPersona: number, idTitular: number) {
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          console.log('AccountData: ' + JSON.stringify(data));
+          // panel.idProveedorWeb = data.idProveedor;
+          return this.http.put(`${this.url}/Persona/${idPersona}/changeTitular/${idTitular}/prov/${data.idProveedor}`,
+                              { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
             ;
         }
       )
