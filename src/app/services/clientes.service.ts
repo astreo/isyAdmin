@@ -277,16 +277,33 @@ export class ClientesService {
     );
   }
 
-  deletePersonaProveedor(id: number) {
-    return this.http.delete(`${this.url}/x/${id}`, { headers: this.headers, observe: 'response' })
-      .pipe(
-        map(
-          (resp: any) => {
-            return resp.body;
-          }
-        )
+  deletePersonaProveedor(personaProveedor: PersonaProveedor) {
+    // const clienteVM = {} as  ClienteVM;
+    // Object.assign(clienteVM, cliente);
+
+            const httpOptions = {
+                headers: this.headers,
+                body: personaProveedor
+            };
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          personaProveedor.idUsuarioWeb = data.idUsuario;
+          personaProveedor.idProveedorWeb = data.idProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.delete(`${this.url}/PersonaProveedor/${personaProveedor.idPersonaProveedor}`,
+          httpOptions)
+          .pipe(
+            map(
+              () => {
+                return personaProveedor;
+              }
+            )
+          )
+            ;
+        }
       )
-      ;
+    );
   }
 
 }

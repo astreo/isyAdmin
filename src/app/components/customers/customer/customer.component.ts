@@ -491,7 +491,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
       .then((result) => {
         if (result) {
 
-          this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaProveedor(this.personaProveedor.idPersonaProveedor)
+          this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaProveedor(this.personaProveedor)
           .subscribe(
             response => {
               Swal.fire({
@@ -500,6 +500,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
                 type: 'success',
                 confirmButtonText: 'OK'
               });
+              this.activeModal.close();
             }
             ,
             (error) => {
@@ -652,6 +653,10 @@ export class CustomerComponent implements OnInit, OnDestroy {
     debugger;
     this.passEntry.emit(this.gps);
     this.activeModal.close(this.gps); */
+  }
+
+  close() {
+    this.activeModal.close();
   }
 
 }
