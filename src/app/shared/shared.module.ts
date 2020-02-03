@@ -10,6 +10,7 @@ import { ConfirmationDialogService } from './confirmation-dialog/confirmation-di
 import { CustomersDialogComponent } from './customers-dialog/customers-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PanelsDialogComponent } from './panels-dialog/panels-dialog.component';
 
 
 
@@ -27,7 +28,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NavbarComponent,
     SidebarComponent,
     ConfirmationDialogComponent,
-    CustomersDialogComponent
+    CustomersDialogComponent,
+    PanelsDialogComponent
   ],
   exports: [
     FooterComponent,
@@ -35,7 +37,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SidebarComponent,
     ConfirmationDialogComponent
   ],
-  providers: [ ConfirmationDialogService, CustomersDialogComponent ],
-  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent ]
+  providers: [ ConfirmationDialogService, CustomersDialogComponent, PanelsDialogComponent ],
+  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent, PanelsDialogComponent ]
 })
 export class SharedModule { }
