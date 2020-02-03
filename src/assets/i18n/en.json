@@ -91,6 +91,7 @@
         "Labels": {
             "KindCustomer": "Kind of Customer",
             "DocumentHolderDoNotExists": "The Document of the Holder Does Not Exist, mark that the Person owns or Completes the Data, you Can Also look for it",
+            "Account": "Account",
             "AccountNumber": "Account Number",
             "Actions": "Actions",
             "ServiceStates": "Select the State",

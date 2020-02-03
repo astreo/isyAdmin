@@ -1,9 +1,11 @@
+import { Gps } from './../../../models/gps.model';
+import { Panel } from './../../../models/paneles.model';
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Cliente, Titular, Dependiente, Dispositivo, CodigoVerificacion } from '../../../models/cliente.model';
 import { AbstractControl, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { FormType } from '../../../models/enum';
 import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ClientesService } from '../../../services/clientes.service';
 import Swal from 'sweetalert2';
 import { PersonaProveedor, PersonaPanel, PersonaGps, PersonaCamara } from '../../../models/relaciones.model';
@@ -13,6 +15,9 @@ import { clientes as actions } from '../../../store/actions';
 import { CustomersDialogComponent } from '../../../shared/customers-dialog/customers-dialog.component';
 import { SelectionModel } from '../../../models/misc.model';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
+import { CustomerPanelComponent } from '../customer-panel/customer-panel.component';
+import { UtilService } from '../../../services/util.service';
+import { CustomerGpsComponent } from '../customer-gps/customer-gps.component';
 
 declare class CustomerFormDataStructure {
   fields: Cliente;
@@ -73,6 +78,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
   getPersonaCamaraSubscription = new Subscription();
   updateTitularSubscription = new Subscription();
   deletePersonaProveedorSubscription = new Subscription();
+  personaPanelActionSubscription = new Subscription();
+  personaGpsActionSubscription = new Subscription();
 
   titular = {} as Titular;
   codigoVerificacion = {} as CodigoVerificacion;
@@ -118,7 +125,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
   tab1Page = 1;
   tab2Page = 1;
 
-  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder, public modalService: NgbModal,
+  constructor(public utilService: UtilService, public activeModal: NgbActiveModal, private formBuilder: FormBuilder,
+    public modalService: NgbModal,
     public clientesService: ClientesService,
     public confirmationDialogService: ConfirmationDialogService,
     public store: Store<AppState>) { }
@@ -157,6 +165,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getPersonaGpsSubscription.unsubscribe();
     this.getPersonaCamaraSubscription.unsubscribe();
     this.deletePersonaProveedorSubscription.unsubscribe();
+    this.personaPanelActionSubscription.unsubscribe();
   }
 
   setCustomerForm() {
@@ -266,16 +275,14 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getDependientesSubscription = this.clientesService.getDependientes(idPersona)
       .subscribe(
         result => {
-          // if (permisos.length === 0) return;
           this.loading = false;
-          // debugger;
           if (result.length === 0) {
-            Swal.fire({
+            /*Swal.fire({
               title: 'Error!',
               text: 'Dependientes no encontrados',
               type: 'error',
               confirmButtonText: 'OK'
-            });
+            });*/
           } else {
 
             this.dependientes = result;
@@ -297,16 +304,14 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getDispositivosSubscription = this.clientesService.getDispositivos(idPersona)
       .subscribe(
         result => {
-          // if (permisos.length === 0) return;
           this.loading = false;
-          // debugger;
           if (result.length === 0) {
-            Swal.fire({
+            /*Swal.fire({
               title: 'Error!',
               text: 'Dispositivos no encontrados',
               type: 'error',
               confirmButtonText: 'OK'
-            });
+            });*/
           } else {
 
             this.dispositivos = result;
@@ -390,16 +395,14 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getPersonaPanelesSubscription = this.clientesService.getPersonaPaneles(idPersona)
       .subscribe(
         result => {
-          // if (permisos.length === 0) return;
           this.loading = false;
-          // debugger;
           if (result.length === 0) {
-            Swal.fire({
+            /*Swal.fire({
               title: 'Error!',
               text: 'Paneles no encontrados',
               type: 'error',
               confirmButtonText: 'OK'
-            });
+            });*/
           } else {
 
             this.personaPaneles = result;
@@ -421,16 +424,14 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getPersonaGpsSubscription = this.clientesService.getPersonaGps(idPersona)
       .subscribe(
         result => {
-          // if (permisos.length === 0) return;
           this.loading = false;
-          // debugger;
           if (result.length === 0) {
-            Swal.fire({
+            /*Swal.fire({
               title: 'Error!',
               text: 'Gps no encontrados',
               type: 'error',
               confirmButtonText: 'OK'
-            });
+            });*/
           } else {
 
             this.personaGps = result;
@@ -456,12 +457,12 @@ export class CustomerComponent implements OnInit, OnDestroy {
           this.loading = false;
           // debugger;
           if (result.length === 0) {
-            Swal.fire({
+            /*Swal.fire({
               title: 'Error!',
-              text: 'Gps no encontrados',
+              text: 'Cámaras no encontradas',
               type: 'error',
               confirmButtonText: 'OK'
-            });
+            });*/
           } else {
 
             this.personaCamaras = result;
@@ -485,7 +486,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
   }
 
-  openConfirmationDialog() {
+  openConfirmationServiceDialog() {
     this.confirmationDialogService.confirm('Confirmación requerida',
       `Eliminar el servicio del proveedor "${this.personaProveedor.proveedor.nombre}"?`)
       .then((result) => {
@@ -497,6 +498,68 @@ export class CustomerComponent implements OnInit, OnDestroy {
               Swal.fire({
                 title: `Eliminado!`,
                 text: `El servicio ha sido eliminado con éxito`,
+                type: 'success',
+                confirmButtonText: 'OK'
+              });
+              this.activeModal.close();
+            }
+            ,
+            (error) => {
+              Swal.fire({
+                title: 'Error!',
+                text: error.message,
+                type: 'error',
+                confirmButtonText: 'OK'
+              });
+            });
+
+        }
+      });
+  }
+
+  openConfirmationPanelDialog(personaPanel: PersonaPanel) {
+    this.confirmationDialogService.confirm('Confirmación requerida',
+      `Eliminar el panel "${this.personaProveedor.proveedor.nombre}"?`)
+      .then((result) => {
+        if (result) {
+
+          this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaPanel(personaPanel.idPersonaPanel)
+          .subscribe(
+            response => {
+              Swal.fire({
+                title: `Eliminado!`,
+                text: `El panel ha sido eliminado con éxito`,
+                type: 'success',
+                confirmButtonText: 'OK'
+              });
+              this.activeModal.close();
+            }
+            ,
+            (error) => {
+              Swal.fire({
+                title: 'Error!',
+                text: error.message,
+                type: 'error',
+                confirmButtonText: 'OK'
+              });
+            });
+
+        }
+      });
+  }
+
+  openConfirmationGpsDialog(personaGps: PersonaGps) {
+    this.confirmationDialogService.confirm('Confirmación requerida',
+      `Eliminar el GPS "${this.personaProveedor.proveedor.nombre}"?`)
+      .then((result) => {
+        if (result) {
+
+          this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaGps(personaGps.idPersonaGps)
+          .subscribe(
+            response => {
+              Swal.fire({
+                title: `Eliminado!`,
+                text: `El GPS ha sido eliminado con éxito`,
                 type: 'success',
                 confirmButtonText: 'OK'
               });
@@ -586,7 +649,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
   saveCliente() {
     Object.assign(this.cliente, this.customerForm.value);
-    this.store.dispatch(new actions.ActualizarUsuario(this.cliente));
+    this.store.dispatch(new actions.ActualizarCliente(this.cliente));
     this.custCtrls.telefono.disable();
     // this.inEdition = false;
   }
@@ -642,6 +705,115 @@ export class CustomerComponent implements OnInit, OnDestroy {
         // Object.assign(this.titular, result);
         this.getPersona(result.idPersona);
         // this.customerForm.setValue(result);
+      }
+    });
+  }
+
+  openPanelInfoModal(item: PersonaPanel) {
+
+  }
+
+  openPanelModal(formType: FormType, item?: PersonaPanel) {
+    if (!item) {
+      item = {} as PersonaPanel;
+      item.idPersona = this.cliente.idPersona;
+      item.panel = {} as Panel;
+    }
+    debugger;
+    // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
+    const modalRef = this.modalService.open(CustomerPanelComponent, { size: 'sm', backdrop: 'static' });
+    modalRef.componentInstance.personaPanel = item;
+    modalRef.componentInstance.formType = formType;
+    modalRef.result.then((result: PersonaPanel) => {
+      if (result) {
+        console.log('item: ', result);
+        // tslint:disable-next-line: no-shadowed-variable
+        let action: Observable<any>;
+        let actionResult: string;
+        if (formType === FormType.NEW) {
+          actionResult = 'agregado';
+          action = this.clientesService.addPersonaPanel(result);
+          // problema al agregar por el TcpConnection
+        } else {
+          actionResult = 'actualizado';
+          action = this.clientesService.updatePersonaPanel(result);
+        }
+        this.personaPanelActionSubscription = action.subscribe(
+          response => {
+            Swal.fire({
+              title: `${this.utilService.textToTitleCase(actionResult)}!`,
+              text: `El punto ha sido ${actionResult} con éxito`,
+              type: 'success',
+              confirmButtonText: 'OK'
+            });
+            // debugger;
+            Object.assign(item, result);
+            if (formType === FormType.NEW) {
+              // this.getList();
+            }
+          }
+          ,
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
+      }
+    });
+  }
+
+  openGpsModal(formType: FormType, item?: PersonaGps) {
+    if (!item) {
+      item = {} as PersonaGps;
+      item.idPersona = this.cliente.idPersona;
+      item.gps = {} as Gps;
+    }
+    debugger;
+    // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
+    const modalRef = this.modalService.open(CustomerGpsComponent, { size: 'sm', backdrop: 'static' });
+    modalRef.componentInstance.personaGps = item;
+    modalRef.componentInstance.formType = formType;
+    modalRef.result.then((result: PersonaGps) => {
+      if (result) {
+        console.log('item: ', result);
+        // tslint:disable-next-line: no-shadowed-variable
+        let action: Observable<any>;
+        let actionResult: string;
+        if (formType === FormType.NEW) {
+          actionResult = 'agregado';
+          action = this.clientesService.addPersonaGps(result);
+          this.getPersonaGps(this.cliente.idPersona); // problema al agregar por el TcpConnection
+        } else {
+          actionResult = 'actualizado';
+          action = this.clientesService.updatePersonaGps(result);
+        }
+        this.personaGpsActionSubscription = action.subscribe(
+          response => {
+            debugger;
+            Swal.fire({
+              title: `${this.utilService.textToTitleCase(actionResult)}!`,
+              text: `El punto ha sido ${actionResult} con éxito`,
+              type: 'success',
+              confirmButtonText: 'OK'
+            });
+            debugger;
+            Object.assign(item, result);
+            if (formType === FormType.NEW) {
+              // this.getList();
+            }
+          }
+          ,
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
       }
     });
   }

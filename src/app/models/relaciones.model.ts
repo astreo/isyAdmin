@@ -61,7 +61,7 @@ export interface PersonaPanel {
   idPersonaPanel:       number;
   idPersona:            number;
   idPanel:              number;
-  idZona:               null;
+  idZona:               number;
   alias:                string;
   alarma:               string;
   activado:             string;
@@ -71,7 +71,7 @@ export interface PersonaPanel {
   fechaCreacion:        string;
   fechaCreacionUtc:     string;
   fechaModificacion:    string;
-  fechaModificacionUtc: null;
+  fechaModificacionUtc: string;
   panel:                Panel;
   persona:              null;
   zona:                 null;

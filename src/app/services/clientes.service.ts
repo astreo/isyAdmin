@@ -8,7 +8,7 @@ import { AppState } from '../store/app.reducer';
 import { Subscription } from 'rxjs';
 import { AccountService } from './account.service';
 import { Cliente, ClienteVM } from '../models/cliente.model';
-import { PersonaProveedor } from '../models/relaciones.model';
+import { PersonaProveedor, PersonaPanel, PersonaGps } from '../models/relaciones.model';
 
 @Injectable({
   providedIn: 'root'
@@ -211,7 +211,7 @@ export class ClientesService {
   }
 
   updatePersona(cliente: Cliente) {
-    const clienteVM = {} as  ClienteVM;
+    const clienteVM = {} as ClienteVM;
     Object.assign(clienteVM, cliente);
     return this.accountService.getAccountData().pipe(
       switchMap(
@@ -220,13 +220,35 @@ export class ClientesService {
           clienteVM.idProveedorWeb = data.idProveedor;
           // panel.idPuntoInteres = id;
           return this.http.put(`${this.url}/Persona/` + clienteVM.idPersona, clienteVM, { headers: this.headers, observe: 'response' })
-          .pipe(
-            map(
-              () => {
-                return cliente;
-              }
+            .pipe(
+              map(
+                () => {
+                  return cliente;
+                }
+              )
             )
-          )
+            ;
+        }
+      )
+    );
+  }
+
+  addPersona(clienteVM: ClienteVM) {
+    debugger;
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          clienteVM.idUsuarioWeb = data.idUsuario;
+          clienteVM.idProveedorWeb = data.idProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.post(`${this.url}/Persona/`, clienteVM, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  return clienteVM;
+                }
+              )
+            )
             ;
         }
       )
@@ -239,7 +261,7 @@ export class ClientesService {
         (data) => {
           // panel.idProveedorWeb = data.idProveedor;
           return this.http.put(`${this.url}/Persona/${idPersona}/changeTitular/${idTitular}/prov/${data.idProveedor}`,
-                              { headers: this.headers, observe: 'response' })
+            { headers: this.headers, observe: 'response' })
             .pipe(
               map(
                 (resp: any) => {
@@ -263,14 +285,133 @@ export class ClientesService {
           personaProveedor.idProveedorWeb = data.idProveedor;
           // panel.idPuntoInteres = id;
           return this.http.put(`${this.url}/PersonaProveedor/` + personaProveedor.idPersonaProveedor, personaProveedor,
-                               { headers: this.headers, observe: 'response' })
-          .pipe(
-            map(
-              () => {
-                return personaProveedor;
-              }
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  return personaProveedor;
+                }
+              )
             )
-          )
+            ;
+        }
+      )
+    );
+  }
+
+  updatePersonaGps(personaGps: PersonaGps) {
+    // const clienteVM = {} as  ClienteVM;
+    // Object.assign(clienteVM, cliente);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          personaGps.idUsuarioWeb = data.idUsuario;
+          personaGps.idProveedorWeb = data.idProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.put(`${this.url}/PersonaGps/` + personaGps.idPersonaGps, personaGps,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  return personaGps;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  addPersonaGps(personaGps: PersonaGps) {
+    console.log('addPunto: ' + JSON.stringify(personaGps));
+    // let userNew = {} as UsuarioList;
+    // userNew = Object.assign(userNew, usuario);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          personaGps.idPersonaGps = 0;
+          personaGps.idUsuarioWeb = data.idUsuario;
+          personaGps.idProveedorWeb = data.idProveedor;
+          // personaPanel.idProveedor = data.idProveedor;
+          const proveedor = {
+            nombreProveedor: data.nombreProveedor,
+            aliasProveedor: data.aliasProveedor
+          };
+          const info = {
+            personaGps: personaGps,
+            proveedor: proveedor
+          };
+          debugger;
+          // panel.idPuntoInteres = id;
+          return this.http.post(`${this.url}/PersonaGps/`, info, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  debugger;
+                  return personaGps;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  updatePersonaPanel(personaPanel: PersonaPanel) {
+    // const clienteVM = {} as  ClienteVM;
+    // Object.assign(clienteVM, cliente);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          personaPanel.idUsuarioWeb = data.idUsuario;
+          personaPanel.idProveedorWeb = data.idProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.put(`${this.url}/PersonaPanel/` + personaPanel.idPersonaPanel, personaPanel,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  return personaPanel;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  addPersonaPanel(personaPanel: PersonaPanel) {
+    console.log('addPunto: ' + JSON.stringify(personaPanel));
+    // let userNew = {} as UsuarioList;
+    // userNew = Object.assign(userNew, usuario);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          personaPanel.idPersonaPanel = 0;
+          personaPanel.idUsuarioWeb = data.idUsuario;
+          personaPanel.idProveedorWeb = data.idProveedor;
+          // personaPanel.idProveedor = data.idProveedor;
+          const proveedor = {
+            nombreProveedor: data.nombreProveedor,
+            aliasProveedor: data.aliasProveedor
+          };
+          const info = {
+            personaPanel: personaPanel,
+            proveedor: proveedor
+          };
+          debugger;
+          // panel.idPuntoInteres = id;
+          return this.http.post(`${this.url}/PersonaPanel/`, info, { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp;
+                }
+              )
+            )
             ;
         }
       )
@@ -281,10 +422,10 @@ export class ClientesService {
     // const clienteVM = {} as  ClienteVM;
     // Object.assign(clienteVM, cliente);
 
-            const httpOptions = {
-                headers: this.headers,
-                body: personaProveedor
-            };
+    const httpOptions = {
+      headers: this.headers,
+      body: personaProveedor
+    };
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
@@ -292,18 +433,44 @@ export class ClientesService {
           personaProveedor.idProveedorWeb = data.idProveedor;
           // panel.idPuntoInteres = id;
           return this.http.delete(`${this.url}/PersonaProveedor/${personaProveedor.idPersonaProveedor}`,
-          httpOptions)
-          .pipe(
-            map(
-              () => {
-                return personaProveedor;
-              }
+            httpOptions)
+            .pipe(
+              map(
+                () => {
+                  return personaProveedor;
+                }
+              )
             )
-          )
             ;
         }
       )
     );
+  }
+
+  deletePersonaPanel(id: number) {
+    debugger;
+    return this.http.delete(`${this.url}/PersonaPanel/${id}`, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
+  }
+
+  deletePersonaGps(id: number) {
+    debugger;
+    return this.http.delete(`${this.url}/PersonaGps/${id}`, { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
   }
 
 }

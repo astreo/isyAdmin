@@ -93,7 +93,7 @@ export class PanelComponent implements OnInit {
       default:
         break;
     }
-
+debugger;
     this.form = this.formBuilder.group({
       idPanel: [this.panel.idPanel],
       customerId: [this.panel.customerId, Validators.required],

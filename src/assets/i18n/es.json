@@ -92,6 +92,7 @@
         "Labels": {
             "KindCustomer": "Tipo de cliente",
             "DocumentHolderDoNotExists": "El documento del titular no existe, marque que la persona es titular o complete los datos, tambien puede buscarlo.",
+            "Account": "Cuenta",
             "AccountNumber": "Número de Cuenta",
             "HolderEnteredByCustomer": "Titular ingresado por el cliente",
             "ServiceStates": "Seleccionar el estado",

@@ -17,7 +17,6 @@ export class PanelsDialogComponent implements OnInit, OnDestroy {
   panels$: Observable<Panel[]>;
 
   loadedSubsctiption = new Subscription();
-  getClientesFromStoreSubscription = new Subscription();
   subscription = new Subscription();
 
   pageSize = 10;
@@ -34,7 +33,7 @@ export class PanelsDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.getClientesFromStoreSubscription.unsubscribe();
+    this.subscription.unsubscribe();
     this.loadedSubsctiption.unsubscribe();
   }
 

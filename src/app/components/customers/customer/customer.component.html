@@ -310,8 +310,8 @@
               class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
             <button [disabled]="!inEdition" (click)="save('serviceProvider')" type="button"
               class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
-              <button (click)="openConfirmationDialog(providerForm.value)" type="button"
-                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
+            <button (click)="openConfirmationServiceDialog(providerForm.value)" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
           </div>
         </ng-template>
       </ngb-tab>
@@ -334,7 +334,10 @@
                     <th>
                       {{'PAGES.TableHeaders.TypeOfCommunicator' | translate}}
                     </th>
-
+                    <th>
+                      <button (click)="openPanelModal(FormType.NEW)" type="button"
+                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-plus"></i></button>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -351,6 +354,16 @@
                     </td>
                     <td>
                       {{personaPanel.panel.tipoComunicador}}
+                    </td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Basic example">
+                        <button (click)="openPanelModal(FormType.EDIT, personaPanel)" type="button"
+                          class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+                        <button (click)="openConfirmationPanelDialog(personaPanel)" type="button"
+                          class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
+                        <!-- <button (click)="openPanelInfoModal(personaPanel)" type="button"
+                          class="btn btn-outline-secondary icon-btn"><i class="fa fa-list-alt"></i></button> -->
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -379,6 +392,10 @@
                     <th>
                       {{'PAGES.TableHeaders.Alias' | translate}}
                     </th>
+                    <th>
+                      <button (click)="openGpsModal(FormType.NEW)" type="button"
+                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-plus"></i></button>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -392,6 +409,16 @@
                     </td>
                     <td>
                       {{personaGpsDet.alias}}
+                    </td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Basic example">
+                        <button (click)="openGpsModal(FormType.EDIT, personaGpsDet)" type="button"
+                          class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+                        <button (click)="openConfirmationGpsDialog(personaGpsDet)" type="button"
+                          class="btn btn-outline-secondary icon-btn"><i class="fa fa-trash-o"></i></button>
+                        <!-- <button (click)="openPanelInfoModal(personaPanel)" type="button"
+                          class="btn btn-outline-secondary icon-btn"><i class="fa fa-list-alt"></i></button> -->
+                      </div>
                     </td>
                   </tr>
                 </tbody>

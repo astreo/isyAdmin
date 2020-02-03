@@ -1,0 +1,53 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+            <button *ngIf="this.formType === FormType.NEW" type="button" (click)="openModal()" class="btn social-btn btn-primary btn-rounded"> <i class="fa fa-search text-white"></i></button>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Account' | translate}}</label>
+              <input type="text" readonly class="form-control" formControlName='customerId'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.customerId) }">
+              <div *ngIf="isInvalid(ctrls.customerId)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.customerId)}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Alias' | translate}}</label>
+              <input type="text" class="form-control" formControlName='alias'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.alias) }">
+              <div *ngIf="isInvalid(ctrls.alias)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.alias)}}
+              </div>
+            </div>
+
+            <ng-container *ngIf="this.formType === FormType.EDIT">
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.TypeOfCommunicator' | translate}}</p>
+                <p class="field">{{this.personaPanel.panel.tipoComunicador}}</p>
+              </div>
+
+              <div class="form-group">
+                <p class="label">{{'PAGES.Labels.CreatedDate' | translate}}</p>
+                <p class="field">{{this.personaPanel.panel.fechaCreacion}}</p>
+              </div>
+            </ng-container>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>

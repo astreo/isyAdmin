@@ -2,7 +2,7 @@ import { CustomerComponent } from './../customer/customer.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormType } from '../../../models/enum';
 import { Observable, Subscription } from 'rxjs';
-import { Cliente } from '../../../models/cliente.model';
+import { Cliente, ClienteVM } from '../../../models/cliente.model';
 import { FormControl } from '@angular/forms';
 import { AppState } from '../../../store/app.reducer';
 import { Store } from '@ngrx/store';
@@ -11,6 +11,7 @@ import { DecimalPipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { startWith, map } from 'rxjs/operators';
+import { CustomerAddComponent } from '../customer-add/customer-add.component';
 
 @Component({
   selector: 'app-customers-list',
@@ -79,6 +80,27 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: Cliente) => {
       if (result) {
+        /*
+        if (customer.idUsuario) {
+          // customer = Object.assign(customer, result);
+          this.store.dispatch(new actions.ActualizarUsuario(Object.assign(customer, result)));
+        } else {
+          this.store.dispatch(new actions.AgregarUsuario(result));
+        }
+        */
+      }
+    });
+  }
+
+  openAddModal(formType: FormType) {
+    const size = 'sm';
+    const modalRef = this.modalService.open(CustomerAddComponent, { size: size, backdrop: 'static' });
+    // modalRef.componentInstance.cliente = customer;
+    // modalRef.componentInstance.formType = formType;
+    modalRef.result.then((result: ClienteVM) => {
+      if (result) {
+        debugger;
+        this.store.dispatch(new actions.AgregarCliente(result));
         /*
         if (customer.idUsuario) {
           // customer = Object.assign(customer, result);

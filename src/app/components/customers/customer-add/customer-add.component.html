@@ -1,0 +1,67 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.DocumentNumber' | translate}}</label>
+              <input type="text" class="form-control" formControlName='nroDocumento'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.nroDocumento) }">
+              <div *ngIf="isInvalid(ctrls.nroDocumento)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.nroDocumento)}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Names' | translate}}</label>
+              <input type="text" class="form-control" formControlName='nombres'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.nombres) }">
+              <div *ngIf="isInvalid(ctrls.nombres)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.nombres)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.LastNames' | translate}}</label>
+              <input type="text" class="form-control" formControlName='apellidos'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.apellidos) }">
+              <div *ngIf="isInvalid(ctrls.apellidos)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.apellidos)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Phone' | translate}}</label>
+              <input type="text" class="form-control" formControlName='telefono'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.telefono) }">
+              <div *ngIf="isInvalid(ctrls.telefono)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.telefono)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Email' | translate}}</label>
+              <input type="text" class="form-control" formControlName='email'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.email) }">
+              <div *ngIf="isInvalid(ctrls.email)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.email)}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>

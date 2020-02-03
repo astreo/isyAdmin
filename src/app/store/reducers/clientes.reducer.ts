@@ -45,7 +45,36 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
         }
       };
 
-      // --
+   // --
+   case actions.AGREGAR_CLIENTE:
+    return {
+      ...state,
+      loading: true,
+    };
+
+  case actions.AGREGAR_CLIENTE_SUCCESS:
+      console.log('nuevo cliente');
+    console.log(action.cliente);
+    return {
+      ...state,
+      loading: false,
+      loaded: true,
+      clientes: [...state.clientes, action.cliente]
+    };
+
+  case actions.AGREGAR_CLIENTE_FAIL:
+    return {
+      ...state,
+      loading: false,
+      loaded: false,
+      error: {
+        status: action.payload.status,
+        message: action.payload.message,
+        url: action.payload.url
+      }
+    };
+  // --
+
     case actions.ACTUALIZAR_CLIENTE:
       return {
         ...state,

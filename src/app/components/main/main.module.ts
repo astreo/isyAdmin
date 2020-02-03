@@ -27,6 +27,9 @@ import { GpsListComponent } from '../gps/gps-list/gps-list.component';
 import { GpsDetailComponent } from '../gps/gps-detail/gps-detail.component';
 import { CustomersListComponent } from '../customers/customers-list/customers-list.component';
 import { CustomerComponent } from '../customers/customer/customer.component';
+import { CustomerPanelComponent } from '../customers/customer-panel/customer-panel.component';
+import { CustomerGpsComponent } from '../customers/customer-gps/customer-gps.component';
+import { CustomerAddComponent } from '../customers/customer-add/customer-add.component';
 
 
 
@@ -48,7 +51,10 @@ import { CustomerComponent } from '../customers/customer/customer.component';
     GpsListComponent,
     GpsDetailComponent,
     CustomersListComponent,
-    CustomerComponent
+    CustomerComponent,
+    CustomerPanelComponent,
+    CustomerGpsComponent,
+    CustomerAddComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -66,6 +72,16 @@ import { CustomerComponent } from '../customers/customer/customer.component';
     })
     // StoreModule.forFeature('account', reducer)
   ],
-  entryComponents: [UserComponent, PointComponent, DangerZoneComponent, PanelComponent, GpsDetailComponent, CustomerComponent]
+  entryComponents: [
+    UserComponent,
+    PointComponent,
+    DangerZoneComponent,
+    PanelComponent,
+    GpsDetailComponent,
+    CustomerComponent,
+    CustomerPanelComponent,
+    CustomerGpsComponent,
+    CustomerAddComponent
+  ]
 })
 export class MainModule { }

@@ -11,6 +11,7 @@ import { CustomersDialogComponent } from './customers-dialog/customers-dialog.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PanelsDialogComponent } from './panels-dialog/panels-dialog.component';
+import { GpsDialogComponent } from './gps-dialog/gps-dialog.component';
 
 
 
@@ -29,7 +30,8 @@ import { PanelsDialogComponent } from './panels-dialog/panels-dialog.component';
     SidebarComponent,
     ConfirmationDialogComponent,
     CustomersDialogComponent,
-    PanelsDialogComponent
+    PanelsDialogComponent,
+    GpsDialogComponent
   ],
   exports: [
     FooterComponent,
@@ -37,7 +39,7 @@ import { PanelsDialogComponent } from './panels-dialog/panels-dialog.component';
     SidebarComponent,
     ConfirmationDialogComponent
   ],
-  providers: [ ConfirmationDialogService, CustomersDialogComponent, PanelsDialogComponent ],
-  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent, PanelsDialogComponent ]
+  providers: [ ConfirmationDialogService, CustomersDialogComponent, PanelsDialogComponent, GpsDialogComponent ],
+  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent, PanelsDialogComponent, GpsDialogComponent ]
 })
 export class SharedModule { }

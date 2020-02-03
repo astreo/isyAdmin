@@ -39,9 +39,9 @@ export class ClientesEffects {
     );
 
   @Effect()
-  actualizarUsuario$ = this.actions$.pipe(
+  actualizarCliente$ = this.actions$.pipe(
     ofType(actions.ACTUALIZAR_CLIENTE),
-    map((action: actions.ActualizarUsuario) => action),
+    map((action: actions.ActualizarCliente) => action),
     switchMap((payload) => this.clientesService.updatePersona(payload.cliente)
       .pipe(
         map(response => {
@@ -51,7 +51,7 @@ export class ClientesEffects {
             type: 'success',
             confirmButtonText: 'OK'
           });
-          return new actions.ActualizarUsuarioSuccess();
+          return new actions.ActualizarClienteSuccess();
         }
         ),
         catchError(error => {
@@ -61,10 +61,41 @@ export class ClientesEffects {
             type: 'error',
             confirmButtonText: 'OK'
           });
-          return of(new actions.ActualizarUsuarioFail(error));
+          return of(new actions.ActualizarClienteFail(error));
         }
         ))
     )
   );
+
+   // --
+  @Effect()
+  agregarCliente$ = this.actions$.pipe(
+    ofType(actions.AGREGAR_CLIENTE),
+    map((action: actions.AgregarCliente) => action),
+    switchMap((action) => this.clientesService.addPersona(action.cliente)
+      .pipe(
+        map(response => {
+          Swal.fire({
+            title: 'Agregado!',
+            text: `El cliente ${action.cliente.idCliente} ha sido agregado con éxito`,
+            type: 'success',
+            confirmButtonText: 'OK'
+          });
+          return new actions.AgregarClienteSuccess(response);
+        }
+        ),
+        catchError(error => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+          return of(new actions.AgregarClienteFail(error));
+        }
+        ))
+    )
+  );
+  // --
 
 }
