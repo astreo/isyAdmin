@@ -99,7 +99,6 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     // modalRef.componentInstance.formType = formType;
     modalRef.result.then((result: ClienteVM) => {
       if (result) {
-        debugger;
         this.store.dispatch(new actions.AgregarCliente(result));
         /*
         if (customer.idUsuario) {

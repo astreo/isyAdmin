@@ -234,14 +234,22 @@ export class ClientesService {
   }
 
   addPersona(clienteVM: ClienteVM) {
-    debugger;
     return this.accountService.getAccountData().pipe(
       switchMap(
         (data) => {
+          clienteVM.idPersona = 0;
           clienteVM.idUsuarioWeb = data.idUsuario;
           clienteVM.idProveedorWeb = data.idProveedor;
+          const proveedor = {
+            nombreProveedor: data.nombreProveedor,
+            aliasProveedor: data.aliasProveedor
+          };
+          const info = {
+            persona: clienteVM,
+            proveedor: proveedor
+          };
           // panel.idPuntoInteres = id;
-          return this.http.post(`${this.url}/Persona/`, clienteVM, { headers: this.headers, observe: 'response' })
+          return this.http.post(`${this.url}/Persona/`, info, { headers: this.headers, observe: 'response' })
             .pipe(
               map(
                 () => {
@@ -342,13 +350,10 @@ export class ClientesService {
             personaGps: personaGps,
             proveedor: proveedor
           };
-          debugger;
-          // panel.idPuntoInteres = id;
           return this.http.post(`${this.url}/PersonaGps/`, info, { headers: this.headers, observe: 'response' })
             .pipe(
               map(
                 () => {
-                  debugger;
                   return personaGps;
                 }
               )
@@ -402,7 +407,6 @@ export class ClientesService {
             personaPanel: personaPanel,
             proveedor: proveedor
           };
-          debugger;
           // panel.idPuntoInteres = id;
           return this.http.post(`${this.url}/PersonaPanel/`, info, { headers: this.headers, observe: 'response' })
             .pipe(
@@ -448,7 +452,6 @@ export class ClientesService {
   }
 
   deletePersonaPanel(id: number) {
-    debugger;
     return this.http.delete(`${this.url}/PersonaPanel/${id}`, { headers: this.headers, observe: 'response' })
       .pipe(
         map(
@@ -461,7 +464,6 @@ export class ClientesService {
   }
 
   deletePersonaGps(id: number) {
-    debugger;
     return this.http.delete(`${this.url}/PersonaGps/${id}`, { headers: this.headers, observe: 'response' })
       .pipe(
         map(
