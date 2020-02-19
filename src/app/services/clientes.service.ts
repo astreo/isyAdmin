@@ -81,6 +81,25 @@ export class ClientesService {
     );
   }
 
+  getPendientes() {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/persona/pendientes/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
   getDependientes(idPersona: number) {
     return this.accountService.getProveedorId().pipe(
       switchMap(
@@ -170,6 +189,21 @@ export class ClientesService {
         }
       )
     );
+  }
+
+  getPersonaPanelEventos(idPersonaPanel: number) {
+    // debugger;
+    return this.http.get(`${this.url}/eventoAlarma/personapanel/${idPersonaPanel}/take/10`,
+      { headers: this.headers, observe: 'response' })
+      .pipe(
+        map(
+          (resp: any) => {
+            return resp.body;
+          }
+        )
+      )
+      ;
+
   }
 
   getPersonaGps(idPersona: number) {

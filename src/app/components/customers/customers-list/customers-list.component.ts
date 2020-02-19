@@ -12,6 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { startWith, map } from 'rxjs/operators';
 import { CustomerAddComponent } from '../customer-add/customer-add.component';
+import { ClientesService } from '../../../services/clientes.service';
 
 @Component({
   selector: 'app-customers-list',
@@ -21,24 +22,30 @@ import { CustomerAddComponent } from '../customer-add/customer-add.component';
 export class CustomersListComponent implements OnInit, OnDestroy {
   FormType = FormType;
   formType: FormType;
+  loading: boolean;
   loading$: Observable<boolean>;
   clientes = {} as Cliente[];
+  pendientes = {} as Cliente[];
+  pendientes$: Observable<Cliente[]>;
   clientes$: Observable<Cliente[]>;
   loaded$ = this.store.select(state => state.clientes.loaded);
 
   loadedSubsctiption = new Subscription();
   accountSubscription = new Subscription();
   getClientesFromStoreSubscription = new Subscription();
+  getPendientesSubscription = new Subscription();
 
   pageSize = 10;
   page = 1;
 
-  textFilter = new FormControl('');
+  custTextFilter = new FormControl('');
+  pendTextFilter = new FormControl('');
 
-  constructor(public store: Store<AppState>, public modalService: NgbModal,
+  constructor(public store: Store<AppState>, public modalService: NgbModal, public clientesService: ClientesService,
     public confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
+    this.getPendientes();
     this.loading$ = this.store.select(state => state.clientes.loading);
     this.loadedSubsctiption = this.loaded$.subscribe(loaded => {
       if (!loaded) {
@@ -53,6 +60,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.accountSubscription.unsubscribe();
     this.getClientesFromStoreSubscription.unsubscribe();
+    this.getPendientesSubscription.unsubscribe();
     this.loadedSubsctiption.unsubscribe();
   }
 
@@ -61,9 +69,23 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     this.getClientesFromStoreSubscription = this.store.select(state => state.clientes.clientes)
       .subscribe(items => {
         this.clientes = items;
-        this.clientes$ = this.textFilter.valueChanges.pipe(
+        this.clientes$ = this.custTextFilter.valueChanges.pipe(
           startWith(''),
-          map(text => this.searchText(text))
+          map(text => this.searchTextClientes(text))
+        );
+      });
+  }
+
+  getPendientes() {
+    this.loading = true;
+    this.getPendientesSubscription = this.clientesService.getPendientes()
+      .subscribe(result => {
+        this.loading = false;
+        // debugger;
+        this.pendientes = result;
+        this.pendientes$ = this.pendTextFilter.valueChanges.pipe(
+          startWith(''),
+          map(text => this.searchTextPendientes(text))
         );
       });
   }
@@ -127,7 +149,7 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     // .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
 
-  searchText(text: string): Cliente[] {
+  searchTextClientes(text: string): Cliente[] {
     return this.clientes.map((obj) => {
       obj.apellidos = obj.apellidos ? obj.apellidos : '';
       obj.nroDocumento = obj.nroDocumento ? obj.nroDocumento : '';
@@ -138,6 +160,21 @@ export class CustomersListComponent implements OnInit, OnDestroy {
         // || clientes.apellidos.toLowerCase().includes(term)
         || clientes.nroDocumento.toLowerCase().includes(term)
         || clientes.telefono.toLowerCase().includes(term)
+        ;
+    });
+  }
+
+  searchTextPendientes(text: string): Cliente[] {
+    return this.pendientes.map((obj) => {
+      obj.apellidos = obj.apellidos ? obj.apellidos : '';
+      obj.nroDocumento = obj.nroDocumento ? obj.nroDocumento : '';
+      return obj;
+    }).filter(pendientes => {
+      const term = text.toLowerCase();
+      return (pendientes.nombres.trim() + ' ' + pendientes.apellidos.trim()).toLowerCase().includes(term)
+        // || pendientes.apellidos.toLowerCase().includes(term)
+        || pendientes.nroDocumento.toLowerCase().includes(term)
+        || pendientes.telefono.toLowerCase().includes(term)
         ;
     });
   }

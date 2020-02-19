@@ -59,7 +59,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="holder" title="{{'PAGES.Labels.Holder' | translate}}">
+      <ngb-tab id="holder" *ngIf="titular.nroDocumento" title="{{'PAGES.Labels.Holder' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="col-md-6">
@@ -249,7 +249,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="serviceProvider" title="{{'PAGES.Labels.ServiceProvider' | translate}}">
+      <ngb-tab id="serviceProvider" *ngIf="personaProveedor.proveedor" title="{{'PAGES.Labels.ServiceProvider' | translate}}">
         <ng-template ngbTabContent>
           <form [formGroup]='providerForm' (keydown.enter)="$event.preventDefault()">
             <div class="row">
