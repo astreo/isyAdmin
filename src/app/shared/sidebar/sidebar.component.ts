@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(public store: Store<AppState>, private translate: TranslateService) { }
 
   ngOnInit() {
-
+    // this.cambiaIdioma('es');
     this.subscription = this.store.select('account')
       .pipe(
         map(item => ({ menu: item.usuario.perfilNivel })),

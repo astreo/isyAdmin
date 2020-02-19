@@ -18,6 +18,7 @@ export class ProveedorService {
   constructor(private http: HttpClient, private utilService: UtilService) { }
 
   getProveedores(idProveedor: number) {
+    console.log(`${this.url}/Proveedor/lista/` + idProveedor, 'proveedor');
     return this.http.get(`${this.url}/Proveedor/lista/` + idProveedor, { headers: this.headers, observe: 'response' })
       .pipe(
         map(

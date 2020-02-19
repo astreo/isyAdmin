@@ -18,7 +18,15 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUrl: string;
 
   constructor(private translate: TranslateService, private router: Router, public store: Store<AppState>) {
-    translate.setDefaultLang('es');
+    // translate.setDefaultLang('es');
+    /*let userLang = navigator.language.split('-')[0];
+    userLang = /(en|de|it|fr|es|be)/gi.test(userLang) ? userLang : 'en';
+    this.translate.use(userLang);*/
+    translate.addLangs(['en', 'es']);
+    translate.setDefaultLang('en');
+
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|es/) ? browserLang : 'en');
   }
 
   ngOnInit() {

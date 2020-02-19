@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.reducer';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 declare interface LoggedUser {
   nombre: string;
@@ -32,11 +34,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       document.querySelector('.sidebar-offcanvas').classList.remove('active');
     }
   }
-  constructor(config: NgbDropdownConfig, public store: Store<AppState>) {
+  constructor(private translate: TranslateService, private router: Router, config: NgbDropdownConfig, public store: Store<AppState>) {
     config.placement = 'bottom-right';
   }
 
   ngOnInit() {
+    // this.cambiaIdioma('en');
     /*this.store.select('account')
       .subscribe(result => {
         this.loggedUser.nombre = result.usuario.nombres + ' ' + result.usuario.apellidos;
@@ -58,6 +61,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  cambiaIdioma(idioma: string) {
+    console.log(`Traduzco a: ${idioma}`);
+    this.translate.use(idioma);
+  }
+
+  close() {
+    console.log('salir');
+    this.router.navigate(['/login']);
   }
 
 }
