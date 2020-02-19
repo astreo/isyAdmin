@@ -1,0 +1,37 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title">Lista de los ultimos 10 eventos</h4>
+  </div>
+  <div class="modal-body">
+
+    <div class="table-responsive">
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>
+              {{'PAGES.TableHeaders.Date' | translate}}
+            </th>
+            <th>
+              {{'PAGES.TableHeaders.Description' | translate}}
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="panelEventos.length>0">
+          <tr *ngFor="let item of panelEventos">
+            <td>
+              {{item.fechaCreacion}}
+            </td>
+            <td>
+              {{item.entryLogText}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn social-btn btn-outline-secondary icon-btn" (click)="activeModal.close('Close click')"><i
+      class="fa fa-times"></i>
+  </button>
+  </div>
+</div>

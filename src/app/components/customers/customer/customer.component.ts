@@ -18,6 +18,7 @@ import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/c
 import { CustomerPanelComponent } from '../customer-panel/customer-panel.component';
 import { UtilService } from '../../../services/util.service';
 import { CustomerGpsComponent } from '../customer-gps/customer-gps.component';
+import { CustomerPanelEventsComponent } from '../customer-panel-events/customer-panel-events.component';
 
 declare class CustomerFormDataStructure {
   fields: Cliente;
@@ -710,7 +711,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
   }
 
   openPanelInfoModal(item: PersonaPanel) {
-
+    // const modalRef = this.modalService.open(CustomerPanelEventsComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(CustomerPanelEventsComponent);
+    modalRef.componentInstance.idPersonaPanel = item.idPersonaPanel;
   }
 
   openPanelModal(formType: FormType, item?: PersonaPanel) {
