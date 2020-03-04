@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(
         map(item => ({
           nombre: (item.usuario.nombres + ' ' + item.usuario.apellidos),
-          proveedor: item.usuario.proveedor.nombre,
+          proveedor: item.usuario.proveedor.alias,
           urlLogo: item.usuario.proveedor.urlLogo
         })),
         )

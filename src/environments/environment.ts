@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 // const url = 'http://localhost:53069';
 
-const url = 'http://192.168.0.11/isywebadmin';
+// const url = 'http://192.168.0.11/isywebadmin';
+const url = 'https://www.isy.mobi/isywebadmin2';
 
 export const environment = {
   production: false,

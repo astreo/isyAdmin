@@ -338,10 +338,10 @@ MIT
 @ngx-translate/core
 MIT
 
-@angular/forms
+@ngrx/store
 MIT
 
-@ngrx/store
+@angular/forms
 MIT
 
 zone.js

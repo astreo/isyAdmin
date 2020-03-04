@@ -98,7 +98,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="dependentUsers" *ngIf="dependientes.length > 0"
+      <ngb-tab id="dependentUsers"
         title="{{'PAGES.Labels.DependentUsers' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
@@ -121,7 +121,7 @@
 
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="dependientes.length > 0">
                   <tr
                     *ngFor="let dependiente of dependientes | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
                     <td>
@@ -147,7 +147,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="devices" *ngIf="dispositivos.length > 0" title="{{'PAGES.Labels.Devices' | translate}}">
+      <ngb-tab id="devices" title="{{'PAGES.Labels.Devices' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -171,7 +171,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="dispositivos.length > 0">
                   <tr
                     *ngFor="let dispositivo of dispositivos | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
                     <td>
@@ -315,7 +315,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="panels" *ngIf="personaPaneles.length > 0" title="{{'PAGES.Labels.Panels' | translate}}">
+      <ngb-tab id="panels" title="{{'PAGES.Labels.Panels' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -340,7 +340,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="personaPaneles.length > 0">
                   <tr
                     *ngFor="let personaPanel of personaPaneles | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
                     <td>
@@ -376,7 +376,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="gps" *ngIf="personaGps.length > 0" title="{{'PAGES.Labels.Gps' | translate}}">
+      <ngb-tab id="gps" title="{{'PAGES.Labels.Gps' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -398,7 +398,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="personaGps.length > 0">
                   <tr
                     *ngFor="let personaGpsDet of personaGps | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
                     <td>
@@ -431,7 +431,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="cameras" *ngIf="personaCamaras.length > 0" title="{{'PAGES.Labels.Cameras' | translate}}">
+      <ngb-tab id="cameras" title="{{'PAGES.Labels.Cameras' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">
             <div class="table-responsive">
@@ -452,7 +452,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="personaCamaras.length > 0">
                   <tr
                     *ngFor="let personaCamara of personaCamaras | slice: (tab1Page-1) * pageSize : (tab1Page-1) * pageSize + pageSize">
                     <td>

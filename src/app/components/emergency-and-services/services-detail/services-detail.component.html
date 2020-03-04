@@ -1,0 +1,43 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}} Nr: {{asistencia.idSolicitudServicio}}, {{asistencia.cliente}}</h4>
+  </div>
+  <div class="modal-body">
+
+      <div *ngIf="asistencia" class="row">
+        <div class="col-md-6">
+          <div *ngFor="let item of asistencia.emePerArchivo">
+            <div *ngIf="item.tipo === 'A'">
+              <audio [src]="item.nombreArchivo" controls></audio>
+            </div>
+          </div>
+          <div>
+            <ngb-carousel>
+              <ng-container *ngFor="let item of asistencia.emePerArchivo">
+                <ng-template ngbSlide *ngIf="item.tipo === 'F'">
+                  <div class="picsum-img-wrapper">
+                    <img [src]="item.nombreArchivo" width="100%">
+                  </div>
+                </ng-template>
+              </ng-container>
+            </ngb-carousel>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <agm-map [latitude]="asistencia.latitud" [longitude]="asistencia.longitud"
+              [fullscreenControl]='true' [zoom]=15>
+              <agm-marker [latitude]="asistencia.latitud" [longitude]="asistencia.longitud">
+              </agm-marker>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn social-btn btn-outline-secondary icon-btn" (click)="activeModal.close('Close click')"><i
+      class="fa fa-times"></i>
+  </button>
+  </div>
+</div>

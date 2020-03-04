@@ -31,6 +31,8 @@ import { CustomerPanelComponent } from '../customers/customer-panel/customer-pan
 import { CustomerGpsComponent } from '../customers/customer-gps/customer-gps.component';
 import { CustomerAddComponent } from '../customers/customer-add/customer-add.component';
 import { CustomerPanelEventsComponent } from '../customers/customer-panel-events/customer-panel-events.component';
+import { ServicesListComponent } from '../emergency-and-services/services-list/services-list.component';
+import { ServicesDetailComponent } from '../emergency-and-services/services-detail/services-detail.component';
 
 
 
@@ -56,7 +58,9 @@ import { CustomerPanelEventsComponent } from '../customers/customer-panel-events
     CustomerPanelComponent,
     CustomerGpsComponent,
     CustomerAddComponent,
-    CustomerPanelEventsComponent
+    CustomerPanelEventsComponent,
+    ServicesListComponent,
+    ServicesDetailComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -84,7 +88,8 @@ import { CustomerPanelEventsComponent } from '../customers/customer-panel-events
     CustomerPanelComponent,
     CustomerGpsComponent,
     CustomerAddComponent,
-    CustomerPanelEventsComponent
+    CustomerPanelEventsComponent,
+    ServicesDetailComponent
   ]
 })
 export class MainModule { }

@@ -296,6 +296,7 @@
             "EditServiceCategory": "Edit Service Category",
             "EditTypeProvider": "Edit Type Provider",
             "EditUser": "Edit User",
+            "EmergencyDetail": "Emergency Detail",
             "NewBanner": "New Banner",
             "NewCustomer": "New Customer",
             "NewGps": "New Gps",
@@ -312,6 +313,7 @@
             "NewUser": "New User",
             "ResetPassword": "Reset Password",
             "SendNews": "Edit News",
+            "ServiceDetail": "Service Detail",
             "UpdateCustomerService": "Update Service for Customer"
         },
         "Placeholders": {
