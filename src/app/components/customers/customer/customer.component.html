@@ -59,6 +59,58 @@
           </div>
         </ng-template>
       </ngb-tab>
+
+
+      <ngb-tab *ngIf="solicitudCliente.idSolicitudCliente>0" id="customerRequest" title="{{'PAGES.Labels.CustomerState' | translate}}">
+        <ng-template ngbTabContent>
+          <form [formGroup]='custRequestForm' (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+              <div class="col-md-6">
+                <div (click)="openModalTitularReq()">
+                  <div class="form-group">
+                    <p class="label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</p>
+                    <p class="field">{{this.solicitudCliente.documentoTitular}}</p>
+                  </div>
+
+                  <div class="form-group">
+                    <p class="label">{{'PAGES.Labels.HolderNames' | translate}}</p>
+                    <p class="field">{{this.solicitudCliente.nombreTitular}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <p class="label">{{'PAGES.Labels.RequestDate' | translate}}</p>
+                  <p class="field">{{this.solicitudCliente.fechaSolicitud}}</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{'PAGES.Labels.State' | translate}}</label>
+                  <select class="form-control form-control-sm" formControlName='estado'
+                    [ngClass]="{ 'is-invalid': isInvalid(custReqCtrls.estado) }">
+                    <option value="">{{'PAGES.DefaultListItems.SelectType' | translate}}</option>
+                    <option *ngFor="let estadoServicio of estadosServicio" [ngValue]="estadoServicio.id">
+                      {{'PAGES.Labels.' + estadoServicio.descripcion | translate}}</option>
+                  </select>
+                  <div *ngIf="isInvalid(custReqCtrls.estado)" class="invalid-feedback">
+                    {{getErrorMessage(custReqCtrls.estado)}}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </form>
+          <div class="btn-group" role="group">
+            <button *ngIf="!inEdition" (click)="edit('custReq')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-pencil"></i></button>
+            <button *ngIf="inEdition" (click)="edit('custReq')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-undo"></i></button>
+            <button [disabled]="!inEdition" (click)="save('custReq')" type="button"
+              class="btn btn-outline-secondary icon-btn"><i class="fa fa-save"></i></button>
+          </div>
+        </ng-template>
+      </ngb-tab>
+
+
       <ngb-tab id="holder" *ngIf="titular.nroDocumento" title="{{'PAGES.Labels.Holder' | translate}}">
         <ng-template ngbTabContent>
           <div class="row">

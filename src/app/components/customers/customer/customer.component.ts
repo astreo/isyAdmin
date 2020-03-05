@@ -1,7 +1,7 @@
 import { Gps } from './../../../models/gps.model';
 import { Panel } from './../../../models/paneles.model';
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Cliente, Titular, Dependiente, Dispositivo, CodigoVerificacion } from '../../../models/cliente.model';
+import { Cliente, Titular, Dependiente, Dispositivo, CodigoVerificacion, SolicitudCliente } from '../../../models/cliente.model';
 import { AbstractControl, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { FormType } from '../../../models/enum';
 import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -53,6 +53,28 @@ declare interface ProviderForm extends FormGroup {
   controls: ProviderFormDataStructure['controls'];
 }
 
+declare class CustRequestFormDataStructure {
+  fields: {
+    fechaSolicitud: string;
+    nroDocumento: string;
+    nombreTitular: string;
+    estado: string;
+    // esTitular: boolean
+  };
+  controls: {
+    idSolicitudCliente: AbstractControl;
+    nroDocumento: AbstractControl;
+    nombreTitular: AbstractControl;
+    estado: AbstractControl;
+    // esTitular: AbstractControl
+  };
+}
+
+declare interface CustRequestForm extends FormGroup {
+  value: CustRequestFormDataStructure['fields'];
+  controls: CustRequestFormDataStructure['controls'];
+}
+
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
@@ -68,12 +90,14 @@ export class CustomerComponent implements OnInit, OnDestroy {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   customerForm: CustomerForm;
   providerForm: ProviderForm;
+  custRequestForm: CustRequestForm;
 
   getTitularSubscription = new Subscription();
   getDependientesSubscription = new Subscription();
   getDispositivosSubscription = new Subscription();
   getCodigoVerificacionSubscription = new Subscription();
   getPersonaProveedorSubscription = new Subscription();
+  getSolicitudClienteSubscription = new Subscription();
   getPersonaPanelesSubscription = new Subscription();
   getPersonaGpsSubscription = new Subscription();
   getPersonaCamaraSubscription = new Subscription();
@@ -91,6 +115,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
   personaGps = {} as PersonaGps[];
   personaCamaras = {} as PersonaCamara[];
   originalData = {} as any;
+  solicitudCliente = {} as SolicitudCliente;
 
   estadosServicio: SelectionModel[] = [
     {
@@ -148,6 +173,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getDependientes(this.cliente.idPersona);
     this.getDispositivos(this.cliente.idPersona);
     this.getCodigoVerificacion(this.cliente.idPersona);
+    this.getSolicitudCliente(this.cliente.idPersona);
     this.getPersonaProveedor(this.cliente.idPersona);
     this.getPersonaPaneles(this.cliente.idPersona);
     this.getPersonaGps(this.cliente.idPersona);
@@ -167,6 +193,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.getPersonaCamaraSubscription.unsubscribe();
     this.deletePersonaProveedorSubscription.unsubscribe();
     this.personaPanelActionSubscription.unsubscribe();
+    this.getSolicitudClienteSubscription.unsubscribe();
   }
 
   setCustomerForm() {
@@ -191,12 +218,27 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.providerForm.disable();
   }
 
+  setCustRequestForm() {
+    this.custRequestForm = this.formBuilder.group({
+      fechaSolicitud: [this.solicitudCliente.fechaSolicitud],
+      documentoTitular: [this.solicitudCliente.documentoTitular],
+      nombreTitular: [this.solicitudCliente.nombreTitular],
+      estado: [this.solicitudCliente.estado],
+      // esTitular: [this.solicitudCliente.esTitular]
+    }) as CustRequestForm;
+    this.custRequestForm.disable();
+  }
+
   get custCtrls() {
     return this.customerForm.controls;
   }
 
   get provCtrls() {
     return this.providerForm.controls;
+  }
+
+  get custReqCtrls() {
+    return this.custRequestForm.controls;
   }
 
   isInvalid(ctrl: AbstractControl) {
@@ -360,6 +402,38 @@ export class CustomerComponent implements OnInit, OnDestroy {
       );
   }
 
+  getSolicitudCliente(idPersona: number) {
+    this.loading = true;
+    this.getPersonaProveedorSubscription = this.clientesService.getSolicitudCliente(idPersona)
+      .subscribe(
+        result => {
+          // if (permisos.length === 0) return;
+          this.loading = false;
+          // debugger;
+          if (!result || result.length === 0) {
+            /*Swal.fire({
+              title: 'Error!',
+              text: 'Solicitud no encontrado para esta persona',
+              type: 'error',
+              confirmButtonText: 'OK'
+            });*/
+          } else {
+            this.solicitudCliente = result;
+            this.setCustRequestForm();
+            console.log(JSON.stringify(this.solicitudCliente));
+          }
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.message,
+            type: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      );
+  }
+
   getPersonaProveedor(idPersona: number) {
     this.loading = true;
     this.getPersonaProveedorSubscription = this.clientesService.getPersonaProveedor(idPersona)
@@ -494,25 +568,25 @@ export class CustomerComponent implements OnInit, OnDestroy {
         if (result) {
 
           this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaProveedor(this.personaProveedor)
-          .subscribe(
-            response => {
-              Swal.fire({
-                title: `Eliminado!`,
-                text: `El servicio ha sido eliminado con éxito`,
-                type: 'success',
-                confirmButtonText: 'OK'
+            .subscribe(
+              response => {
+                Swal.fire({
+                  title: `Eliminado!`,
+                  text: `El servicio ha sido eliminado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                this.activeModal.close();
+              }
+              ,
+              (error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
               });
-              this.activeModal.close();
-            }
-            ,
-            (error) => {
-              Swal.fire({
-                title: 'Error!',
-                text: error.message,
-                type: 'error',
-                confirmButtonText: 'OK'
-              });
-            });
 
         }
       });
@@ -525,25 +599,25 @@ export class CustomerComponent implements OnInit, OnDestroy {
         if (result) {
 
           this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaPanel(personaPanel.idPersonaPanel)
-          .subscribe(
-            response => {
-              Swal.fire({
-                title: `Eliminado!`,
-                text: `El panel ha sido eliminado con éxito`,
-                type: 'success',
-                confirmButtonText: 'OK'
+            .subscribe(
+              response => {
+                Swal.fire({
+                  title: `Eliminado!`,
+                  text: `El panel ha sido eliminado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                this.activeModal.close();
+              }
+              ,
+              (error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
               });
-              this.activeModal.close();
-            }
-            ,
-            (error) => {
-              Swal.fire({
-                title: 'Error!',
-                text: error.message,
-                type: 'error',
-                confirmButtonText: 'OK'
-              });
-            });
 
         }
       });
@@ -556,25 +630,25 @@ export class CustomerComponent implements OnInit, OnDestroy {
         if (result) {
 
           this.deletePersonaProveedorSubscription = this.clientesService.deletePersonaGps(personaGps.idPersonaGps)
-          .subscribe(
-            response => {
-              Swal.fire({
-                title: `Eliminado!`,
-                text: `El GPS ha sido eliminado con éxito`,
-                type: 'success',
-                confirmButtonText: 'OK'
+            .subscribe(
+              response => {
+                Swal.fire({
+                  title: `Eliminado!`,
+                  text: `El GPS ha sido eliminado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                this.activeModal.close();
+              }
+              ,
+              (error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
               });
-              this.activeModal.close();
-            }
-            ,
-            (error) => {
-              Swal.fire({
-                title: 'Error!',
-                text: error.message,
-                type: 'error',
-                confirmButtonText: 'OK'
-              });
-            });
 
         }
       });
@@ -586,6 +660,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
     switch (tab) {
       case 'customer':
         this.editCliente();
+        break;
+      case 'custReq':
+        this.editSolicitudCliente();
         break;
       case 'holder':
         this.editTitular();
@@ -622,6 +699,17 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
   }
 
+  editSolicitudCliente() {
+    if (this.inEdition) {
+      this.custReqCtrls.estado.enable();
+      Object.assign(this.originalData, this.solicitudCliente);
+    } else {
+      this.custReqCtrls.estado.disable();
+      Object.assign(this.solicitudCliente, this.originalData);
+      this.custReqCtrls.estado.setValue(this.solicitudCliente.estado);
+    }
+  }
+
   editTitular() {
     if (this.inEdition) {
       this.openModal();
@@ -629,6 +717,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
       Object.assign(this.titular, this.originalData);
     }
   }
+
 
   save(tab: string) {
     this.inEdition = !this.inEdition;
@@ -708,6 +797,19 @@ export class CustomerComponent implements OnInit, OnDestroy {
         // this.customerForm.setValue(result);
       }
     });
+  }
+
+  openModalTitularReq() {
+    if (this.inEdition) {
+      const modalRef = this.modalService.open(CustomersDialogComponent, { size: 'lg', backdrop: 'static' });
+      modalRef.result.then((result: Cliente) => {
+        if (result) {
+          this.solicitudCliente.documentoTitular = result.nroDocumento;
+          this.solicitudCliente.nombreTitular = result.nombres + ' ' + result.apellidos;
+          console.log(JSON.stringify(result));
+        }
+      });
+    }
   }
 
   openPanelInfoModal(item: PersonaPanel) {

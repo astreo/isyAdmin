@@ -172,6 +172,25 @@ export class ClientesService {
     );
   }
 
+  getSolicitudCliente(idPersona: number) {
+    return this.accountService.getProveedorId().pipe(
+      switchMap(
+        (idProveedor) => {
+          return this.http.get(`${this.url}/SolicitudCliente/Person/${idPersona}/prov/${idProveedor}`,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                (resp: any) => {
+                  return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
   getPersonaPaneles(idPersona: number) {
     return this.accountService.getProveedorId().pipe(
       switchMap(
