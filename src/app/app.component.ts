@@ -23,10 +23,10 @@ export class AppComponent implements OnInit, OnDestroy {
     userLang = /(en|de|it|fr|es|be)/gi.test(userLang) ? userLang : 'en';
     this.translate.use(userLang);*/
     translate.addLangs(['en', 'es']);
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('es');
 
     const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|es/) ? browserLang : 'en');
+    translate.use(browserLang.match(/en|es/) ? browserLang : 'es');
   }
 
   ngOnInit() {

@@ -212,7 +212,7 @@ export interface SolicitudCliente {
   esTitular:          boolean;
   personaJuridica:    boolean;
   persona:            ClienteVM;
-  proveedor:          null;
+  proveedor:          Proveedor;
   idProveedorWeb:     number;
   idUsuarioWeb:       number;
   proveedorWeb:       null;

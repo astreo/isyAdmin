@@ -7,8 +7,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
 import { Subscription } from 'rxjs';
 import { AccountService } from './account.service';
-import { Cliente, ClienteVM } from '../models/cliente.model';
+import { Cliente, ClienteVM, SolicitudCliente } from '../models/cliente.model';
 import { PersonaProveedor, PersonaPanel, PersonaGps } from '../models/relaciones.model';
+import { Proveedor } from '../models/proveedor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -327,6 +328,34 @@ export class ClientesService {
               map(
                 (resp: any) => {
                   return resp.body;
+                }
+              )
+            )
+            ;
+        }
+      )
+    );
+  }
+
+  updateSolicitudCliente(solicitudCliente: SolicitudCliente) {
+    // const clienteVM = {} as  ClienteVM;
+    // Object.assign(clienteVM, cliente);
+    return this.accountService.getAccountData().pipe(
+      switchMap(
+        (data) => {
+          solicitudCliente.idUsuarioWeb = data.idUsuario;
+          solicitudCliente.idProveedorWeb = data.idProveedor;
+          solicitudCliente.proveedor = {} as Proveedor;
+          solicitudCliente.proveedor.idProveedor = data.idProveedor;
+          solicitudCliente.proveedor.nombre = data.nombreProveedor;
+          solicitudCliente.proveedor.alias = data.aliasProveedor;
+          // panel.idPuntoInteres = id;
+          return this.http.put(`${this.url}/solicitudCliente/` + solicitudCliente.idSolicitudCliente, solicitudCliente,
+            { headers: this.headers, observe: 'response' })
+            .pipe(
+              map(
+                () => {
+                  return solicitudCliente;
                 }
               )
             )

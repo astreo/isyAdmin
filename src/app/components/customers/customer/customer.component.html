@@ -66,7 +66,7 @@
           <form [formGroup]='custRequestForm' (keydown.enter)="$event.preventDefault()">
             <div class="row">
               <div class="col-md-6">
-                <div (click)="openModalTitularReq()">
+                <!-- <div (click)="openModalTitularReq()"> -->
                   <div class="form-group">
                     <p class="label">{{'PAGES.Labels.HolderDocumentNumber' | translate}}</p>
                     <p class="field">{{this.solicitudCliente.documentoTitular}}</p>
@@ -76,7 +76,7 @@
                     <p class="label">{{'PAGES.Labels.HolderNames' | translate}}</p>
                     <p class="field">{{this.solicitudCliente.nombreTitular}}</p>
                   </div>
-                </div>
+                <!-- </div> -->
               </div>
               <div class="col-md-6">
                 <div class="form-group">

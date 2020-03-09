@@ -311,6 +311,7 @@
             "EditServiceCategory": "Editar Categoria de Servicio",
             "EditTypeProvider": "Editar Tipo de Proveedor",
             "EditUser": "Editar Usuario",
+            "EmergencyDetail": "Detalle de Emergencia",
             "NewBanner": "Nuevo Banner",
             "NewCustomer": "Nuevo Cliente",
             "NewGps": "Nuevo Gps",
@@ -327,6 +328,7 @@
             "NewUser": "Nuevo Usuario",
             "ResetPassword": "Resetear Password",
             "SendNews": "Editar Noticias",
+            "ServiceDetail": "Detalle de Servicio",
             "UpdateCustomerService": "Actualizar el servicio para cliente"
         },
         "Placeholders": {

@@ -726,6 +726,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
       case 'customer':
         this.saveCliente();
         break;
+      case 'custReq':
+        this.saveSolicitudCliente();
+        break;
       case 'holder':
         this.saveTitular();
         break;
@@ -742,6 +745,28 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new actions.ActualizarCliente(this.cliente));
     this.custCtrls.telefono.disable();
     // this.inEdition = false;
+  }
+
+  saveSolicitudCliente() {
+    this.solicitudCliente.estado = this.custReqCtrls.estado.value;
+    this.updateTitularSubscription = this.clientesService.updateSolicitudCliente(this.solicitudCliente).subscribe(
+      response => {
+        Swal.fire({
+          title: `ACTUALIZADO!`,
+          text: `La solicitud ha sido actualizada con éxito`,
+          type: 'success',
+          confirmButtonText: 'OK'
+        });
+      }
+      ,
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message,
+          type: 'error',
+          confirmButtonText: 'OK'
+        });
+      });
   }
 
   saveTitular() {

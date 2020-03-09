@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, of, interval } from 'rxjs';
 import { Peticion } from 'src/app/models/peticion.model';
 import { FormControl } from '@angular/forms';
 import { UtilService } from '../../../services/util.service';
@@ -41,15 +41,15 @@ export class ServicesListComponent implements OnInit, OnDestroy {
     private peticionesService: PeticionesService, public store: Store<AppState>, private translateService: TranslateService) { }
 
   ngOnInit() {
-    /*const source = interval(10000);
-    const text = 'Your Text Here';
-    this.subscription = source.subscribe(val => this.opensnack(text));*/
-
     this.getList(true);
-    setInterval(() => {
+
+    const source = interval(10000);
+    this.intervalSubscription = source.subscribe(val => this.getList(false));
+
+    /*setInterval(() => {
       this.subscription.unsubscribe();
       this.getList(false);
-    }, 10000);
+    }, 10000);*/
   }
 
   ngOnDestroy() {
@@ -120,6 +120,7 @@ export class ServicesListComponent implements OnInit, OnDestroy {
 
 
   openModal(item: Peticion) {
+    // this.intervalSubscription.unsubscribe();
     this.subscription.unsubscribe();
     const modalRef = this.modalService.open(ServicesDetailComponent, { size: 'lg', backdrop: 'static' });
     // const modalRef = this.modalService.open(ServicesDetailComponent);
