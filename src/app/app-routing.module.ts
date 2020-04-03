@@ -10,7 +10,7 @@ const routes: Routes = [
     { path: 'newPwd', component: NewPwdComponent },
     {
         path: '',
-        loadChildren: './components/main/main.module#MainModule',
+        loadChildren: () => import('./components/main/main.module').then(m => m.MainModule),
         // canLoad: [ AuthGuardService ]
     },
     { path: '**', redirectTo: '' },

@@ -19,7 +19,7 @@ export const mainRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   {
     path: 'reporte',
-    loadChildren: '../reports/reports.module#ReportsModule',
+    loadChildren: () => import('../reports/reports.module').then(m => m.ReportsModule),
     // canLoad: [ AuthGuardService ]
   },
   { path: 'puntointeres', component: PointsListComponent },
