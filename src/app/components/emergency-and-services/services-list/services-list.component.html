@@ -46,8 +46,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  *ngFor="let item of list  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                <tr *ngFor="let item of list  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                   <td>
                     <ngb-highlight [result]="item.idSolicitudServicio" [term]="textFilter.value"></ngb-highlight>
                   </td>
@@ -61,12 +60,14 @@
                     <ngb-highlight [result]="item.persona.apellidos" [term]="textFilter.value"></ngb-highlight>
                   </td>
                   <td>
-                    <ngb-highlight [result]="item.servicioDesc" [term]="textFilter.value"></ngb-highlight>
+                    <span [ngClass]=" item.servicio == 'EMEper' ? 'bg-danger flag' : ''">
+                      <ngb-highlight [result]="item.servicioDesc" [term]="textFilter.value"></ngb-highlight>
+                    </span>
                   </td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                      <button (click)="openModal(item)" type="button"
-                        class="btn btn-outline-secondary icon-btn"><i class="fa fa-list-alt"></i></button>
+                      <button (click)="openModal(item)" type="button" class="btn btn-outline-secondary icon-btn"><i
+                          class="fa fa-list-alt"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -75,8 +76,8 @@
           </div>
           <br>
           <ngb-pagination class="d-flex justify-content-center pagination-rounded-flat" [pageSize]="pageSize"
-            [collectionSize]="list.length" [(page)]="page" [maxSize]="10" [rotate]="true"
-            [boundaryLinks]="true"></ngb-pagination>
+            [collectionSize]="list.length" [(page)]="page" [maxSize]="10" [rotate]="true" [boundaryLinks]="true">
+          </ngb-pagination>
         </ng-container>
       </div>
     </div>

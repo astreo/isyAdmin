@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -6,11 +6,16 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private translate: TranslateService) { }
+  ngOnDestroy(): void {
+    window.onpopstate = null;
+    console.log('hola');
+  }
 
   ngOnInit() {
+    window.onpopstate = function (e) { window.history.forward(); };
   }
 
   cambiaIdioma(idioma: string) {

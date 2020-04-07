@@ -35,7 +35,7 @@ export function reducer(state = estadoInicial, action: actions.accion): State {
     case actions.CARGAR_USUARIO_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loading: false, // RodV - Se comentó porque el loading se detiene mucho antes de entrar al home
         loaded: true,
         authenticated: true,
         usuario: { ...action.usuario }
