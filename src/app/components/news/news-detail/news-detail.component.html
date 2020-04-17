@@ -1,1 +1,75 @@
-<p>news-detail works!</p>
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <form spellcheck="false" [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Link' | translate}}</label>
+              <textarea type="text" class="form-control" formControlName='titulo'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.titulo) }" rows="2" maxlength="260">
+              </textarea>
+              <div *ngIf="isInvalid(ctrls.titulo)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.titulo)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Title' | translate}}</label>
+              <input type="text" class="form-control" formControlName='linkNoticia'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.linkNoticia) }">
+              <div *ngIf="isInvalid(ctrls.linkNoticia)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.linkNoticia)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Content' | translate}}</label>
+              <textarea type="text" class="form-control" formControlName='contenido'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.contenido) }" rows="6" maxlength="260">
+              </textarea>
+              <div *ngIf="isInvalid(ctrls.contenido)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.contenido)}}
+              </div>
+            </div>
+
+            <div>
+              <img [src]="ctrls.urlImagen.value" width="200" height="100"/>
+            </div>
+
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="enviado" formControlName='enviado'>
+              <label class="form-label" for="enviado">{{'PAGES.Labels.SendPush' | translate}}</label>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="verMapa" formControlName='verMapa' #verMapa>
+            <label class="form-label" for="verMapa">{{'PAGES.Labels.NewsPoint' | translate}}</label>
+          </div>
+          <div *ngIf="verMapa.checked">
+            <agm-map (mapClick)="agregarMarcador($event.coords)" [latitude]="initialLat" [longitude]="initialLng"
+              [fullscreenControl]='true' [zoom]=15>
+              <agm-marker [latitude]="lat" [longitude]="lng">
+              </agm-marker>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>

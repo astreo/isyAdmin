@@ -8,6 +8,8 @@ import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/c
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NoticiasService } from 'src/app/services/noticias.service';
 import { startWith, map } from 'rxjs/operators';
+import { NewsDetailComponent } from '../news-detail/news-detail.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-news-list',
@@ -57,6 +59,50 @@ export class NewsListComponent implements OnInit, OnDestroy {
   }
 
   openModal(formType: FormType, item?: Noticia) {
+    if (!item) {
+      item = {} as Noticia;
+    }
+    // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
+    const modalRef = this.modalService.open(NewsDetailComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.noticia = item;
+    modalRef.componentInstance.formType = formType;
+    modalRef.result.then((result: Noticia) => {
+      if (result) {
+        console.log('item: ', result);
+        // tslint:disable-next-line: no-shadowed-variable
+        let action: Observable<any>;
+        let actionResult: string;
+        if (formType === FormType.NEW) {
+          actionResult = 'agregado';
+          // action = this.puntosDeInteresService.addPunto(result);
+        } else {
+          actionResult = 'actualizado';
+          // action = this.puntosDeInteresService.updatePunto(item.idPuntoInteres, result);
+        }
+        this.actionSubscription = action.subscribe(
+          response => {
+            Swal.fire({
+              title: `${this.utilService.textToTitleCase(actionResult)}!`,
+              text: `El punto ha sido ${actionResult} con éxito`,
+              type: 'success',
+              confirmButtonText: 'OK'
+            });
+            Object.assign(item, result);
+            if (formType === FormType.NEW) {
+              this.getList();
+            }
+          }
+          ,
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
+      }
+    });
   }
 
   searchText(text: string): Noticia[] {

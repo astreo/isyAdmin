@@ -93,7 +93,8 @@ import { NewsListComponent } from '../news/news-list/news-list.component';
     CustomerGpsComponent,
     CustomerAddComponent,
     CustomerPanelEventsComponent,
-    ServicesDetailComponent
+    ServicesDetailComponent,
+    NewsDetailComponent
   ]
 })
 export class MainModule { }
