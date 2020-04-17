@@ -30,6 +30,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const links = document.getElementsByTagName('a');
+
+for (let i = 0; i < links.length; i++) {
+    links[i].setAttribute('data-href', links[i].getAttribute('href'));
+    links[i].removeAttribute('href');
+    links[i].onclick = function() {
+        window.location.href = links[i].getAttribute('data-href');
+    };
+}
     this.routerSubscription = this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         this.currentUrl = e.url.split(';')[0];

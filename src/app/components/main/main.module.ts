@@ -33,6 +33,8 @@ import { CustomerAddComponent } from '../customers/customer-add/customer-add.com
 import { CustomerPanelEventsComponent } from '../customers/customer-panel-events/customer-panel-events.component';
 import { ServicesListComponent } from '../emergency-and-services/services-list/services-list.component';
 import { ServicesDetailComponent } from '../emergency-and-services/services-detail/services-detail.component';
+import { NewsDetailComponent } from '../news/news-detail/news-detail.component';
+import { NewsListComponent } from '../news/news-list/news-list.component';
 
 
 
@@ -60,7 +62,9 @@ import { ServicesDetailComponent } from '../emergency-and-services/services-deta
     CustomerAddComponent,
     CustomerPanelEventsComponent,
     ServicesListComponent,
-    ServicesDetailComponent
+    ServicesDetailComponent,
+    NewsDetailComponent,
+    NewsListComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],

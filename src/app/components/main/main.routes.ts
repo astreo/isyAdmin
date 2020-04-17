@@ -11,6 +11,7 @@ import { PanelsListComponent } from '../panels/panels-list/panels-list.component
 import { GpsListComponent } from '../gps/gps-list/gps-list.component';
 import { CustomersListComponent } from '../customers/customers-list/customers-list.component';
 import { ServicesListComponent } from '../emergency-and-services/services-list/services-list.component';
+import { NewsListComponent } from '../news/news-list/news-list.component';
 
 
 export const mainRoutes: Routes = [
@@ -29,4 +30,5 @@ export const mainRoutes: Routes = [
   { path: 'gps', component: GpsListComponent },
   { path: 'persona', component: CustomersListComponent },
   { path: 'solicitudservicio', component: ServicesListComponent },
+  { path: 'noticia', component: NewsListComponent },
 ];

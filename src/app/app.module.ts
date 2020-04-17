@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { appReducers } from './store/app.reducer';
 import { effectsArr } from './store/effects';
 import { AuthModule } from './components/auth/auth.module';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 // Carga archivos de idioma escritos en formato JSON.
 export function customTranslateLoader(http: HttpClient) {
@@ -51,7 +52,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       logOnly: environment.production,
     }),
   ],
-  providers: [],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
