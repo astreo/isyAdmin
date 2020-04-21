@@ -61,6 +61,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
   openModal(formType: FormType, item?: Noticia) {
     if (!item) {
       item = {} as Noticia;
+      item.enviado = false;
     }
     // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
     const modalRef = this.modalService.open(NewsDetailComponent, { size: 'lg', backdrop: 'static' });

@@ -30,7 +30,7 @@
             <div class="form-group">
               <label class="form-label">{{'PAGES.Labels.Content' | translate}}</label>
               <textarea type="text" class="form-control" formControlName='contenido'
-                [ngClass]="{ 'is-invalid': isInvalid(ctrls.contenido) }" rows="6" maxlength="260">
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.contenido) }" rows="6" maxlength="1000">
               </textarea>
               <div *ngIf="isInvalid(ctrls.contenido)" class="invalid-feedback">
                 {{getErrorMessage(ctrls.contenido)}}
@@ -38,7 +38,12 @@
             </div>
 
             <div>
-              <img [src]="ctrls.urlImagen.value" width="200" height="100"/>
+              <div>
+                <img [src]="ctrls.urlImagen.value" width="200" height="100" (click)="fileInput.click()" />
+              </div>
+              <div class="avatar-edit">
+                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput (change)="uploadFile($event)" />
+              </div>
             </div>
 
             <div class="form-group form-check">

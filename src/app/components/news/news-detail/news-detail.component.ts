@@ -90,6 +90,7 @@ export class NewsDetailComponent implements OnInit {
     let resp = '';
     resp += fc.hasError('required') ? 'Debe ingresar un valor. ' : '';
     resp += fc.hasError('minlength') ? 'Debe ingresar mínimo 6 dígitos. ' : '';
+    resp += fc.hasError('maxlength') ? 'Ha excedido la cantidad de caracteres. ' : '';
     resp += fc.hasError('equalValidator') ? 'Los valores no coinciden ' : '';
     return resp;
   }
@@ -141,6 +142,26 @@ export class NewsDetailComponent implements OnInit {
     // debugger;
     this.passEntry.emit(this.noticia);
     this.activeModal.close(this.noticia);
+  }
+
+  uploadFile(event) {
+    const reader = new FileReader(); // HTML5 FileReader API
+    const file = event.target.files[0];
+    if (event.target.files && event.target.files[0]) {
+      reader.readAsDataURL(file);
+
+      // When file uploads set it to file formcontrol
+      reader.onload = () => {
+        this.ctrls.urlImagen.setValue(reader.result);
+        /*this.registrationForm.patchValue({
+          file: reader.result
+        });
+        this.editFile = false;
+        this.removeUpload = true;*/
+      };
+      // ChangeDetectorRef since file is loading outside the zone
+      // this.cd.markForCheck();
+    }
   }
 
 }
