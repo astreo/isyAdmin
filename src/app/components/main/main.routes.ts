@@ -12,6 +12,7 @@ import { GpsListComponent } from '../gps/gps-list/gps-list.component';
 import { CustomersListComponent } from '../customers/customers-list/customers-list.component';
 import { ServicesListComponent } from '../emergency-and-services/services-list/services-list.component';
 import { NewsListComponent } from '../news/news-list/news-list.component';
+import { BannersListComponent } from '../banners/banners-list/banners-list.component';
 
 
 export const mainRoutes: Routes = [
@@ -31,4 +32,5 @@ export const mainRoutes: Routes = [
   { path: 'persona', component: CustomersListComponent },
   { path: 'solicitudservicio', component: ServicesListComponent },
   { path: 'noticia', component: NewsListComponent },
+  { path: 'banner', component: BannersListComponent },
 ];

@@ -9,6 +9,7 @@ export class ConfirmationDialogComponent implements OnInit {
 
   @Input() title: string;
   @Input() message: string;
+  @Input() iconClass: string;
   @Input() btnOkText: string;
   @Input() btnCancelText: string;
 

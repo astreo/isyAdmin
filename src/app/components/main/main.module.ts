@@ -35,6 +35,7 @@ import { ServicesListComponent } from '../emergency-and-services/services-list/s
 import { ServicesDetailComponent } from '../emergency-and-services/services-detail/services-detail.component';
 import { NewsDetailComponent } from '../news/news-detail/news-detail.component';
 import { NewsListComponent } from '../news/news-list/news-list.component';
+import { BannersListComponent } from '../banners/banners-list/banners-list.component';
 
 
 
@@ -64,7 +65,8 @@ import { NewsListComponent } from '../news/news-list/news-list.component';
     ServicesListComponent,
     ServicesDetailComponent,
     NewsDetailComponent,
-    NewsListComponent
+    NewsListComponent,
+    BannersListComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],

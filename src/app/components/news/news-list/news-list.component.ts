@@ -11,14 +11,23 @@ import { startWith, map } from 'rxjs/operators';
 import { NewsDetailComponent } from '../news-detail/news-detail.component';
 import Swal from 'sweetalert2';
 
+enum ConfirmationOp {
+  Delete,
+  Send,
+}
+
 @Component({
   selector: 'app-news-list',
+
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.scss']
 })
+
 export class NewsListComponent implements OnInit, OnDestroy {
   FormType = FormType;
   formType: FormType;
+  ConfirmationOp = ConfirmationOp;
+  // confirmationOp: ConfirmationOp;
   loading: boolean;
   news = {} as Noticia[];
   news$: Observable<Noticia[]>;
@@ -75,10 +84,10 @@ export class NewsListComponent implements OnInit, OnDestroy {
         let actionResult: string;
         if (formType === FormType.NEW) {
           actionResult = 'agregado';
-          // action = this.puntosDeInteresService.addPunto(result);
+          action = this.noticiasService.addNoticia(result);
         } else {
           actionResult = 'actualizado';
-          // action = this.puntosDeInteresService.updatePunto(item.idPuntoInteres, result);
+          action = this.noticiasService.updateNoticia(item.idNoticia, result);
         }
         this.actionSubscription = action.subscribe(
           response => {
@@ -104,6 +113,51 @@ export class NewsListComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  openConfirmationDialog(item: Noticia, op?: ConfirmationOp) {
+    let iconClass: string;
+    let actionMessage = 'Eliminar ';
+    if (op === ConfirmationOp.Send) {
+      actionMessage = 'Enviar '
+      iconClass = 'fa fa-paper-plane';
+    }
+    this.confirmationDialogService.confirm('Confirmación requerida',
+      `${actionMessage} "${item.titulo}"?`, iconClass)
+      .then((result) => {
+        if (result) {
+          if (item) {
+            let action: Observable<any>;
+        let actionResult: string;
+        if (op === ConfirmationOp.Delete) {
+          actionResult = 'eliminado';
+          action = this.noticiasService.deleteNoticia(item.idNoticia);
+        } else {
+          actionResult = 'enviado';
+          action = this.noticiasService.sendNoticia(item);
+        }
+        this.actionSubscription = action.subscribe(
+              response => {
+                Swal.fire({
+                  title: `Eliminado!`,
+                  text: `El punto ha sido eliminado con éxito`,
+                  type: 'success',
+                  confirmButtonText: 'OK'
+                });
+                this.getList();
+              }
+              ,
+              (error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  type: 'error',
+                  confirmButtonText: 'OK'
+                });
+              });
+          }
+        }
+      });
   }
 
   searchText(text: string): Noticia[] {
