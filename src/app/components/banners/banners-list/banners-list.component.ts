@@ -8,6 +8,8 @@ import { ConfirmationDialogService } from 'src/app/shared/confirmation-dialog/co
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BannersService } from '../../../services/banners.service';
 import { startWith, map } from 'rxjs/operators';
+import { BannerComponent } from '../banner/banner.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-banners-list',
@@ -62,6 +64,54 @@ export class BannersListComponent implements OnInit, OnDestroy {
       const term = text.toLowerCase();
       return banners.rangoFechas.toLowerCase().includes(term)
         ;
+    });
+  }
+
+  openModal(formType: FormType, item?: Banner) {
+    if (!item) {
+      item = {} as Banner;
+      item.rangoFechas = this.utilService.dateToString({ separator: '/', returnFormat: 'mmddyyyy' }) + ' - ' + this.utilService.dateToString({ separator: '/', returnFormat: 'mmddyyyy' });
+    }
+    // const size = (formObject === FormObject.USER) ? 'lg' : 'sm';
+    const modalRef = this.modalService.open(BannerComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.banner = item;
+    modalRef.componentInstance.formType = formType;
+    modalRef.result.then((result: Banner) => {
+      if (result) {
+        console.log('item: ', result);
+        // tslint:disable-next-line: no-shadowed-variable
+        let action: Observable<any>;
+        let actionResult: string;
+        if (formType === FormType.NEW) {
+          actionResult = 'agregado';
+          // action = this.bannersService.addbanner(result);
+        } else {
+          actionResult = 'actualizado';
+          // action = this.bannersService.updatebanner(item.idbanner, result);
+        }
+        this.actionSubscription = action.subscribe(
+          response => {
+            Swal.fire({
+              title: `${this.utilService.textToTitleCase(actionResult)}!`,
+              text: `El item ha sido ${actionResult} con éxito`,
+              type: 'success',
+              confirmButtonText: 'OK'
+            });
+            Object.assign(item, result);
+            if (formType === FormType.NEW) {
+              this.getList();
+            }
+          }
+          ,
+          (error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: error.message,
+              type: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
+      }
     });
   }
 

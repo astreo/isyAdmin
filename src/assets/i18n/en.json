@@ -64,6 +64,7 @@
             "Profile": "Select the Profile",
             "Provider": "Select the Provider",
             "Reject": "Reject",
+            "Select": "Select Option",
             "SelectType": "Select Type",
             "ServiceCategory": "Select the Service Category",
             "TotalConnect": "Total Connect",
@@ -316,6 +317,7 @@
             "NewUser": "New User",
             "ResetPassword": "Reset Password",
             "SendNews": "Edit News",
+            "SelectDates": "Select Dates",
             "ServiceDetail": "Service Detail",
             "UpdateCustomerService": "Update Service for Customer"
         },

@@ -9,7 +9,7 @@
           <div>
 
             <div class="form-group">
-              <label class="form-label">{{'PAGES.Labels.Link' | translate}}</label>
+              <label class="form-label">{{'PAGES.Labels.Title' | translate}}</label>
               <textarea type="text" class="form-control" formControlName='titulo'
                 [ngClass]="{ 'is-invalid': isInvalid(ctrls.titulo) }" rows="2" maxlength="260">
               </textarea>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">{{'PAGES.Labels.Title' | translate}}</label>
+              <label class="form-label">{{'PAGES.Labels.Link' | translate}}</label>
               <input type="text" class="form-control" formControlName='linkNoticia'
                 [ngClass]="{ 'is-invalid': isInvalid(ctrls.linkNoticia) }">
               <div *ngIf="isInvalid(ctrls.linkNoticia)" class="invalid-feedback">

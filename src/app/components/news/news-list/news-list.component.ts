@@ -42,7 +42,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
   textFilter = new FormControl('');
 
   constructor(public utilService: UtilService, public confirmationDialogService: ConfirmationDialogService, public modalService: NgbModal,
-              private noticiasService: NoticiasService) { }
+    private noticiasService: NoticiasService) { }
 
   ngOnInit() {
     this.getList();
@@ -93,7 +93,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
           response => {
             Swal.fire({
               title: `${this.utilService.textToTitleCase(actionResult)}!`,
-              text: `El punto ha sido ${actionResult} con éxito`,
+              text: `El item ha sido ${actionResult} con éxito`,
               type: 'success',
               confirmButtonText: 'OK'
             });
@@ -119,7 +119,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
     let iconClass: string;
     let actionMessage = 'Eliminar ';
     if (op === ConfirmationOp.Send) {
-      actionMessage = 'Enviar '
+      actionMessage = 'Enviar ';
       iconClass = 'fa fa-paper-plane';
     }
     this.confirmationDialogService.confirm('Confirmación requerida',
@@ -128,19 +128,19 @@ export class NewsListComponent implements OnInit, OnDestroy {
         if (result) {
           if (item) {
             let action: Observable<any>;
-        let actionResult: string;
-        if (op === ConfirmationOp.Delete) {
-          actionResult = 'eliminado';
-          action = this.noticiasService.deleteNoticia(item.idNoticia);
-        } else {
-          actionResult = 'enviado';
-          action = this.noticiasService.sendNoticia(item);
-        }
-        this.actionSubscription = action.subscribe(
+            let actionResult: string;
+            if (op === ConfirmationOp.Delete) {
+              actionResult = 'eliminado';
+              action = this.noticiasService.deleteNoticia(item.idNoticia);
+            } else {
+              actionResult = 'enviado';
+              action = this.noticiasService.sendNoticia(item);
+            }
+            this.actionSubscription = action.subscribe(
               response => {
                 Swal.fire({
-                  title: `Eliminado!`,
-                  text: `El punto ha sido eliminado con éxito`,
+                  title: `${this.utilService.textToTitleCase(actionResult)}!`,
+                  text: `El item ha sido ${actionResult} con éxito`,
                   type: 'success',
                   confirmButtonText: 'OK'
                 });

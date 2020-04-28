@@ -1,0 +1,120 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{formTitle | translate}}</h4>
+  </div>
+  <div class="modal-body">
+    <form spellcheck="false" [formGroup]='form' (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Content' | translate}}</label>
+              <textarea type="text" class="form-control" formControlName='contenidoAnuncio'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.contenidoAnuncio) }" rows="2" maxlength="260">
+              </textarea>
+              <div *ngIf="isInvalid(ctrls.contenidoAnuncio)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.contenidoAnuncio)}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">{{'PAGES.Labels.Link' | translate}}</label>
+              <input type="text" class="form-control" formControlName='linkAnuncio'
+                [ngClass]="{ 'is-invalid': isInvalid(ctrls.linkAnuncio) }">
+              <div *ngIf="isInvalid(ctrls.linkAnuncio)" class="invalid-feedback">
+                {{getErrorMessage(ctrls.linkAnuncio)}}
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <img [src]="ctrls.pathImagen.value" width="200" height="100" (click)="fileInput.click()" />
+              </div>
+              <div class="avatar-edit">
+                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                  (change)="uploadFile($event)" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-label">{{'PAGES.Labels.SinceUntil' | translate}}</label>
+
+            <div class="input-group">
+
+              <input type="text" class="form-control" formControlName='rangoFechas'>
+
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="openRangeDatesModal()" type="button">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
+            <select class="form-control form-control-sm" formControlName='prioridad'
+              [ngClass]="{ 'is-invalid': isInvalid(ctrls.prioridad) }">
+              <option value="">{{'PAGES.DefaultListItems.Select' | translate}}</option>
+              <option *ngFor="let prioridad of prioridades" [ngValue]="prioridad.id">{{prioridad.descripcion}}</option>
+            </select>
+            <div *ngIf="isInvalid(ctrls.prioridad)" class="invalid-feedback">
+              {{getErrorMessage(ctrls.prioridad)}}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-12 form-label">{{'PAGES.Labels.SendTo' | translate}}</label>
+            <div class="col-sm-4">
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="enviarNoCliente" formControlName='enviarNoCliente'>
+                <label class="form-label" for="enviarNoCliente">{{'PAGES.Labels.NoCustomers' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="enviarCliente" formControlName='enviarCliente'>
+                <label class="form-label" for="enviarCliente">{{'PAGES.Labels.Customers' | translate}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{'PAGES.Labels.Profile' | translate}}</label>
+            <select class="form-control form-control-sm" formControlName='plataforma'
+              [ngClass]="{ 'is-invalid': isInvalid(ctrls.plataforma) }">
+              <option value="TODOS">{{'PAGES.DefaultListItems.All' | translate}}</option>
+              <option *ngFor="let plataforma of plataformas" [ngValue]="plataforma.id">{{plataforma.descripcion}}
+              </option>
+            </select>
+            <div *ngIf="isInvalid(ctrls.plataforma)" class="invalid-feedback">
+              {{getErrorMessage(ctrls.plataforma)}}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{'PAGES.Labels.Order' | translate}}</label>
+            <input type="number" min="0" class="form-control" formControlName='orden'
+              [ngClass]="{ 'is-invalid': isInvalid(ctrls.orden) }">
+            <div *ngIf="isInvalid(ctrls.orden)" class="invalid-feedback">
+              {{getErrorMessage(ctrls.orden)}}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()"
+      [disabled]="form.invalid">{{'PAGES.Buttons.Save' | translate}}
+    </button>
+  </div>
+</div>

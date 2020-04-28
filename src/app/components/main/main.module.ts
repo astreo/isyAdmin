@@ -36,6 +36,7 @@ import { ServicesDetailComponent } from '../emergency-and-services/services-deta
 import { NewsDetailComponent } from '../news/news-detail/news-detail.component';
 import { NewsListComponent } from '../news/news-list/news-list.component';
 import { BannersListComponent } from '../banners/banners-list/banners-list.component';
+import { BannerComponent } from '../banners/banner/banner.component';
 
 
 
@@ -66,7 +67,8 @@ import { BannersListComponent } from '../banners/banners-list/banners-list.compo
     ServicesDetailComponent,
     NewsDetailComponent,
     NewsListComponent,
-    BannersListComponent
+    BannersListComponent,
+    BannerComponent
     // ReportsComponent,
     // CustomersListComponent,
   ],
@@ -96,7 +98,8 @@ import { BannersListComponent } from '../banners/banners-list/banners-list.compo
     CustomerAddComponent,
     CustomerPanelEventsComponent,
     ServicesDetailComponent,
-    NewsDetailComponent
+    NewsDetailComponent,
+    BannerComponent
   ]
 })
 export class MainModule { }

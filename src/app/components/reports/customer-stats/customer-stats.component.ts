@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NgbDate } from '../../../models/misc.model';
+// import { NgbDate } from '../../../models/misc.model';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
 import { ClientesEstadistica } from '../../../models/reports.model';
 import { ReportsService } from '../../../services/reports.service';
@@ -27,11 +28,11 @@ export class CustomerStatsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const date = new Date();
-    this.fecha = {
+    this.fecha = NgbDate.from({
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate()
-    };
+    });
     this.getData();
   }
 

@@ -1,0 +1,31 @@
+<div class="col-12 card">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ 'PAGES.ModalTitles.SelectDates' | translate }}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row d-flex justify-content-center">
+      <div>
+        <ngb-datepicker #dp [startDate]="startDate" (select)="onDateSelection($event)" [displayMonths]="2"
+          [dayTemplate]="dateTimeRange" outsideDays="hidden">
+        </ngb-datepicker>
+
+        <ng-template #dateTimeRange let-date let-focused="focused">
+          <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+            [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+            (mouseleave)="hoveredDate = null">
+            {{ date.day }}
+          </span>
+        </ng-template>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark"
+      (click)="activeModal.close()">{{'PAGES.Buttons.Cancel' | translate}}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="ok()">
+      Ok
+    </button>
+  </div>
+</div>

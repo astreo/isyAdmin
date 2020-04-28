@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PanelsDialogComponent } from './panels-dialog/panels-dialog.component';
 import { GpsDialogComponent } from './gps-dialog/gps-dialog.component';
+import { RangeDatesDialogComponent } from './range-dates-dialog/range-dates-dialog.component';
 
 
 
@@ -31,7 +32,8 @@ import { GpsDialogComponent } from './gps-dialog/gps-dialog.component';
     ConfirmationDialogComponent,
     CustomersDialogComponent,
     PanelsDialogComponent,
-    GpsDialogComponent
+    GpsDialogComponent,
+    RangeDatesDialogComponent
   ],
   exports: [
     FooterComponent,
@@ -39,7 +41,7 @@ import { GpsDialogComponent } from './gps-dialog/gps-dialog.component';
     SidebarComponent,
     ConfirmationDialogComponent
   ],
-  providers: [ ConfirmationDialogService, CustomersDialogComponent, PanelsDialogComponent, GpsDialogComponent ],
-  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent, PanelsDialogComponent, GpsDialogComponent ]
+  providers: [ ConfirmationDialogService, CustomersDialogComponent, PanelsDialogComponent, GpsDialogComponent, RangeDatesDialogComponent ],
+  entryComponents: [ ConfirmationDialogComponent, CustomersDialogComponent, PanelsDialogComponent, GpsDialogComponent, RangeDatesDialogComponent ]
 })
 export class SharedModule { }

@@ -4,7 +4,10 @@ import { FormControl } from '@angular/forms';
 import { ClienteList } from 'src/app/models/reports.model';
 import { ReportsService } from '../../../services/reports.service';
 import { UtilService } from '../../../services/util.service';
-import { NgbDate } from 'src/app/models/misc.model';
+// import { NgbDate } from 'src/app/models/misc.model';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+
+
 import * as XLSX from 'xlsx';
 import { map } from 'rxjs/operators';
 
